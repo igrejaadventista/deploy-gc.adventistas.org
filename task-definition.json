@@ -1,3 +1,4 @@
+   
 {
   "ipcMode": null,
   "executionRoleArn": "arn:aws:iam::AWSACCID:role/ecsTaskExecutionRole",
@@ -9,7 +10,7 @@
         "logDriver": "awslogs",
         "secretOptions": null,
         "options": {
-          "awslogs-group": "/ecs/general-conference",
+          "awslogs-group": "/ecs/ECSTASK",
           "awslogs-region": "us-east-1",
           "awslogs-stream-prefix": "ecs"
         }
@@ -37,7 +38,7 @@
       "memoryReservation": null,
       "volumesFrom": [],
       "stopTimeout": null,
-      "image": "449474385124.dkr.ecr.us-east-1.amazonaws.com/general-conference",
+      "image": "AWSACCID.dkr.ecr.us-east-1.amazonaws.com/ECSTASK",
       "startTimeout": null,
       "firelensConfiguration": null,
       "dependsOn": null,
@@ -54,7 +55,7 @@
       "dockerLabels": null,
       "systemControls": null,
       "privileged": null,
-      "name": "general-conference"
+      "name": "ECSTASK"
     }
   ],
   "placementConstraints": [],
