@@ -1,4 +1,4 @@
 <?php
 
 
-_e('teste', 'gc');
+echo "teste";
