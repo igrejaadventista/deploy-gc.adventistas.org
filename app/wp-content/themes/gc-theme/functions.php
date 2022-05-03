@@ -108,20 +108,20 @@ function wp_rest_headless_clean_response_nodes($items_to_remove)
     return $items_to_remove;
 }
 
-add_filter('wp_headless_rest__cors_rules', 'wp_rest_headless_header_rules');
-function wp_rest_headless_header_rules($rules)
-{
+// add_filter('wp_headless_rest__cors_rules', 'wp_rest_headless_header_rules');
+// function wp_rest_headless_header_rules($rules)
+// {
 
-    $rules = array(
-        'Access-Control-Allow-Origin'      => $origin,
-        'Access-Control-Allow-Methods'     => 'GET',
-        'Access-Control-Allow-Credentials' => 'true',
-        'Access-Control-Allow-Headers'     => 'Access-Control-Allow-Headers, Content-Type, origin',
-        'Access-Control-Expose-Headers'    => array('Link', false), //Use array if replace param is required
-    );
+//     $rules = array(
+//         'Access-Control-Allow-Origin'      => $origin,
+//         'Access-Control-Allow-Methods'     => 'GET',
+//         'Access-Control-Allow-Credentials' => 'true',
+//         'Access-Control-Allow-Headers'     => 'Access-Control-Allow-Headers, Content-Type, origin',
+//         'Access-Control-Expose-Headers'    => array('Link', false), //Use array if replace param is required
+//     );
 
-    return $rules;
-}
+//     return $rules;
+// }
 
 add_action('after_setup_theme', 'wpdocs_theme_setup');
 function wpdocs_theme_setup()
@@ -133,26 +133,46 @@ add_action('acf/save_post', 'my_acf_save_post');
 function my_acf_save_post($post_id)
 {
 
-    // if (get_post_type($post_id) == 'timeline') {
-    //     $values = get_fields($post_id);
-    //     // die(var_dump($values));
+    if (get_post_type($post_id) == 'timeline') {
+        // $values = get_fields($post_id);
+        // die(var_dump($values));
 
-    //     // while( have_rows('content') ) {
-    //     //     the_row();
+        while (have_rows('ct', $post_id)) {
+            the_row();
+            $layout = get_row_layout();
+            if (get_row_layout() == 'ct-site') {
+                $url = get_sub_field('ct-site-url');
+            }
+        }
 
-    //     //     // Get the row layout.
-    //     //     $layout = get_row_layout();
-    //     //     if( get_row_layout() == 'paragraph' ):
+        $tags = getSiteOG($url);
+        $metas = [
+            'url' => $url,
+            'title' => !empty($tags['title']) ? $tags['title'] : '',
+            'description' => !empty($tags['description']) ? $tags['description'] : '',
+            'image' => !empty($tags['image']) ? $tags['image'] : ''
+        ];
 
-    //     //     // Do something...
-    //     // }
+        update_sub_field(array('ct', 1, 'ct-site-title'), !empty($tags['title']) ? $tags['title'] : '');
+        update_sub_field(array('ct', 1, 'ct-site-description'), !empty($tags['description']) ? $tags['description'] : '');
+        update_sub_field(array('ct', 1, 'ct-site-image_url'), !empty($tags['image']) ? $tags['image'] : '');
 
-    //     // $url = get_sub_field('ct-site-url');
+        update_post_meta($post_id, 'url_meta_tags', $metas);
+        $saida = get_post_meta($post_id, 'url_meta_tags');
 
-    //     // die(var_dump($url));
+        // die(var_dump($saida[0]));
+    }
+}
 
-    //     $url = 'https://noticias.adventistas.org/pt/noticia/biblia/desafio-de-teologos-e-tornar-livro-de-daniel-mais-compreendido/';
-    //     $title = 
+function getSiteOG($url)
+{
+    $doc = new DOMDocument();
+    @$doc->loadHTML(file_get_contents($url));
+    $res['title'] = $doc->getElementsByTagName('title')->item(0)->nodeValue;
 
-    // }
+    foreach ($doc->getElementsByTagName('meta') as $m) {
+        $tag = $m->getAttribute('name') ?: $m->getAttribute('property');
+        if (in_array($tag, ['description', 'keywords']) || strpos($tag, 'og:') === 0) $res[str_replace('og:', '', $tag)] = $m->getAttribute('content');
+    }
+    return $res;
 }
