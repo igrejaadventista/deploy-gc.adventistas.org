@@ -4,7 +4,7 @@
     "fields": [
         {
             "key": "field_626f155d89dab",
-            "label": "Tipo do conteúdo",
+            "label": "Content Type",
             "name": "ct",
             "type": "flexible_content",
             "instructions": "",
@@ -82,6 +82,63 @@
                             },
                             "default_value": "",
                             "placeholder": ""
+                        },
+                        {
+                            "key": "field_62710369a85e9",
+                            "label": "Title",
+                            "name": "ct-site-title",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "maxlength": "",
+                            "readonly": 1
+                        },
+                        {
+                            "key": "field_62710388a85ea",
+                            "label": "Description",
+                            "name": "ct-site-description",
+                            "type": "textarea",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "maxlength": "",
+                            "rows": 3,
+                            "new_lines": "",
+                            "readonly": 1
+                        },
+                        {
+                            "key": "field_627103cca85eb",
+                            "label": "Image URL",
+                            "name": "ct-site-image_url",
+                            "type": "url",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "placeholder": "",
+                            "readonly": 1
                         }
                     ],
                     "min": "",
@@ -90,7 +147,7 @@
                 "layout_626f1ac212114": {
                     "key": "layout_626f1ac212114",
                     "name": "ct-manual",
-                    "label": "Manual",
+                    "label": "Manual Content",
                     "display": "block",
                     "sub_fields": [
                         {
@@ -176,7 +233,7 @@
                     "max": ""
                 }
             },
-            "button_label": "Adicionar Linha",
+            "button_label": "New line",
             "min": 1,
             "max": 1
         }
@@ -201,5 +258,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 1,
-    "modified": 1651487292
+    "modified": 1651573848
 }

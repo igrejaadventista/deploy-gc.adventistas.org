@@ -69,7 +69,6 @@ function wp_rest_headless_disable_endpoints($endpoints_to_remove)
         '/wp/v2/blocks',
         '/wp/v2/block-renderer',
         '/oembed/',
-        '/wp/v2/pages',
         '/wp/v2/menu-items',
         '/wp/v2/template-parts',
         '/wp/v2/navigation',
