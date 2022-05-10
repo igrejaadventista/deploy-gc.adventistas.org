@@ -1,0 +1,8 @@
+vendor/
+.idea
+.cache-loader
+dist
+node_modules
+npm-debug.log
+yarn-error.log
+auth.json

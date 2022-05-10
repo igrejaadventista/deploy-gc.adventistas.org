@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"name": "Theme",
+            "path": "app/wp-content/themes/gc-theme"
+        },
+		{
+			"path": "."
+		}
+	],
+	"settings": {}
+}
