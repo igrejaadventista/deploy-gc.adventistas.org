@@ -12,11 +12,19 @@
     "build": "bud build",
     "translate": "npm run translate:pot && npm run translate:js",
     "translate:pot": "wp i18n make-pot . ./resources/lang/sage.pot --ignore-domain --include=\"app,resources\"",
-    "translate:js": "wp i18n make-json ./resources/lang --pretty-print"
+    "translate:js": "wp i18n make-json ./resources/lang --pretty-print",
+    "lint": "npm run lint:js && npm run lint:css",
+    "lint:js": "eslint resources/scripts",
+    "lint:css": "stylelint \"resources/**/*.{css,scss,vue}\"",
+    "test": "npm run lint"
   },
   "devDependencies": {
     "@roots/bud": "5.7.6",
+    "@roots/bud-eslint": "^5.7.7",
+    "@roots/bud-prettier": "^5.7.7",
+    "@roots/bud-stylelint": "^5.7.7",
     "@roots/bud-tailwindcss": "5.7.6",
+    "@roots/eslint-config": "^5.7.7",
     "@roots/sage": "5.7.6"
   }
 }
