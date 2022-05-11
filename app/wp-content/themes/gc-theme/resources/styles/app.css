@@ -3,7 +3,3 @@
 @import 'tailwindcss/utilities';
 
 @import './sections/header';
-
-body {
-  background: #000;
-}
