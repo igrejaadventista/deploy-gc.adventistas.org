@@ -3,3 +3,7 @@
 @import 'tailwindcss/utilities';
 
 @import './sections/header';
+
+body {
+  height: 200vh;
+}
