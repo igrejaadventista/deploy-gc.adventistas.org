@@ -1,0 +1,5 @@
+header {
+  #menu-toggler:checked ~ nav {
+    left: 0;
+  }
+}
