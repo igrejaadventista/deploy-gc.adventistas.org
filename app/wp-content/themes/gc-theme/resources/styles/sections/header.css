@@ -1,5 +1,36 @@
 header {
-  #menu-toggler:checked ~ nav {
-    left: 0;
+  #menu-toggler:checked {
+    ~ {
+      nav {
+        left: 0;
+      }
+
+      label > div {
+        transform: rotate(45deg);
+        transition: all 0.2s ease-in-out;
+        transition-delay: 0.4s;
+
+        span {
+          transition: all 0.2s ease-in-out;
+
+          &:nth-child(1) {
+            transform: translateY(6px);
+          }
+
+          &:nth-child(2) {
+            width: 0;
+          }
+
+          &:nth-child(3) {
+            transform: translateY(-4px) rotate(90deg);
+          }
+
+          &:nth-child(1),
+          &:nth-child(3) {
+            transition-delay: 0.4s;
+          }
+        }
+      }
+    }
   }
 }

@@ -1,4 +1,4 @@
-<header class="bg-black/20 h-36 md:h-[92px] px-3.5 md:px-9 flex items-center justify-between">
+<header class="bg-black/20 h-36 md:h-[92px] px-3.5 md:px-9 flex items-center justify-between absolute w-full">
   <a class="z-10" href="{{ home_url('/') }}">
     <img class="h-16 md:h-12" src="@asset('images/logo-site.svg')" alt="{{ __('Logo General Conference') }}">
   </a>
@@ -7,10 +7,10 @@
     <input id="menu-toggler" class="hidden" type="checkbox" autocomplete="off">
 
     <label for="menu-toggler" class="cursor-pointer flex items-center text-primary font-bold text-xs px-2 py-3 bg-[#424A5E52] rounded-lg md:hidden z-10">
-      <div class="mr-1.5 grid content-between h-3">
-        <span class="h-0.5 rounded-sm bg-primary w-5 block"></span>
-        <span class="h-0.5 rounded-sm bg-primary w-5 block"></span>
-        <span class="h-0.5 rounded-sm bg-primary w-5 block"></span>
+      <div class="mr-1.5 grid content-between h-3 transition-all">
+        <span class="h-0.5 rounded-sm bg-primary w-5 block transition-all"></span>
+        <span class="h-0.5 rounded-sm bg-primary w-5 block transition-all"></span>
+        <span class="h-0.5 rounded-sm bg-primary w-5 block transition-all"></span>
       </div>
       menu
     </label>
@@ -26,7 +26,7 @@
           'container'      => false,
           'echo'           => false,
           'item_classes'   => 'md:ml-6 font-bold uppercase text-[#E5E5E5] hover:underline text-sm flex justify-center',
-          'link_classes'   => 'py-3',
+          'link_classes'   => 'py-4',
         ])
       !!}
     </nav>
