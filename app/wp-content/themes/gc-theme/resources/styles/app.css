@@ -2,6 +2,8 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+@import './partials/page-header';
+
 @import './sections/header';
 
 body {
