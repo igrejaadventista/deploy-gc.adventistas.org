@@ -2,8 +2,10 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+@import './partials/page-header';
+
 @import './sections/header';
 
 body {
-  background: #000;
+  height: 200vh;
 }

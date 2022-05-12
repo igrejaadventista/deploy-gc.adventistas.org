@@ -1,4 +1,4 @@
-<header class="bg-black/20 h-36 md:h-[92px] px-3.5 md:px-9 flex items-center justify-between absolute w-full">
+<header class="bg-transparent md:bg-black/20 h-36 md:h-[92px] px-3.5 md:px-9 flex items-center justify-between absolute w-full z-10">
   <a class="z-10" href="{{ home_url('/') }}">
     <img class="h-16 md:h-12" src="@asset('images/logo-site.svg')" alt="{{ __('Logo General Conference') }}">
   </a>

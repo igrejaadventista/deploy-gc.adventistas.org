@@ -1,0 +1,40 @@
+/* @tailwind base;
+@tailwind components; */
+@tailwind utilities;
+
+.page-header {
+  &--fixed {
+    @apply fixed;
+    @apply top-0;
+
+    .background {
+      @apply h-full;
+    }
+
+    .logo {
+      @apply hidden;
+    }
+
+    .live {
+      @apply flex;
+      @apply m-0;
+
+      &__title {
+        @apply mb-0;
+        @apply ml-6;
+      }
+
+      &__player {
+        max-width: 216px;
+        width: 46.7%;
+      }
+    }
+  }
+}
+
+.live {
+  iframe {
+    height: 100%;
+    width: 100%;
+  }
+}

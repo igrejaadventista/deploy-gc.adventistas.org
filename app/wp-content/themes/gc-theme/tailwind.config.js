@@ -11,6 +11,9 @@ module.exports = {
     fontFamily: {
       'sans': ['Noto Sans', 'system-ui'],
     },
+    maxWidth: {
+      'container': '724px',
+    },
   },
   plugins: [],
 };
