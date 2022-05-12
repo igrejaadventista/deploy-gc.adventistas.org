@@ -1,9 +1,9 @@
 <section
-  class="timeline w-full px-4 mx-auto max-w-container relative mt-6 md:mt-16
-  before:content-[''] before:absolute before:w-1 before:top-0 before:h-full before:bg-primary"
+  class="timeline w-full px-4 mx-auto max-w-container relative mt-6 md:mt-16 flex flex-col
+  before:content-[''] before:absolute before:w-1 before:top-4 before:h-full before:bg-primary"
 >
   <h2
-    class="text-secondary text-2xl md:text-[32px] md:leading-10 p-4 md:py-3 border-l-8 border-primary bg-gradient-to-r from-primary/20 to-primary/0 mb-6"
+    class="text-secondary text-2xl md:text-[32px] md:leading-10 p-4 md:py-3 border-l-8 border-primary bg-gradient-to-r from-primary/20 to-primary/0 mb-6 mt-4"
   >
     Notícias de <span class="font-bold">hoje</span>
   </h2>
@@ -37,4 +37,10 @@
       </div>
     </div>
   </article>
+
+  <h2
+    class="text-secondary text-2xl md:text-[32px] md:leading-10 p-4 md:py-3 border-l-8 border-primary bg-gradient-to-r from-primary/20 to-primary/0 mb-6 mt-4"
+  >
+    Notícias de <span class="font-bold">05/04</span>
+  </h2>
 </section>
