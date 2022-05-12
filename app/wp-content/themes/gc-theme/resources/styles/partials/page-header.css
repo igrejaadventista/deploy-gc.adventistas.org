@@ -6,6 +6,7 @@
   &--fixed {
     @apply fixed;
     @apply top-0;
+    @apply z-10;
 
     .background {
       @apply h-full;
