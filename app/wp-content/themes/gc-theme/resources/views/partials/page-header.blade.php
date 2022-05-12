@@ -2,7 +2,7 @@
   $live = true;
 @endphp
 
-<section class="page-header page-header--fixed w-full relative flex justify-start flex-col items-center pt-14 pb-4 md:pt-4 transition-all top-[-100%]">
+<section id="page-header" class="page-header w-full relative flex justify-start flex-col items-center pt-14 pb-4 md:pt-4 transition-all top-[-100%] {{ $live ? 'has-live' : '' }}">
   <img
     class="background w-full absolute top-0 left-0 object-cover -z-10 {{ $live ? 'h-[90%] md:h-[69%]' : 'h-full' }}"
     src="@asset('images/page-header.jpg')"
@@ -27,3 +27,5 @@
     </div>
   @endif
 </section>
+
+<div id="page-header-spacer"></div>
