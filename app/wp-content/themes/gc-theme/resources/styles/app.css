@@ -9,3 +9,11 @@
 body {
   height: 200vh;
 }
+
+.aspect-video,
+.aspect-video-lg {
+  iframe {
+    height: 100%;
+    width: 100%;
+  }
+}

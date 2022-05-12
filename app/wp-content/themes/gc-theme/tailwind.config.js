@@ -18,6 +18,7 @@ module.exports = {
     extend: {
       aspectRatio: {
         'thumbnail': '159 / 85',
+        'video-lg': '317 / 200',
       },
     },
   },

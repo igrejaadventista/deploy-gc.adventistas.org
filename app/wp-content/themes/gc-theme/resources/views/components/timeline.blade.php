@@ -23,4 +23,18 @@
       </p>
     </div>
   </article>
+
+  <article class="mb-12 md:mb-14">
+    <div class="border-l-8 border-secondary pl-4">
+      <h4 class="text-primary font-bold text-xs">às 18:00</h4>
+
+      <h3 class="text-secondary font-bold text-xl md:text-2xl">Saudação do Pr. Ted Wilson</h3>
+    </div>
+
+    <div class="pl-6 mt-3">
+      <div class="aspect-video-lg rounded-lg overflow-hidden">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/i8d6R-3ITPI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+    </div>
+  </article>
 </section>
