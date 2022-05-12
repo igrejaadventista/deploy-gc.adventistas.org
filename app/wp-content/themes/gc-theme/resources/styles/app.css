@@ -17,3 +17,7 @@ body {
     width: 100%;
   }
 }
+
+.btn-secondary {
+  @apply rounded inline-flex items-center justify-center text-white font-bold bg-secondary;
+}
