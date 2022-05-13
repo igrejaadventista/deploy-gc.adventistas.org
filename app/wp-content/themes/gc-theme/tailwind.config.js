@@ -8,6 +8,7 @@ module.exports = {
       'primary': '#FFBA14',
       'secondary': '#202936',
       'grey': '#545A61',
+      'grey-light': '#EAEAEA',
     },
     fontFamily: {
       'sans': ['Noto Sans', 'system-ui'],
