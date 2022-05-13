@@ -1,11 +1,8 @@
-/* @tailwind base;
-@tailwind components; */
 @tailwind utilities;
 
 .page-header {
   &--fixed {
-    @apply fixed;
-    @apply top-0;
+    @apply fixed top-0 z-10;
 
     .background {
       @apply h-full;
@@ -16,12 +13,10 @@
     }
 
     .live {
-      @apply flex;
-      @apply m-0;
+      @apply flex m-0;
 
       &__title {
-        @apply mb-0;
-        @apply ml-6;
+        @apply mb-0 ml-6;
       }
 
       &__player {
@@ -29,12 +24,5 @@
         width: 46.7%;
       }
     }
-  }
-}
-
-.live {
-  iframe {
-    height: 100%;
-    width: 100%;
   }
 }

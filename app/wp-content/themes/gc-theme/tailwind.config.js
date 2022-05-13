@@ -7,12 +7,19 @@ module.exports = {
       'black': '#000000',
       'primary': '#FFBA14',
       'secondary': '#202936',
+      'grey': '#545A61',
     },
     fontFamily: {
       'sans': ['Noto Sans', 'system-ui'],
     },
     maxWidth: {
       'container': '724px',
+    },
+    extend: {
+      aspectRatio: {
+        'thumbnail': '159 / 85',
+        'video-lg': '317 / 200',
+      },
     },
   },
   plugins: [],
