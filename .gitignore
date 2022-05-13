@@ -1,6 +1,7 @@
 vendor/
 mysql/
 cache/
+uploads/
 .idea
 .cache-loader
 dist
