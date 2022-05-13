@@ -1,0 +1,10 @@
+vendor/
+mysql/
+cache/
+.idea
+.cache-loader
+dist
+node_modules
+npm-debug.log
+yarn-error.log
+auth.json
