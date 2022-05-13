@@ -22,6 +22,9 @@ module.exports = {
         'thumbnail': '159 / 85',
         'video-lg': '317 / 200',
       },
+      fontSize: {
+        'page-title': ['2.5rem', '3rem'],
+      },
     },
   },
   plugins: [],

@@ -1,13 +1,30 @@
 @extends('layouts.app')
 
 @section('content')
-  @include('partials.page-header')
+  <div class="flex min-h-screen">
+    <div class="w-[58.5%] relative flex justify-center items-center flex-col grow shrink-0">
+      <img
+        class="w-full h-full absolute top-0 left-0 object-cover -z-10"
+        src="@asset('images/page-header.jpg')"
+        alt="{{ __('Imagem de fundo') }}"
+      >
 
-  @if (! have_posts())
-    <x-alert type="warning">
-      {!! __('Sorry, but the page you are trying to view does not exist.', 'sage') !!}
-    </x-alert>
+      <img class="h-14 md:h-14 mb-[72px]" src="@asset('images/page-header-logo.png')" alt="{{ __('Uma igreja em movimento') }}">
 
-    {!! get_search_form(false) !!}
-  @endif
+      <h2 class="text-white text-2xl font-bold">Erro 404</h2>
+
+      <h1 class="text-center text-primary text-page-title">
+        <b>Me desculpe!</b><br>
+        Conteúdo não encontrado! :(
+      </h1>
+
+      <p class="text-white text-base mt-4 text-center">O conteúdo que você está procurando não existe e<br> não foi encontrado.</p>
+
+      <a class="btn-primary py-4 px-6 text-base rounded-full mt-6" href="{{ get_home_url() }}">Voltar para o início</a>
+    </div>
+
+    <div class="grow flex items-center">
+      <img class="w-full" src="@asset('images/404.png')" alt="{{ __('404') }}">
+    </div>
+  </div>
 @endsection
