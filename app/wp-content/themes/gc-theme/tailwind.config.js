@@ -15,6 +15,7 @@ module.exports = {
     },
     maxWidth: {
       'container': '724px',
+      'container-content': '792px',
     },
     extend: {
       aspectRatio: {
