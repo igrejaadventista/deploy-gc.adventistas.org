@@ -15,6 +15,25 @@ sed -i -e "s/REPLACE_WITH_REAL_KEY/$NEWRELIC_KEY/" \
   $(php -r "echo(PHP_CONFIG_FILE_SCAN_DIR);")/newrelic.ini
 echo "Fim da instalação da extensão"
 
+echo "Instala dependencias do tema"
+curl -sL https://deb.nodesource.com/setup_16.x | sudo bash -
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+sudo apt update
+sudo apt -y install nodejs yarn
+cd ~
+curl -sS https://getcomposer.org/installer -o /tmp/composer-setup.php
+HASH=`curl -sS https://composer.github.io/installer.sig`
+php -r "if (hash_file('SHA384', '/tmp/composer-setup.php') === '$HASH') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+sudo php /tmp/composer-setup.php --install-dir=/usr/local/bin --filename=composer
+echo "Fim da instalação das dependencias."
+
+echo "Instala e compila dependencias"
+cd /var/www/html/wp-content/themes/gc-theme
+yarn install && yarn build && rm -rf ./node_modules
+composer install 
+echo "Fim da instalação dos componentes"
+
 echo "Ajuste nas permissões da pasta uploads"
 #rm -rf /var/www/html/wp-content
 find /var/www/html -type d -exec chmod 755 {} \;
