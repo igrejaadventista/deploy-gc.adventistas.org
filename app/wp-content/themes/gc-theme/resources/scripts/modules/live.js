@@ -1,4 +1,4 @@
-export default class PageHeader {
+export default class Live {
 
   constructor() {
     this.element = document.getElementById('page-header');
