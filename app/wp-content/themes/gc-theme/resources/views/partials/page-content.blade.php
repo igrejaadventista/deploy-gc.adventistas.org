@@ -2,7 +2,11 @@
   <header class="w-full flex flex-col pb-2 mb-6 border-b border-grey-light">
     <h1 class="text-2xl md:text-page-title font-bold text-secondary block">@title</h1>
 
-    <x-time class="text-right mt-4">@published</x-time>
+    <div class="flex items-center justify-between mt-4">
+      <x-share />
+
+      <x-time class="text-right">@published</x-time>
+    </div>
   </header>
 
   <section class="flex flex-col">@content</section>
