@@ -18,7 +18,7 @@
         Conteúdo não encontrado! :(
       </h1>
 
-      <p class="text-white text-base mt-4 text-center">O conteúdo que você está procurando não existe e<br class="hidden md:block"> não foi encontrado.</p>
+      <p class="text-white text-base mt-4 text-center max-w-[384px]">{!! __('O conteúdo que você está procurando não existe e não foi encontrado.', 'gc') !!}</p>
 
       <a class="btn-primary py-4 px-6 text-base rounded-full mt-6" href="{{ get_home_url() }}">Voltar para o início</a>
 
