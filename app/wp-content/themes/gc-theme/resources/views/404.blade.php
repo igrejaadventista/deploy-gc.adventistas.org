@@ -9,12 +9,9 @@
         alt="@translate('Imagem de fundo')"
       >
 
-      <img class="h-14 md:h-14 mb-[72px]" src="@asset('images/page-header-logo.png')" alt="@translate('Uma igreja em movimento')">
+      <img class="h-14 md:h-14 mb-[72px]" src="{{ \App\translateImage('page-header-logo.png') }}" alt="@translate('Uma igreja em movimento')">
 
-      <h2 class="text-white text-2xl font-bold">Erro 404</h2>
-      @dump(wp_get_theme())
-      @dump(get_locale())
-      @dump($textDomain)
+      <h2 class="text-white text-2xl font-bold">@translate('Erro 404')</h2>
 
       <h1 class="text-center text-primary text-2xl md:text-page-title">
         <b>@translate('Me desculpe!')</b><br>

@@ -23,8 +23,7 @@ class App extends Composer
     public function with()
     {
         return [
-            'siteName' => get_bloginfo('name', 'display'),
-            'textDomain' => 'gc',
+            'siteName'   => get_bloginfo('name', 'display'),
         ];
     }
 
