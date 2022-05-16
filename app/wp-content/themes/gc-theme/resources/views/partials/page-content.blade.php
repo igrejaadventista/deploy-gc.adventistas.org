@@ -14,6 +14,6 @@
   <footer class="w-full flex justify-between border-t border-grey-light mt-6 md:mt-2 pt-10">
     <x-button-scroll-top />
 
-    <x-button-secondary class="py-3 px-6 text-base" href="{{ get_home_url() }}">Acessar notícias</x-button-secondary>
+    <x-button-secondary class="py-3 px-6 text-base" href="{{ get_home_url() }}">@translate('Acessar notícias')</x-button-secondary>
   </footer>
 </article>
