@@ -1,5 +1,5 @@
 @php
-  $live = true;
+  $live = false;
 @endphp
 
 <section id="page-header" class="page-header w-full relative flex justify-start flex-col items-center pt-14 pb-4 md:pt-4 transition-all top-[-100%] {{ $live ? 'has-live' : '' }}">

@@ -104,5 +104,5 @@ add_action('after_setup_theme', function () {
      */
     add_theme_support('customize-selective-refresh-widgets');
 
-    load_theme_textdomain('gc', get_template_directory() . '/languages');
+    load_theme_textdomain('gc', get_theme_file_path('/resources/lang'));
 }, 20);

@@ -11,7 +11,7 @@
 
   <article class="mb-12 md:mb-14">
     <div class="border-l-8 border-secondary pl-4">
-      <h4 class="text-primary font-bold text-xs">às 23:00</h4>
+      <x-time class="text-right mt-4">às 23:00</x-time>
 
       <h3 class="text-secondary font-bold text-xl md:text-2xl">Abertura do evento</h3>
     </div>
@@ -27,7 +27,7 @@
 
   <article class="mb-12 md:mb-14">
     <div class="border-l-8 border-secondary pl-4">
-      <h4 class="text-primary font-bold text-xs">às 18:00</h4>
+      <x-time class="text-right mt-4">às 18:00</x-time>
 
       <h3 class="text-secondary font-bold text-xl md:text-2xl">Saudação do Pr. Ted Wilson</h3>
     </div>
@@ -47,7 +47,7 @@
 
   <article class="mb-12 md:mb-14">
     <div class="border-l-8 border-secondary pl-4">
-      <h4 class="text-primary font-bold text-xs">às 18:00</h4>
+      <x-time class="text-right mt-4">às 18:00</x-time>
 
       <h3 class="text-secondary font-bold text-xl md:text-2xl">Orientação 1</h3>
     </div>
