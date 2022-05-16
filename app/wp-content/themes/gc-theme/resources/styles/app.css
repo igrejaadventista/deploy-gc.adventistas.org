@@ -20,6 +20,10 @@
   background-color: #ececec;
 }
 
+.btn-primary {
+  @apply inline-flex items-center justify-center text-secondary font-bold bg-primary;
+}
+
 .btn-secondary {
   @apply rounded inline-flex items-center justify-center text-white font-bold bg-secondary;
 }
