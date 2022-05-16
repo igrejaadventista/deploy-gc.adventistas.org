@@ -22,7 +22,7 @@ class Live extends Composer {
      */
     public function override() {
         return [
-            'isOn' => true,
+            'isOn' => !is_front_page() && get_page_template_slug() !== 'template-timeline.blade.php' ? false : true,
             'ID' => 'IHEbht3ZcPQ',
             'title' => 'Ao vivo | Abertura da GC &#178;&#8304;&#178;&#178;',
         ];

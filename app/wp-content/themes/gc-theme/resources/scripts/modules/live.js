@@ -7,6 +7,8 @@ export default class Live {
 
     (new IntersectionObserver((entries) => this.onScrollDown(entries[0]), {threshold: this.threshold})).observe(this.element);
     (new IntersectionObserver((entries) => this.onScrollUp(entries[0]), {threshold: this.threshold})).observe(this.spacer);
+
+    setInterval(() => this.checkLive(), 3000);
   }
 
   onScrollDown({isIntersecting, intersectionRatio}) {
@@ -27,6 +29,10 @@ export default class Live {
       this.spacer.style.height = '0px';
       this.element.classList.remove('page-header--fixed');
     }
+  }
+
+  checkLive() {
+    console.log(123);
   }
 
 }
