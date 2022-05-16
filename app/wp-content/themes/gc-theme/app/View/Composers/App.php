@@ -23,17 +23,9 @@ class App extends Composer
     public function with()
     {
         return [
-            'siteName' => $this->siteName(),
+            'siteName' => get_bloginfo('name', 'display'),
+            'textDomain' => 'gc',
         ];
     }
 
-    /**
-     * Returns the site name.
-     *
-     * @return string
-     */
-    public function siteName()
-    {
-        return get_bloginfo('name', 'display');
-    }
 }
