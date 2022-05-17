@@ -20,6 +20,7 @@ class Timeline {
             'title' => 'Configurações',
             'fields' => $this->setFields(),
             'position' => 'side',
+            'show_in_rest' => true,
             'location' => [
                 Location::if('post_template', 'timeline.blade.php')
             ],
