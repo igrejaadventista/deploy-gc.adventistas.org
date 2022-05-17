@@ -1,1 +1,1 @@
-@extends('template-timeline')
+@extends('timeline')
