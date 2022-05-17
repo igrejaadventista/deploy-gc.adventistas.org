@@ -6,7 +6,11 @@
 
 namespace App;
 
+use App\Fields\Timeline;
+
 use function Roots\bundle;
+
+define('TEXTDOMAIN', 'gc');
 
 /**
  * Register the theme assets.
@@ -106,3 +110,7 @@ add_action('after_setup_theme', function () {
 
     load_theme_textdomain('gc', get_theme_file_path('/resources/lang'));
 }, 20);
+
+add_action('acf/init', function() {
+    new Timeline;
+});
