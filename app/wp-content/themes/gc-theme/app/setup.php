@@ -6,7 +6,8 @@
 
 namespace App;
 
-use App\Fields\Timeline;
+use App\Fields\TemplateTimeline;
+use App\PostTypes\Timeline;
 
 use function Roots\bundle;
 
@@ -112,6 +113,10 @@ add_action('after_setup_theme', function () {
     load_theme_textdomain('gc', get_theme_file_path('/resources/lang'));
 }, 20);
 
-add_action('acf/init', function() {
+add_action('init', function() {
     new Timeline;
+});
+
+add_action('acf/init', function() {
+    new TemplateTimeline;
 });

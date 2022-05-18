@@ -36,7 +36,8 @@
   "autoload": {
     "psr-4": {
       "App\\": "app/",
-      "Fields\\": "Fields/"
+      "Fields\\": "Fields/",
+      "PostTypes\\": "PostTypes/"
     }
   },
   "require": {

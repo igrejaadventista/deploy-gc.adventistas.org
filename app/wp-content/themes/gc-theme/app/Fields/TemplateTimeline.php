@@ -10,9 +10,9 @@ use WordPlate\Acf\Fields\TrueFalse;
 use WordPlate\Acf\Location;
 
 /**
- * Timeline Register timeline fields
+ * TemplateTimeline Register timeline template fields
  */
-class Timeline {
+class TemplateTimeline {
 
     public function __construct() {
         register_extended_field_group([
