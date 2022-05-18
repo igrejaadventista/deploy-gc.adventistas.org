@@ -1,6 +1,6 @@
 <section id="page-header" class="page-header w-full relative flex justify-start flex-col items-center pt-14 pb-4 md:pt-4 transition-all top-[-100%] {{ $isOn ? 'has-live' : '' }}">
   <img
-    class="background w-full absolute top-0 left-0 object-cover -z-10 {{ $isOn ? 'h-[90%] md:h-[69%]' : 'h-full' }}"
+    class="background w-full absolute top-0 left-0 object-cover -z-10 h-full"
     src="@asset('images/page-header.jpg')"
     alt="@translate('Imagem de fundo')"
   >
@@ -11,9 +11,10 @@
     alt="@translate('Uma igreja em movimento')"
   >
 
-  @istrue($isOn)
-    <div class="live w-full px-4 max-w-container mt-7 md:mt-20">
+  @istrue($isTimeline)
+    <div id="live-container" class="live w-full px-4 max-w-container mt-7 md:mt-20 {{ !$isOn ? 'hidden' : '' }}">
       <h4
+        id="live-title"
         class="live__title before:content-[''] before:w-4 before:max-w-[16px] before:h-4 before:bg-[#FF0000] before:flex before:rounded-full
         before:shadow-lg before:shadow-[#ff000066] before:mr-3 before:md:mr-2 before:basis-auto before:shrink-0 before:grow
         flex items-center text-primary font-bold text-sm md:text-base mb-4 justify-center md:justify-start order-last"
@@ -22,7 +23,15 @@
       </h4>
 
       <div class="live__player aspect-video rounded-lg overflow-hidden shadow-xl basis-auto shrink-0 grow">
-        <iframe src="https://www.youtube.com/embed/{{ $ID }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <iframe
+          id="live-player"
+          src="https://www.youtube.com/embed/{{ $ID }}?autoplay=1&mute=1&enablejsapi=1"
+          title="YouTube video player"
+          frameborder="0"
+          allowTransparency="true"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+        ></iframe>
       </div>
     </div>
   @endistrue
