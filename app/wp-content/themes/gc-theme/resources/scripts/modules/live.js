@@ -75,8 +75,8 @@ export default class Live {
   }
 
   refreshStatus(live) {
+    this.pageHeader?.classList.toggle('remove-live', this.pageHeader?.classList.contains('has-live') && !live.enabled);
     this.pageHeader?.classList.toggle('has-live', live.enabled);
-    this.pageHeader?.classList.toggle('remove-live', !live.enabled);
     this.live.container?.classList.toggle('hidden', !live.enabled);
     this.refreshObservers();
     // this.live.player?.contentWindow.postMessage(`{"event":"command","func":"${live.enabled ? 'playVideo' : 'pauseVideo' }","args":""}`, '*');
