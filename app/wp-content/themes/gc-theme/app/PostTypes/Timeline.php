@@ -37,6 +37,7 @@ class Timeline {
     function setArgs(): array {
         return [
             'label'               => __('Item', constant('TEXTDOMAIN')),
+            'menu_icon'           => 'dashicons-excerpt-view',
             'labels'              => $this->setLabels(),
             'supports'            => array('title'),
             'taxonomies'          => array('category'),

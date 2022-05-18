@@ -6,6 +6,7 @@
 
 namespace App;
 
+use App\Fields\PostTimeline;
 use App\Fields\TemplateTimeline;
 use App\PostTypes\Timeline;
 
@@ -110,7 +111,7 @@ add_action('after_setup_theme', function () {
      */
     add_theme_support('customize-selective-refresh-widgets');
 
-    load_theme_textdomain('gc', get_theme_file_path('/resources/lang'));
+    load_theme_textdomain(constant('TEXTDOMAIN'), get_theme_file_path('/resources/lang'));
 }, 20);
 
 add_action('init', function() {
@@ -118,5 +119,6 @@ add_action('init', function() {
 });
 
 add_action('acf/init', function() {
+    new PostTimeline;
     new TemplateTimeline;
 });
