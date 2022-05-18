@@ -12,7 +12,7 @@
   >
 
   @istrue($isTimeline)
-    <div id="live-container" class="live w-full px-4 max-w-container mt-7 md:mt-20 {{ !$isOn ? 'hidden' : '' }}">
+    <div id="live-container" class="live w-full px-4 max-w-container mt-7 md:mt-20 {{ !$isOn ? 'hidden' : '' }}" data-video="{{ $ID }}">
       <h4
         id="live-title"
         class="live__title before:content-[''] before:w-4 before:max-w-[16px] before:h-4 before:bg-[#FF0000] before:flex before:rounded-full
@@ -22,16 +22,8 @@
         {!! $title !!}
       </h4>
 
-      <div class="live__player aspect-video rounded-lg overflow-hidden shadow-xl basis-auto shrink-0 grow">
-        <iframe
-          id="live-player"
-          src="https://www.youtube.com/embed/{{ $ID }}?autoplay=1&mute=1&enablejsapi=1"
-          title="YouTube video player"
-          frameborder="0"
-          allowTransparency="true"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-        ></iframe>
+      <div class="live__player rounded-lg aspect-video overflow-hidden shadow-xl basis-auto shrink-0 grow">
+        <div id="live-player"></div>
       </div>
     </div>
   @endistrue

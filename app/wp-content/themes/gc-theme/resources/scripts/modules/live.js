@@ -5,10 +5,10 @@ export default class Live {
     this.spacer     = document.getElementById('page-header-spacer');
     this.threshold  = 0.3;
     this.live = {
-      container:     document.getElementById('live-container'),
-      title:         document.getElementById('live-title'),
-      player:        document.getElementById('live-player'),
-      previousTitle: '',
+      container:      document.getElementById('live-container'),
+      title:          document.getElementById('live-title'),
+      player:         null,
+      previousTitle:  '',
       previousPlayer: '',
     };
     this.observers = {
@@ -17,12 +17,28 @@ export default class Live {
     };
 
     this.live.previousTitle  = this.live.title?.innerHTML;
-    this.live.previousPlayer = this.live.player?.src;
+    this.live.previousPlayer = this.live.container?.dataset.video;
 
     this.connectObservers();
 
+    window.onYouTubeIframeAPIReady = () => this.initPlayer();
+
     if(this.live.container)
       setInterval(() => this.checkLive(), 3000);
+  }
+
+  initPlayer() {
+    this.live.player = new window.YT.Player('live-player', {
+      videoId: this.live.previousPlayer,
+      events: {
+        'onReady': () => this.onPlayerReady(),
+      },
+    });
+  }
+
+  onPlayerReady() {
+    this.live.player.mute();
+    this.live.player.playVideo();
   }
 
   connectObservers() {
@@ -75,11 +91,15 @@ export default class Live {
   }
 
   refreshStatus(live) {
+    if(this.live.player.getPlayerState() == 1 && !live.enabled && this.pageHeader?.classList.contains('has-live'))
+      this.live.player.pauseVideo();
+    else if(this.live.player.getPlayerState() != 1 && live.enabled && !this.pageHeader?.classList.contains('has-live'))
+      this.live.player.playVideo();
+
     this.pageHeader?.classList.toggle('remove-live', this.pageHeader?.classList.contains('has-live') && !live.enabled);
     this.pageHeader?.classList.toggle('has-live', live.enabled);
     this.live.container?.classList.toggle('hidden', !live.enabled);
     this.refreshObservers();
-    // this.live.player?.contentWindow.postMessage(`{"event":"command","func":"${live.enabled ? 'playVideo' : 'pauseVideo' }","args":""}`, '*');
   }
 
   refreshTitle(live) {
@@ -91,25 +111,13 @@ export default class Live {
   }
 
   refreshPlayer(live) {
-    const url = new URL(this.live.previousPlayer);
-    const player = `/embed/${live.videoID}`;
+    const currentVideo = this.live.player.getVideoData()['video_id'];
 
-    if(!this.live.player || url.pathname == player)
+    if(!this.live.player || live.videoID == currentVideo)
       return;
 
-
-    url.pathname = player;
-    url.searchParams.delete('mute');
-    console.log(url.toString());
-
-
-    this.live.previousPlayer = url.toString();
-    this.live.player.src = url.toString();
-
-    // setTimeout(() => {
-      this.live.player?.contentWindow.postMessage(`{"event":"command","func":"playVideo","args":""}`, '*');
-    // }, 5000);
-
+    this.live.previousPlayer = live.videoID;
+    this.live.player.loadVideoById(live.videoID);
   }
 
 }

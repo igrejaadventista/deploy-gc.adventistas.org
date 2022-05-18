@@ -18,6 +18,7 @@ define('TEXTDOMAIN', 'gc');
  * @return void
  */
 add_action('wp_enqueue_scripts', function () {
+    wp_enqueue_script('youtube-iframe_api', 'https://www.youtube.com/iframe_api', [], null, true);
     wp_enqueue_style('noto-sans', 'https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap');
 
     bundle('app')->enqueue();
