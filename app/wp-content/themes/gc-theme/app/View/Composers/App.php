@@ -4,8 +4,8 @@ namespace App\View\Composers;
 
 use Roots\Acorn\View\Composer;
 
-class App extends Composer
-{
+class App extends Composer {
+
     /**
      * List of views served by this composer.
      *
@@ -24,6 +24,7 @@ class App extends Composer
     {
         return [
             'siteName'   => get_bloginfo('name', 'display'),
+            'isTimeline' => is_front_page() || get_page_template_slug() === 'timeline.blade.php',
         ];
     }
 

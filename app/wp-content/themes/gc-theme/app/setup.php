@@ -6,7 +6,11 @@
 
 namespace App;
 
+use App\Fields\Timeline;
+
 use function Roots\bundle;
+
+define('TEXTDOMAIN', 'gc');
 
 /**
  * Register the theme assets.
@@ -14,6 +18,7 @@ use function Roots\bundle;
  * @return void
  */
 add_action('wp_enqueue_scripts', function () {
+    wp_enqueue_script('youtube-iframe_api', 'https://www.youtube.com/iframe_api', [], null, true);
     wp_enqueue_style('noto-sans', 'https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap');
 
     bundle('app')->enqueue();
@@ -106,3 +111,7 @@ add_action('after_setup_theme', function () {
 
     load_theme_textdomain('gc', get_theme_file_path('/resources/lang'));
 }, 20);
+
+add_action('acf/init', function() {
+    new Timeline;
+});

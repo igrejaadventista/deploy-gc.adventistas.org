@@ -1,11 +1,17 @@
 @tailwind utilities;
 
 .page-header {
+  &.has-live {
+    .background {
+      @apply h-[90%] md:h-[69%];
+    }
+  }
+
   &--fixed {
     @apply fixed top-0 z-10;
 
     .background {
-      @apply h-full;
+      @apply h-full !important;
     }
 
     .logo {

@@ -55,3 +55,56 @@ add_filter('render_block', function($block_content, $block) {
 
     return $block_content;
 }, 10, 2);
+
+add_filter('wp_headless_rest__rest_endpoints_to_remove', function($endpoints_to_remove) {
+    $endpoints_to_remove = array(
+        '/wp/v2/post',
+        '/wp/v2/media',
+        '/wp/v2/types',
+        '/wp/v2/statuses',
+        '/wp/v2/taxonomies',
+        '/wp/v2/tags',
+        '/wp/v2/users',
+        '/wp/v2/comments',
+        '/wp/v2/themes',
+        '/wp/v2/blocks',
+        '/wp/v2/block-renderer',
+        '/oembed/',
+        '/wp/v2/pages',
+        '/wp/v2/menu-items',
+        '/wp/v2/template-parts',
+        '/wp/v2/navigation',
+        '/wp/v2/menus',
+        '/wp/v2/global-styles/',
+        '/wp/v2/menu-locations',
+        '/wp/v2/block-types',
+
+        // CUSTOM
+        '/wp/v2/categories',
+        '/wp/v2/search',
+        '/wp/v2/plugins',
+        '/wp/v2/block-directory',
+        '/wp/v2/settings',
+        '/wp/v2/templates',
+        '/wp/v2/pattern-directory/patterns',
+        '/wp/v2/widgets',
+        '/wp/v2/widget-types',
+        '/wp/v2/sidebars'
+    );
+
+    return $endpoints_to_remove;
+});
+
+add_filter('wp_headless_rest__rest_object_remove_nodes', function($items_to_remove) {
+    $items_to_remove = array(
+        'guid',
+        '_links',
+        'ping_status'
+    );
+
+    return $items_to_remove;
+});
+
+// WP REST Headless
+add_filter('wp_headless_rest__enable_rest_cleanup', '__return_true');
+add_filter('wp_headless_rest__disable_front_end', '__return_false');

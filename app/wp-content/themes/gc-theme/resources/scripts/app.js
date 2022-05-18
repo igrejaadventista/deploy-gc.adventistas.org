@@ -1,5 +1,5 @@
 import {domReady} from '@roots/sage/client';
-import PageHeader from './modules/page-header';
+import Live from './modules/live';
 
 /**
  * app.main
@@ -11,7 +11,7 @@ const main = async (err) => {
   }
 
   // application code
-  new PageHeader;
+  new Live;
 };
 
 /**
