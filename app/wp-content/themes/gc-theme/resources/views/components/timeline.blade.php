@@ -8,6 +8,14 @@
 >
 
   <div id="timeline-trigger" class="absolute bottom-0 w-full h-80 -z-10"></div>
+
+  <template id="timeline-title">
+    <h2
+      class="timeline-title text-secondary text-2xl md:text-[32px] md:leading-10 p-4 md:py-3 border-l-8 border-primary bg-gradient-to-r from-primary/20 to-primary/0 mb-6 mt-4"
+    >
+      @translate('Notícias de') <span class="timeline-title__day font-bold">@translate('hoje')</span>
+    </h2>
+  </template>
 </infinite-scroll>
 
 {{-- <h2
@@ -75,14 +83,6 @@
       </div>
     </div>
   </article> --}}
-
-<template id="timeline-title">
-  <h2
-    class="text-secondary text-2xl md:text-[32px] md:leading-10 p-4 md:py-3 border-l-8 border-primary bg-gradient-to-r from-primary/20 to-primary/0 mb-6 mt-4"
-  >
-    Notícias de <span class="font-bold">hoje</span>
-  </h2>
-</template>
 
 <template id="timeline-manual">
   <article class="mb-12 md:mb-14">
