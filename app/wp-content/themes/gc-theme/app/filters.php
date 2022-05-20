@@ -113,12 +113,17 @@ add_action('acf/save_post', function($post_id) {
     if(get_post_type($post_id) != 'timeline')
         return;
 
+    $url = '';
+
     while(have_rows('content', $post_id)):
         the_row();
 
         if(get_row_layout() == 'site')
             $url = get_sub_field('url');
     endwhile;
+
+    if(empty($url))
+        return;
 
     $tags = getSiteOG($url);
 
