@@ -4,8 +4,10 @@ export default class Timeline {
     this.element = document.querySelector('infinite-scroll');
     this.dates = [];
     this.formatDate = new Intl.DateTimeFormat('default', { month: '2-digit', day: '2-digit' });
+    this.formatTime = new Intl.DateTimeFormat('default', { hour: '2-digit', minute: '2-digit' });
     this.templates = {
       date: this.element.querySelector('#timeline-title')?.content,
+      manual: this.element.querySelector('#timeline-manual')?.content,
     }
 
     this.element.addEventListener('loadData', (event) => this.parseData(event.detail));
@@ -21,8 +23,8 @@ export default class Timeline {
       this.parseDate(item);
 
       switch(item.acf?.content[0]?.acf_fc_layout) {
-        case 'site':
-          this.buildSiteCard(item);
+        case 'manual':
+          this.buildManualItem(item);
           break;
       }
     });
@@ -36,16 +38,51 @@ export default class Timeline {
 
     this.dates.push(date);
 
-    const dateElement = this.templates.date?.cloneNode(true);
+    const element = this.templates.date?.cloneNode(true);
 
     if(!date.isToday())
-      dateElement.querySelector('.timeline-title__day').textContent = this.formatDate.format(date);
+      element.querySelector('.timeline-title__day').textContent = this.formatDate.format(date);
 
-    this.element.appendChild(dateElement);
+    this.element.appendChild(element);
   }
 
-  buildSiteCard(data) {
+  buildManualItem(data) {
     console.log(data);
+
+    const element = this.templates.manual?.cloneNode(true);
+
+    this.buildItemTime(element, data);
+    this.buildItemTitle(element, data);
+    this.buildItemDescription(element, data);
+
+    this.element.appendChild(element);
+  }
+
+  buildItemTime(elementItem, data) {
+    const element = elementItem.querySelector('.timeline-item-time');
+
+    if(!element)
+      return;
+
+    element.innerHTML = this.formatTime.format(new Date(data.date));
+  }
+
+  buildItemTitle(elementItem, data) {
+    const element = elementItem.querySelector('.timeline-item-title');
+
+    if(!element)
+      return;
+
+    element.innerHTML = data.title.rendered;
+  }
+
+  buildItemDescription(elementItem, data) {
+    const element = elementItem.querySelector('.timeline-item-description');
+
+    if(!element || !data.acf?.content[0]?.description)
+      return;
+
+    element.innerHTML = data.acf?.content[0]?.description;
   }
 
 }

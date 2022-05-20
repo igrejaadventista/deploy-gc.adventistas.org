@@ -69,7 +69,7 @@ class InfiniteScroll extends HTMLElement {
     if(!Array.isArray(data))
       return;
 
-      this.dispatchEvent(new CustomEvent('loadData', { detail: data }));
+    this.dispatchEvent(new CustomEvent('loadData', { detail: data }));
   }
 
   isUrl() {

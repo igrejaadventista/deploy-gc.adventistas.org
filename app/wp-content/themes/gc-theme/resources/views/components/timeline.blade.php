@@ -16,6 +16,22 @@
       @translate('Notícias de') <span class="timeline-title__day font-bold">@translate('hoje')</span>
     </h2>
   </template>
+
+  <template id="timeline-manual">
+    <article class="mb-12 md:mb-14">
+      <div class="border-l-8 border-secondary pl-4">
+        <x-time class="text-right mt-4">@translate('às') <span class="timeline-item-time"></span></x-time>
+
+        <h3 class="timeline-item-title text-secondary font-bold text-xl md:text-2xl"></h3>
+      </div>
+
+      <div class="pl-6 flex flex-col">
+        <img class="w-full rounded-lg aspect-thumbnail object-cover mt-4 md:order-2" src="@asset('images/timeline-01.png')" alt="Abertura do evento">
+
+        <p class="timeline-item-description empty:hidden mt-3 md:mt-2 text-sm md:text-base text-grey"></p>
+      </div>
+    </article>
+  </template>
 </infinite-scroll>
 
 {{-- <h2
@@ -84,20 +100,3 @@
     </div>
   </article> --}}
 
-<template id="timeline-manual">
-  <article class="mb-12 md:mb-14">
-    <div class="border-l-8 border-secondary pl-4">
-      <x-time class="text-right mt-4">às 23:00</x-time>
-
-      <h3 class="text-secondary font-bold text-xl md:text-2xl">Abertura do evento</h3>
-    </div>
-
-    <div class="pl-6 flex flex-col">
-      <img class="w-full rounded-lg aspect-thumbnail object-cover mt-4 md:order-2" src="@asset('images/timeline-01.png')" alt="Abertura do evento">
-
-      <p class="mt-3 md:mt-2 text-sm md:text-base text-grey">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nibh ipsum, facilisis ac vehicula ut, interdum eget lacus. Maecenas faucibus cursus tellus nec pellentesque. Aenean blandit est eu ultrices sagittis.
-      </p>
-    </div>
-  </article>
-</template>
