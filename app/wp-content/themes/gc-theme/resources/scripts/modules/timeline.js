@@ -7,7 +7,9 @@ export default class Timeline {
     this.formatTime = new Intl.DateTimeFormat('default', { hour: '2-digit', minute: '2-digit' });
     this.templates = {
       date: this.element.querySelector('#timeline-title')?.content,
-      manual: this.element.querySelector('#timeline-manual')?.content,
+      manual: this.element.querySelector('#timeline-manual-site')?.content,
+      site: this.element.querySelector('#timeline-manual-site')?.content,
+      embed: this.element.querySelector('#timeline-embed')?.content,
     }
 
     this.element.addEventListener('loadData', (event) => this.parseData(event.detail));
@@ -17,20 +19,16 @@ export default class Timeline {
     if(!Array.isArray(data))
       return;
 
-    console.log(data);
-
     data.forEach((item) => {
-      this.parseDate(item);
+      this.buildDate(item);
 
-      switch(item.acf?.content[0]?.acf_fc_layout) {
-        case 'manual':
-          this.buildManualItem(item);
-          break;
-      }
+      let element = this.templates[item.content?.acf_fc_layout]?.cloneNode(true);
+
+      this.buildItem(element, item);
     });
   }
 
-  parseDate(data) {
+  buildDate(data) {
     const date = (new Date(data.date)).withoutTime();
 
     if(this.dates.includes(date))
@@ -46,14 +44,11 @@ export default class Timeline {
     this.element.appendChild(element);
   }
 
-  buildManualItem(data) {
-    console.log(data);
-
-    const element = this.templates.manual?.cloneNode(true);
-
+  buildItem(element, data) {
     this.buildItemTime(element, data);
     this.buildItemTitle(element, data);
     this.buildItemDescription(element, data);
+    this.buildItemEmbed(element, data);
 
     this.element.appendChild(element);
   }
@@ -79,10 +74,22 @@ export default class Timeline {
   buildItemDescription(elementItem, data) {
     const element = elementItem.querySelector('.timeline-item-description');
 
-    if(!element || !data.acf?.content[0]?.description)
+    if(!element || !data.content?.description)
       return;
 
-    element.innerHTML = data.acf?.content[0]?.description;
+    element.innerHTML = data.content?.description;
+  }
+
+  buildItemEmbed(elementItem, data) {
+    const element = elementItem.querySelector('.timeline-item-embed');
+
+    if(!element)
+      return;
+
+    const newContent = document.createRange().createContextualFragment(data.content?.url);
+    element.appendChild(newContent);
+
+    // element.innerHTML = data.content?.url;
   }
 
 }

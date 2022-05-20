@@ -140,3 +140,16 @@ add_action('acf/save_post', function($post_id) {
 
     update_post_meta($post_id, 'url_meta_tags', $meta);
 });
+
+add_action('rest_api_init', function() {
+	register_rest_field(
+        array('timeline'),
+        'content', array(
+			'get_callback'    => function($post) {
+                return is_array($content = gf('content', $post['id'])) ? $content[0] : null;
+            },
+			'update_callback' => null,
+			'schema'          => null,
+		)
+	);
+});
