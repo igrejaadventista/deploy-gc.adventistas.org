@@ -6,6 +6,7 @@ use WordPlate\Acf\ConditionalLogic;
 use WordPlate\Acf\Fields\Group;
 use WordPlate\Acf\Fields\Number;
 use WordPlate\Acf\Fields\Text;
+use WordPlate\Acf\Fields\Textarea;
 use WordPlate\Acf\Fields\TrueFalse;
 use WordPlate\Acf\Location;
 
@@ -51,6 +52,10 @@ class TemplateTimeline {
                         ]),
                     Text::make(__('ID do vídeo', constant('TEXTDOMAIN')), 'videoID')
                         ->required()
+                        ->conditionalLogic([
+                            ConditionalLogic::if('enabled')->equals(1)
+                        ]),
+                    Textarea::make(__('Descrição', constant('TEXTDOMAIN')), 'description')
                         ->conditionalLogic([
                             ConditionalLogic::if('enabled')->equals(1)
                         ]),

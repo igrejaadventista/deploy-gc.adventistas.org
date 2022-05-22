@@ -1,7 +1,7 @@
 import {domReady} from '@roots/sage/client';
 import './modules/infinite-scroll';
 import Timeline from './modules/timeline';
-// import Live from './modules/live';
+import Live from './modules/live';
 import './utils/date';
 
 /**
@@ -14,7 +14,7 @@ const main = async (err) => {
   }
 
   // application code
-  // new Live;
+  new Live;
   new Timeline;
 };
 
