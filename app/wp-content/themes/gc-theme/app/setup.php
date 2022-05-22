@@ -112,6 +112,12 @@ add_action('after_setup_theme', function () {
     add_theme_support('customize-selective-refresh-widgets');
 
     load_theme_textdomain(constant('TEXTDOMAIN'), get_theme_file_path('/resources/lang'));
+
+    add_theme_support('custom-logo', [
+        'height'      => 64,
+        'flex-height' => true,
+        'flex-width'  => true,
+    ]);
 }, 20);
 
 add_action('init', function() {
