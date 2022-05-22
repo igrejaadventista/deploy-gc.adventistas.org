@@ -108,3 +108,48 @@ add_filter('wp_headless_rest__rest_object_remove_nodes', function($items_to_remo
 // WP REST Headless
 add_filter('wp_headless_rest__enable_rest_cleanup', '__return_true');
 add_filter('wp_headless_rest__disable_front_end', '__return_false');
+
+add_action('acf/save_post', function($post_id) {
+    if(get_post_type($post_id) != 'timeline')
+        return;
+
+    $url = '';
+
+    while(have_rows('content', $post_id)):
+        the_row();
+
+        if(get_row_layout() == 'site')
+            $url = get_sub_field('url');
+    endwhile;
+
+    if(empty($url))
+        return;
+
+    $tags = getSiteOG($url);
+
+    $meta = [
+        'url'         => $url,
+        'title'       => !empty($tags['title']) ? $tags['title'] : '',
+        'description' => !empty($tags['description']) ? $tags['description'] : '',
+        'image'       => !empty($tags['image']) ? $tags['image'] : ''
+    ];
+
+    update_sub_field(array('content', 1, 'title'), !empty($tags['title']) ? $tags['title'] : '');
+    update_sub_field(array('content', 1, 'description'), !empty($tags['description']) ? $tags['description'] : '');
+    update_sub_field(array('content', 1, 'image'), !empty($tags['image']) ? $tags['image'] : '');
+
+    update_post_meta($post_id, 'url_meta_tags', $meta);
+});
+
+add_action('rest_api_init', function() {
+	register_rest_field(
+        array('timeline'),
+        'content', array(
+			'get_callback'    => function($post) {
+                return is_array($content = gf('content', $post['id'])) ? $content[0] : null;
+            },
+			'update_callback' => null,
+			'schema'          => null,
+		)
+	);
+});

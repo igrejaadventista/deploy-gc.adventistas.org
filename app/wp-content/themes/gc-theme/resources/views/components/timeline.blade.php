@@ -1,71 +1,57 @@
-<section
+<infinite-scroll
   class="timeline w-full px-4 mx-auto max-w-container relative mt-6 md:mt-16 flex flex-col
   before:content-[''] before:absolute before:w-1 before:top-4 before:h-[110%] before:bg-primary
   after:content-['...'] after:text-secondary after:font-bold after:text-center after:text-2xl after:mt-2 after:md:mt-4"
+  url="{{ get_rest_url(null, 'wp/v2/timeline') }}"
+  args="_fields=date,title,content"
+  trigger="#timeline-trigger"
 >
-  <h2
-    class="text-secondary text-2xl md:text-[32px] md:leading-10 p-4 md:py-3 border-l-8 border-primary bg-gradient-to-r from-primary/20 to-primary/0 mb-6 mt-4"
-  >
-    Notícias de <span class="font-bold">hoje</span>
-  </h2>
 
-  <article class="mb-12 md:mb-14">
-    <div class="border-l-8 border-secondary pl-4">
-      <x-time class="text-right mt-4">às 23:00</x-time>
+  <div id="timeline-trigger" class="absolute bottom-0 w-full h-80 -z-10"></div>
 
-      <h3 class="text-secondary font-bold text-xl md:text-2xl">Abertura do evento</h3>
-    </div>
+  <template id="timeline-title">
+    <h2
+      class="timeline-title text-secondary text-2xl md:text-[32px] md:leading-10 p-4 md:py-3 border-l-8 border-primary bg-gradient-to-r from-primary/20 to-primary/0 mb-6 mt-4"
+    >
+      @translate('Notícias de') <span class="timeline-title__day font-bold">@translate('hoje')</span>
+    </h2>
+  </template>
 
-    <div class="pl-6 flex flex-col">
-      <img class="w-full rounded-lg aspect-thumbnail object-cover mt-4 md:order-2" src="@asset('images/timeline-01.png')" alt="Abertura do evento">
+  <template id="timeline-manual-site">
+    <article class="mb-12 md:mb-14">
+      <div class="border-l-8 border-secondary pl-4">
+        <x-time class="text-right mt-4">@translate('às') <span class="timeline-item-time"></span></x-time>
 
-      <p class="mt-3 md:mt-2 text-sm md:text-base text-grey">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nibh ipsum, facilisis ac vehicula ut, interdum eget lacus. Maecenas faucibus cursus tellus nec pellentesque. Aenean blandit est eu ultrices sagittis.
-      </p>
-    </div>
-  </article>
-
-  <article class="mb-12 md:mb-14">
-    <div class="border-l-8 border-secondary pl-4">
-      <x-time class="text-right mt-4">às 18:00</x-time>
-
-      <h3 class="text-secondary font-bold text-xl md:text-2xl">Saudação do Pr. Ted Wilson</h3>
-    </div>
-
-    <div class="pl-6 mt-3">
-      <div class="aspect-video-lg rounded-lg overflow-hidden">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/i8d6R-3ITPI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <h3 class="timeline-item-title text-secondary font-bold text-xl md:text-2xl"></h3>
       </div>
-    </div>
-  </article>
 
-  <h2
-    class="text-secondary text-2xl md:text-[32px] md:leading-10 p-4 md:py-3 border-l-8 border-primary bg-gradient-to-r from-primary/20 to-primary/0 mb-6 mt-4"
-  >
-    Notícias de <span class="font-bold">05/04</span>
-  </h2>
+      <div class="pl-6 flex flex-col mt-2">
+        <div class="bg-[#F8F9FB] rounded-lg overflow-hidden">
+          <img class="timeline-item-thumbnail w-full aspect-thumbnail object-cover" src="data:, ">
 
-  <article class="mb-12 md:mb-14">
-    <div class="border-l-8 border-secondary pl-4">
-      <x-time class="text-right mt-4">às 18:00</x-time>
+          <div class="p-4 md:p-6">
+            <div class="timeline-item-description text-sm md:text-base text-grey empty:hidden"></div>
 
-      <h3 class="text-secondary font-bold text-xl md:text-2xl">Orientação 1</h3>
-    </div>
-
-    <div class="pl-6 flex flex-col mt-2">
-      <div class="p-4 md:p-6 bg-[#F8F9FB] rounded-lg">
-        <p class="text-sm md:text-base text-grey">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nibh ipsum, facilisis ac vehicula ut, interdum eget lacus. Maecenas faucibus cursus tellus nec pellentesque. Aenean blandit est eu ultrices sagittis.
-        </p>
-
-        <p class="mt-4 text-sm md:text-base text-grey">
-          <b>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nibh ipsum</b>, facilisis ac vehicula ut, interdum eget lacus.
-        </p>
-
-        <a class="btn-secondary py-2 px-3 text-sm mt-4 md:mt-6" href="#">
-          Ler mais<img class="ml-2 h-3" src="@asset('images/arrow-down.svg')" alt="{{ __('Seta para baixo') }}">
-        </a>
+            <a class="timeline-item-link btn-secondary py-2 px-3 text-sm mt-4 md:mt-6" href="#" rel="noopener" target="_blank">
+              @translate('Ler mais')<img class="ml-2 h-3" src="@asset('images/icons/arrow-down.svg')" alt="@translate('Seta para baixo')">
+            </a>
+          </div>
+        </div>
       </div>
-    </div>
-  </article>
-</section>
+    </article>
+  </template>
+
+  <template id="timeline-embed">
+    <article class="mb-12 md:mb-14">
+      <div class="border-l-8 border-secondary pl-4">
+        <x-time class="text-right mt-4">@translate('às') <span class="timeline-item-time"></span></x-time>
+
+        <h3 class="timeline-item-title text-secondary font-bold text-xl md:text-2xl"></h3>
+      </div>
+
+      <div class="pl-6 mt-3">
+        <div class="timeline-item-embed"></div>
+      </div>
+    </article>
+  </template>
+</infinite-scroll>
