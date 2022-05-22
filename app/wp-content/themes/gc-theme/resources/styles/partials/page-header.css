@@ -29,6 +29,10 @@
         max-width: 216px;
         width: 46.7%;
       }
+
+      &__description {
+        @apply hidden;
+      }
     }
   }
 }

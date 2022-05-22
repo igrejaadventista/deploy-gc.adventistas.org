@@ -3,27 +3,31 @@ export default class Live {
   constructor() {
     this.pageHeader = document.getElementById('page-header');
     this.spacer     = document.getElementById('page-header-spacer');
+    this.page       = this.pageHeader?.dataset.page;
     this.threshold  = 0.3;
     this.live = {
-      container:      document.getElementById('live-container'),
-      title:          document.getElementById('live-title'),
-      player:         null,
-      previousTitle:  '',
-      previousPlayer: '',
+      container:           document.getElementById('live-container'),
+      title:               document.getElementById('live-title'),
+      description:         document.getElementById('live-description'),
+      player:              null,
+      previousTitle:       '',
+      previousPlayer:      '',
+      previousDescription: '',
     };
     this.observers = {
       pageHeader: new IntersectionObserver((entries) => this.onScrollDown(entries[0]), {threshold: this.threshold}),
       spacer:     new IntersectionObserver((entries) => this.onScrollUp(entries[0]), {threshold: this.threshold}),
     };
 
-    this.live.previousTitle  = this.live.title?.innerHTML;
-    this.live.previousPlayer = this.live.container?.dataset.video;
+    this.live.previousTitle        = this.live.title?.innerHTML;
+    this.live.previousPlayer       = this.live.container?.dataset.video;
+    this.live.previousDescription  = this.live.title?.innerHTML;
 
     this.connectObservers();
 
     window.onYouTubeIframeAPIReady = () => this.initPlayer();
 
-    if(this.live.container)
+    if(this.live.container && this.page)
       setInterval(() => this.checkLive(), 3000);
   }
 
@@ -79,13 +83,14 @@ export default class Live {
   }
 
   checkLive() {
-    fetch(`http://localhost/wp-json/wp/v2/pages/48`)
+    fetch(this.page)
       .then((data) => data.json())
       .then((data) => {
         const live = data?.acf?.live;
 
         this.refreshTitle(live);
         this.refreshPlayer(live);
+        this.refreshDescription(live);
         this.refreshStatus(live);
       });
   }
@@ -118,6 +123,14 @@ export default class Live {
 
     this.live.previousPlayer = live.videoID;
     this.live.player.loadVideoById(live.videoID);
+  }
+
+  refreshDescription(live) {
+    if(!this.live.description || this.live.previousDescription == live.description)
+      return;
+
+    this.live.previousDescription   = live.description;
+    this.live.description.innerHTML = live.description;
   }
 
 }

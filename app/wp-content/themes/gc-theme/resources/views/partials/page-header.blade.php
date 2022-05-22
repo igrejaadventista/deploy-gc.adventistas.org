@@ -1,4 +1,8 @@
-<section id="page-header" class="page-header w-full relative flex justify-start flex-col items-center pt-14 pb-4 md:pt-4 transition-all top-[-100%] {{ $isOn ? 'has-live' : '' }}">
+<section
+  id="page-header"
+  class="page-header w-full relative flex justify-start flex-col items-center pt-14 pb-4 md:pt-4 transition-all top-[-100%] {{ $isOn ? 'has-live' : '' }}"
+  data-page="{{ $page }}"
+>
   <img
     class="background w-full absolute top-0 left-0 object-cover -z-10 h-full"
     src="@asset('images/page-header.jpg')"
@@ -25,6 +29,8 @@
       <div class="live__player rounded-lg aspect-video overflow-hidden shadow-xl basis-auto shrink-0 grow">
         <div id="live-player"></div>
       </div>
+
+      <p id="live-description" class="live__description mt-4 text-[#5E5E5E] text-base hidden md:block">{!! $description !!}</p>
     </div>
   @endistrue
 </section>
