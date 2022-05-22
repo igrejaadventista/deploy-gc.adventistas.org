@@ -109,6 +109,13 @@ add_filter('wp_headless_rest__rest_object_remove_nodes', function($items_to_remo
 add_filter('wp_headless_rest__enable_rest_cleanup', '__return_true');
 add_filter('wp_headless_rest__disable_front_end', '__return_false');
 
+add_filter('get_custom_logo', function($html) {
+    $html = str_replace('custom-logo-link', 'z-10', $html);
+    $html = str_replace('custom-logo', 'h-16 md:h-12 w-auto', $html);
+
+    return $html;
+});
+
 add_action('acf/save_post', function($post_id) {
     if(get_post_type($post_id) != 'timeline')
         return;
