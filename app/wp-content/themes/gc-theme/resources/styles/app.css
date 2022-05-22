@@ -27,3 +27,7 @@
 .btn-secondary {
   @apply rounded inline-flex items-center justify-center text-white font-bold bg-secondary;
 }
+
+img[src="data:,"] {
+  @apply hidden !important;
+}

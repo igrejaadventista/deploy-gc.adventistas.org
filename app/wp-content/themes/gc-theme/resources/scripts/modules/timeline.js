@@ -31,10 +31,10 @@ export default class Timeline {
   buildDate(data) {
     const date = (new Date(data.date)).withoutTime();
 
-    if(this.dates.includes(date))
+    if(this.dates.includes(this.formatDate.format(date)))
       return;
 
-    this.dates.push(date);
+    this.dates.push(this.formatDate.format(date));
 
     const element = this.templates.date?.cloneNode(true);
 
@@ -47,8 +47,10 @@ export default class Timeline {
   buildItem(element, data) {
     this.buildItemTime(element, data);
     this.buildItemTitle(element, data);
+    this.buildItemThumbnail(element, data);
     this.buildItemDescription(element, data);
     this.buildItemEmbed(element, data);
+    this.buildItemLink(element, data);
 
     this.element.appendChild(element);
   }
@@ -68,7 +70,16 @@ export default class Timeline {
     if(!element)
       return;
 
-    element.innerHTML = data.title.rendered;
+    element.innerHTML = data.content?.title !== undefined ? data.content.title : data.title.rendered;
+  }
+
+  buildItemThumbnail(elementItem, data) {
+    const element = elementItem.querySelector('.timeline-item-thumbnail');
+
+    if(!element || !data.content?.image)
+      return;
+
+    element.src = data.content.image;
   }
 
   buildItemDescription(elementItem, data) {
@@ -90,6 +101,15 @@ export default class Timeline {
     element.appendChild(newContent);
 
     // element.innerHTML = data.content?.url;
+  }
+
+  buildItemLink(elementItem, data) {
+    const element = elementItem.querySelector('.timeline-item-link');
+
+    if(!element || !data.content?.url)
+      return;
+
+    element.href = data.content?.url;
   }
 
 }

@@ -9,6 +9,7 @@ use WordPlate\Acf\Fields\Oembed;
 use WordPlate\Acf\Fields\Text;
 use WordPlate\Acf\Fields\Textarea;
 use WordPlate\Acf\Fields\Url;
+use WordPlate\Acf\Fields\WysiwygEditor;
 use WordPlate\Acf\Location;
 
 /**
@@ -45,7 +46,8 @@ class PostTimeline {
                         ->fields([
                             Oembed::make(__('URL', constant('TEXTDOMAIN')), 'url')
                                 ->required(),
-                            Textarea::make(__('Descrição', constant('TEXTDOMAIN')), 'description'),
+                            WysiwygEditor::make(__('Descrição', constant('TEXTDOMAIN')), 'description')
+                                ->mediaUpload(false),
                         ]),
 
                     Layout::make(__('Site', constant('TEXTDOMAIN')), 'site')
@@ -67,10 +69,9 @@ class PostTimeline {
                             Url::make(__('URL', constant('TEXTDOMAIN')), 'url')
                                 ->required(),
                             Image::make(__('Imagem', constant('TEXTDOMAIN')), 'image'),
-                            Text::make(__('Título', constant('TEXTDOMAIN')), 'title')
-                                ->required(),
-                            Textarea::make(__('Descrição', constant('TEXTDOMAIN')), 'description')
-                                ->required(),
+                            WysiwygEditor::make(__('Descrição', constant('TEXTDOMAIN')), 'description')
+                                ->required()
+                                ->mediaUpload(false),
                         ]),
                 ])
         ];

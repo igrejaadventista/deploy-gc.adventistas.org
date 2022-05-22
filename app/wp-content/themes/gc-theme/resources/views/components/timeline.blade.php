@@ -27,13 +27,13 @@
 
       <div class="pl-6 flex flex-col mt-2">
         <div class="bg-[#F8F9FB] rounded-lg overflow-hidden">
-          <img class="w-full aspect-thumbnail object-cover" src="@asset('images/timeline-01.png')" alt="Abertura do evento">
+          <img class="timeline-item-thumbnail w-full aspect-thumbnail object-cover" src="data:, ">
 
           <div class="p-4 md:p-6">
             <div class="timeline-item-description text-sm md:text-base text-grey empty:hidden"></div>
 
-            <a class="btn-secondary py-2 px-3 text-sm mt-4 md:mt-6" href="#">
-              @translate('Ler mais')<img class="ml-2 h-3" src="@asset('images/arrow-down.svg')" alt="@translate('Seta para baixo')">
+            <a class="timeline-item-link btn-secondary py-2 px-3 text-sm mt-4 md:mt-6" href="#" rel="noopener" target="_blank">
+              @translate('Ler mais')<img class="ml-2 h-3" src="@asset('images/icons/arrow-down.svg')" alt="@translate('Seta para baixo')">
             </a>
           </div>
         </div>
