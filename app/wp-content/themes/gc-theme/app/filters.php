@@ -70,7 +70,6 @@ add_filter('wp_headless_rest__rest_endpoints_to_remove', function($endpoints_to_
         '/wp/v2/blocks',
         '/wp/v2/block-renderer',
         '/oembed/',
-        '/wp/v2/pages',
         '/wp/v2/menu-items',
         '/wp/v2/template-parts',
         '/wp/v2/navigation',
