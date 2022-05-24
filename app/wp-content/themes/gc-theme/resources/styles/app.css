@@ -3,6 +3,7 @@
 @import 'tailwindcss/utilities';
 
 @import './partials/page-header';
+@import './partials/timeline';
 
 @import './sections/header';
 
