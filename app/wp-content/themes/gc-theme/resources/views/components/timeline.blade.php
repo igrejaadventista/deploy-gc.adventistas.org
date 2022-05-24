@@ -1,6 +1,6 @@
 <infinite-scroll
   class="timeline w-full px-4 mx-auto max-w-container relative mt-6 md:mt-16 flex flex-col
-  before:content-[''] before:absolute before:w-1 before:top-4 before:h-[110%] before:bg-primary
+  before:content-[''] before:absolute before:w-1 before:top-4 before:bg-primary
   after:content-['...'] after:text-secondary after:font-bold after:text-center after:text-2xl after:mt-2 after:md:mt-4"
   url="{{ get_rest_url(null, 'wp/v2/timeline') }}"
   args="_fields=date,title,content"
