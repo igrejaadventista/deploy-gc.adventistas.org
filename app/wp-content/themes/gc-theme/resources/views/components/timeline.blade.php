@@ -7,7 +7,7 @@
   trigger="#timeline-trigger"
 >
 
-  <div id="timeline-trigger" class="absolute bottom-0 w-full h-80 -z-10"></div>
+  <div id="timeline-trigger" class="absolute bottom-0 left-0 w-full h-80 -z-10"></div>
 
   <template id="timeline-title">
     <h2
