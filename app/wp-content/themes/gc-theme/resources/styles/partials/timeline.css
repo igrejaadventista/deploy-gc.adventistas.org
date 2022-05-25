@@ -6,4 +6,10 @@
       height: calc(100% - 1rem + 174px);
     }
   }
+
+  .timeline-item-embed {
+    iframe {
+      width: 100% !important;
+    }
+  }
 }
