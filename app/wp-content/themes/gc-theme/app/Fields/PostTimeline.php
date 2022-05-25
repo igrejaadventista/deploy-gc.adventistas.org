@@ -68,7 +68,8 @@ class PostTimeline {
                         ->fields([
                             Url::make(__('URL', constant('TEXTDOMAIN')), 'url')
                                 ->required(),
-                            Image::make(__('Imagem', constant('TEXTDOMAIN')), 'image'),
+                            Image::make(__('Imagem', constant('TEXTDOMAIN')), 'image')
+                                ->returnFormat('url'),
                             WysiwygEditor::make(__('Descrição', constant('TEXTDOMAIN')), 'description')
                                 ->required()
                                 ->mediaUpload(false),

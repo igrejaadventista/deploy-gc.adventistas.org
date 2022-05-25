@@ -50,7 +50,7 @@
       </div>
 
       <div class="pl-6 mt-3">
-        <div class="timeline-item-embed"></div>
+        <div class="timeline-item-embed rounded-lg overflow-hidden"></div>
       </div>
     </article>
   </template>
