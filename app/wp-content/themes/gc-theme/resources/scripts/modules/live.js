@@ -25,10 +25,10 @@ export default class Live {
 
     this.connectObservers();
 
-    window.onYouTubeIframeAPIReady = () => this.initPlayer();
-
-    if(this.live.container && this.page)
-      setInterval(() => this.checkLive(), 3000);
+    if(typeof window.YT === 'undefined' || !window.YT.loaded)
+      window.onYouTubeIframeAPIReady = () => this.initPlayer();
+    else
+      this.initPlayer();
   }
 
   initPlayer() {
@@ -38,6 +38,9 @@ export default class Live {
         'onReady': () => this.onPlayerReady(),
       },
     });
+
+    if(this.live.container && this.page)
+      setInterval(() => this.checkLive(), 3000);
   }
 
   onPlayerReady() {
@@ -116,7 +119,7 @@ export default class Live {
   }
 
   refreshPlayer(live) {
-    const currentVideo = this.live.player.getVideoData()['video_id'];
+    const currentVideo = this.live.player?.getVideoData()['video_id'];
 
     if(!this.live.player || live.videoID == currentVideo)
       return;
