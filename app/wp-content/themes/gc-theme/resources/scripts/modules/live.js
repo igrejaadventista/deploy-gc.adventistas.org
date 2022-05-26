@@ -25,7 +25,10 @@ export default class Live {
 
     this.connectObservers();
 
-    window.onYouTubeIframeAPIReady = () => this.initPlayer();
+    if(typeof window.YT === 'undefined' || !window.YT.loaded)
+      window.onYouTubeIframeAPIReady = () => this.initPlayer();
+    else
+      this.initPlayer();
   }
 
   initPlayer() {
