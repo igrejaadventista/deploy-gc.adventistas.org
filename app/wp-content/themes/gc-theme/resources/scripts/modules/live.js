@@ -26,9 +26,6 @@ export default class Live {
     this.connectObservers();
 
     window.onYouTubeIframeAPIReady = () => this.initPlayer();
-
-    if(this.live.container && this.page)
-      setInterval(() => this.checkLive(), 3000);
   }
 
   initPlayer() {
@@ -38,6 +35,9 @@ export default class Live {
         'onReady': () => this.onPlayerReady(),
       },
     });
+
+    if(this.live.container && this.page)
+      setInterval(() => this.checkLive(), 3000);
   }
 
   onPlayerReady() {
