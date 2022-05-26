@@ -116,7 +116,7 @@ export default class Live {
   }
 
   refreshPlayer(live) {
-    const currentVideo = this.live.player.getVideoData()['video_id'];
+    const currentVideo = this.live.player?.getVideoData()['video_id'];
 
     if(!this.live.player || live.videoID == currentVideo)
       return;

@@ -26,7 +26,7 @@
         {!! $title !!}
       </h4>
 
-      <div class="live__player rounded-lg aspect-video overflow-hidden shadow-xl basis-auto shrink-0 grow">
+      <div class="live__player rounded-lg aspect-video overflow-hidden shadow-xl basis-auto shrink-0 grow bg-black">
         <div id="live-player"></div>
       </div>
 
