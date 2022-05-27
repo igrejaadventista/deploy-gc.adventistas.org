@@ -10,7 +10,7 @@
   >
 
   <img
-    class="logo h-14 md:h-20 mb-2 mt-24 md:mt-40"
+    class="logo h-14 md:h-20 mb-2 mt-36 md:mt-40"
     src="{{ \App\translateImage('page-header-logo.png') }}"
     alt="@translate('Uma igreja em movimento')"
   >
