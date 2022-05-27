@@ -1,6 +1,6 @@
 <section
   id="page-header"
-  class="page-header w-full relative flex justify-start flex-col items-center pt-14 pb-4 md:pt-4 transition-all top-[-100%] {{ $isOn ? 'has-live' : '' }}"
+  class="page-header w-full relative flex justify-start flex-col items-center py-4 transition-all top-[-100%] {{ $isOn ? 'has-live' : '' }}"
   data-page="{{ $page }}"
 >
   <img
