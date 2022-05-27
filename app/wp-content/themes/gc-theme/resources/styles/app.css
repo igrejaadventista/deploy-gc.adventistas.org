@@ -9,9 +9,28 @@
 
 .aspect-video,
 .aspect-video-lg {
+  @supports not(aspect-ratio: 16 / 9) {
+    mask-image: radial-gradient(white, black);
+
+    &::before {
+      float: left;
+      padding-top: 56.25%;
+      content: "";
+    }
+
+    &::after {
+      display: block;
+      content: "";
+      clear: both;
+    }
+
+    iframe {
+      @apply absolute top-0 left-0 bottom-0 right-0;
+    }
+  }
+
   iframe {
-    height: 100%;
-    width: 100%;
+    @apply h-full w-full;
   }
 }
 
