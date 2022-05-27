@@ -45,7 +45,9 @@ class PostTimeline {
                         ->layout('block')
                         ->fields([
                             Oembed::make(__('URL', constant('TEXTDOMAIN')), 'url')
-                                ->required(),
+                                ->required()
+                                ->width(668)
+                                ->height(375),
                             WysiwygEditor::make(__('Descrição', constant('TEXTDOMAIN')), 'description')
                                 ->mediaUpload(false),
                         ]),

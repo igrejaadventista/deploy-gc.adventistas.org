@@ -100,7 +100,8 @@ export default class Timeline {
     const newContent = document.createRange().createContextualFragment(data.content?.url);
     element.appendChild(newContent);
 
-    // element.innerHTML = data.content?.url;
+    if(data.content?.url.includes('youtube') || data.content?.url.includes('vimeo'))
+      element.classList.add('aspect-video')
   }
 
   buildItemLink(elementItem, data) {
