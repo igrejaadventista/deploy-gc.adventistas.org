@@ -52,6 +52,8 @@
 
       <div class="pl-6 mt-3">
         <div class="timeline-item-embed rounded-lg overflow-hidden"></div>
+
+        <div class="timeline-item-description text-sm md:text-base text-grey empty:hidden mt-4"></div>
       </div>
     </article>
   </template>
