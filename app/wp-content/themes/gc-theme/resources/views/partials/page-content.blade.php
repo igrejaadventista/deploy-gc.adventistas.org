@@ -14,6 +14,6 @@
   <footer class="w-full flex justify-between border-t border-grey-light mt-6 md:mt-2 pt-10">
     <x-button-scroll-top />
 
-    <x-button-secondary class="py-3 px-6 text-base" href="{{ get_home_url() }}"><?php __('Acessar notícias', 'gc') ?></x-button-secondary>
+    <x-button-secondary class="py-3 px-6 text-base" href="{{ get_home_url() }}"><?php _e('Acessar notícias', 'gc') ?></x-button-secondary>
   </footer>
 </article>

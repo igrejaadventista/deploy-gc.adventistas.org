@@ -12,7 +12,7 @@
         <span class="h-0.5 rounded-sm bg-primary w-5 block transition-all"></span>
         <span class="h-0.5 rounded-sm bg-primary w-5 block transition-all"></span>
       </div>
-      <?php __('menu', 'gc') ?>
+      <?php _e('menu', 'gc') ?>
     </label>
 
     <nav
