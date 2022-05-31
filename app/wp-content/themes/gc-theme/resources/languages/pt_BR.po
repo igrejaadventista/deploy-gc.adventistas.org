@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2022-05-02 07:50-0300\n"
-"PO-Revision-Date: 2022-05-02 07:50-0300\n"
+"POT-Creation-Date: 2022-05-31 16:39-0300\n"
+"PO-Revision-Date: 2022-05-31 16:43-0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: pt_BR\n"
@@ -11,72 +11,287 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.0.1\n"
-"X-Poedit-Basepath: ..\n"
+"X-Poedit-Basepath: ../..\n"
 "X-Poedit-KeywordsList: __;_e;_x;esc_html__;esc_html_e;esc_html_x;esc_attr__;"
 "esc_attr_e;esc_attr_x\n"
 "X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: resources/languages\n"
 "X-Poedit-SearchPathExcluded-0: node_modules\n"
 "X-Poedit-SearchPathExcluded-1: vendor\n"
 
-#: functions.php:8 functions.php:9 functions.php:10 functions.php:11
+#: app/Fields/PostTimeline.php:39
+msgid "Conteúdo"
+msgstr ""
+
+#: app/Fields/PostTimeline.php:42
+msgid "Adicionar conteúdo"
+msgstr ""
+
+#: app/Fields/PostTimeline.php:44
+msgid "Embed"
+msgstr ""
+
+#: app/Fields/PostTimeline.php:47 app/Fields/PostTimeline.php:58
+#: app/Fields/PostTimeline.php:71
+msgid "URL"
+msgstr ""
+
+#: app/Fields/PostTimeline.php:51 app/Fields/PostTimeline.php:64
+#: app/Fields/PostTimeline.php:75 app/Fields/TemplateTimeline.php:58
+msgid "Descrição"
+msgstr ""
+
+#: app/Fields/PostTimeline.php:55
+msgid "Site"
+msgstr ""
+
+#: app/Fields/PostTimeline.php:60 app/Fields/PostTimeline.php:73
+msgid "Imagem"
+msgstr ""
+
+#: app/Fields/PostTimeline.php:62 app/Fields/TemplateTimeline.php:47
+msgid "Título"
+msgstr ""
+
+#: app/Fields/PostTimeline.php:68
+msgid "Manual"
+msgstr ""
+
+#: app/Fields/TemplateTimeline.php:38
+msgid "Ano"
+msgstr ""
+
+#: app/Fields/TemplateTimeline.php:42 app/Fields/TemplateTimeline.php:49
+msgid "Ao vivo"
+msgstr ""
+
+#: app/Fields/TemplateTimeline.php:44
+msgid "Ativo"
+msgstr ""
+
+#: app/Fields/TemplateTimeline.php:53
+msgid "ID do vídeo"
+msgstr ""
+
+#: app/PostTypes/Timeline.php:16 app/PostTypes/Timeline.php:17
+#: app/PostTypes/Timeline.php:18 app/PostTypes/Timeline.php:19
 msgid "Timeline"
 msgstr ""
 
-#: functions.php:12
+#: app/PostTypes/Timeline.php:20
 msgid "Timeline Archives"
 msgstr ""
 
-#: functions.php:13
+#: app/PostTypes/Timeline.php:21
 msgid "Timeline Attributes"
 msgstr ""
 
-#: functions.php:14
+#: app/PostTypes/Timeline.php:22
 msgid "Parent Item:"
 msgstr ""
 
-#: functions.php:15
+#: app/PostTypes/Timeline.php:23
 msgid "All Itens"
 msgstr "Todos os itens"
 
-#: functions.php:16 functions.php:17
+#: app/PostTypes/Timeline.php:24 app/PostTypes/Timeline.php:25
 msgid "Add New"
 msgstr "Adicionar novo"
 
-#: functions.php:18
+#: app/PostTypes/Timeline.php:26
 msgid "New"
 msgstr "Novo"
 
-#: functions.php:19
+#: app/PostTypes/Timeline.php:27
 msgid "Edit"
 msgstr "Editar"
 
-#: functions.php:20
+#: app/PostTypes/Timeline.php:28
 msgid "Update"
 msgstr "Atualizar"
 
-#: functions.php:21 functions.php:22
+#: app/PostTypes/Timeline.php:29 app/PostTypes/Timeline.php:30
 msgid "View"
 msgstr "Visualizar"
 
-#: functions.php:23
+#: app/PostTypes/Timeline.php:31
 msgid "Search"
 msgstr "Buscar"
 
-#: functions.php:24
+#: app/PostTypes/Timeline.php:32
 msgid "Not found"
 msgstr "Nenhum registro encontrado"
 
-#: functions.php:25
+#: app/PostTypes/Timeline.php:33
 msgid "Not found in Trash"
 msgstr "Nenhum registro encontrado na Lixeira"
 
-#: functions.php:28
+#: app/PostTypes/Timeline.php:39
 msgid "Item"
 msgstr "Item"
 
-#: index.php:3
-msgid "teste"
-msgstr "teste pt"
+#: app/View/Composers/Post.php:48
+msgid "Latest Posts"
+msgstr ""
+
+#: app/View/Composers/Post.php:58
+#, php-format
+msgid "Search Results for %s"
+msgstr "Resultados da pesquisa para %s"
+
+#: app/View/Composers/Post.php:64
+msgid "Not Found"
+msgstr "Não encontrado"
+
+#: app/filters.php:15
+msgid "Continued"
+msgstr "Contínuo"
+
+#: app/setup.php:67
+msgid "Primary Navigation"
+msgstr "Navegação Primária"
+
+#: functions.php:15
+msgid "Error locating autoloader. Please run <code>composer install</code>."
+msgstr ""
+"Erro ao localizar o carregador automático. Execute a <code>instalação do "
+"compositor</code>."
+
+#: functions.php:36
+msgid "You need to install Acorn to use this theme."
+msgstr "Você precisa instalar o Acorn para usar este tema."
+
+#: functions.php:40
+msgid "Acorn Docs: Installation"
+msgstr "Documentos Acorn: Instalação"
+
+#: functions.php:62
+#, php-format
+msgid "Error locating <code>%s</code> for inclusion."
+msgstr "Erro ao localizar <code>%s</code> para inclusão."
+
+#: resources/views/404.blade.php:9
+#: resources/views/partials/page-header.blade.php:9
+msgid "Imagem de fundo"
+msgstr ""
+
+#: resources/views/404.blade.php:12
+#: resources/views/partials/page-header.blade.php:15
+msgid "Uma igreja em movimento"
+msgstr ""
+
+#: resources/views/404.blade.php:14
+msgid "Erro 404"
+msgstr ""
+
+#: resources/views/404.blade.php:17
+msgid "Me desculpe!"
+msgstr ""
+
+#: resources/views/404.blade.php:19
+msgid "Conteúdo não encontrado! :"
+msgstr ""
+
+#: resources/views/404.blade.php:22
+msgid "O conteúdo que você está procurando não existe e não foi encontrado."
+msgstr ""
+
+#: resources/views/404.blade.php:24
+msgid "Voltar para o início"
+msgstr ""
+
+#: resources/views/404.blade.php:26 resources/views/sections/footer.blade.php:2
+msgid "Logo Igreja Adventista"
+msgstr ""
+
+#: resources/views/404.blade.php:30
+msgid "404"
+msgstr ""
+
+#: resources/views/components/button-scroll-top.blade.php:2
+msgid "Seta para cima"
+msgstr ""
+
+#: resources/views/components/share.blade.php:2
+msgid "Compartilhar no Facebook"
+msgstr ""
+
+#: resources/views/components/share.blade.php:3
+msgid "Logo Facebook"
+msgstr ""
+
+#: resources/views/components/share.blade.php:6
+msgid "Compartilhar no Twitter"
+msgstr ""
+
+#: resources/views/components/share.blade.php:7
+msgid "Logo Twitter"
+msgstr ""
+
+#: resources/views/components/share.blade.php:10
+msgid "Compartilhar no Whatsapp"
+msgstr ""
+
+#: resources/views/components/share.blade.php:11
+msgid "Logo Whatsapp"
+msgstr ""
+
+#: resources/views/components/timeline.blade.php:16
+msgid "Notícias de"
+msgstr ""
+
+#: resources/views/components/timeline.blade.php:16
+msgid "hoje"
+msgstr ""
+
+#: resources/views/components/timeline.blade.php:23
+#: resources/views/components/timeline.blade.php:48
+msgid "às"
+msgstr ""
+
+#: resources/views/components/timeline.blade.php:36
+msgid "Ler mais"
+msgstr ""
+
+#: resources/views/components/timeline.blade.php:37
+msgid "Seta para baixo"
+msgstr ""
+
+#: resources/views/partials/page-content.blade.php:17
+msgid "Acessar notícias"
+msgstr ""
+
+#: resources/views/sections/header.blade.php:15
+msgid "menu"
+msgstr ""
+
+#, fuzzy
+#~| msgid "Invalid user ID."
+#~ msgid "Invalid decimal."
+#~ msgstr "ID de usuário inválido."
+
+#, fuzzy
+#~| msgid "Invalid user ID."
+#~ msgid "Invalid number."
+#~ msgstr "ID de usuário inválido."
+
+#, fuzzy
+#~| msgid "Passwords cannot be empty."
+#~ msgid "Type argument list cannot be empty."
+#~ msgstr "As senhas não podem estar vazias."
+
+#, fuzzy
+#~| msgid "Passwords cannot be empty."
+#~ msgid "Type parameter list cannot be empty."
+#~ msgstr "As senhas não podem estar vazias."
+
+#, fuzzy
+#~| msgid "New"
+#~ msgid "new"
+#~ msgstr "Novo"
+
+#~ msgid "teste"
+#~ msgstr "teste pt"
 
 #~ msgid "Featured Image"
 #~ msgstr "Imagem destaque"
@@ -116,9 +331,6 @@ msgstr "teste pt"
 
 #~ msgid "Title"
 #~ msgstr "Título"
-
-#~ msgid "Description"
-#~ msgstr "Descrição"
 
 #~ msgid "Email"
 #~ msgstr "Email"
@@ -195,9 +407,6 @@ msgstr "teste pt"
 #~ msgid "columns-slug"
 #~ msgstr "coluna"
 
-#~ msgid "Invalid user ID."
-#~ msgstr "ID de usuário inválido."
-
 #~ msgid "Sorry, you are not allowed to list users."
 #~ msgstr "Desculpe, você não tem permissão para listar usuários."
 
@@ -211,10 +420,6 @@ msgstr "teste pt"
 #~ msgid "Sorry, that username is not allowed."
 #~ msgstr "Desculpe, esse nome de usuário não é permitido."
 
-#~ msgid "Passwords cannot be empty."
-#~ msgstr "As senhas não podem estar vazias."
-
-#, php-format
 #~ msgid "Passwords cannot contain the \"%s\" character."
 #~ msgstr "As senhas não podem conter o caractere “%s”."
 
@@ -269,7 +474,6 @@ msgstr "teste pt"
 #~ msgid "Any extra capabilities assigned to the user."
 #~ msgstr "Any extra capabilities assigned to the user."
 
-#, php-format
 #~ msgid "Avatar URL with image size of %d pixels."
 #~ msgstr "URL do avatar com tamanho de imagem de %d pixels."
 
@@ -393,9 +597,6 @@ msgstr "teste pt"
 
 #~ msgid "All press"
 #~ msgstr "Todos os posts"
-
-#~ msgid "Search press"
-#~ msgstr "Buscar imprensa"
 
 #~ msgid "Autor"
 #~ msgstr "A"

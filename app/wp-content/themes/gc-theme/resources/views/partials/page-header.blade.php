@@ -6,13 +6,13 @@
   <img
     class="background w-full absolute top-0 left-0 object-cover -z-10 h-full"
     src="@asset('images/page-header.jpg')"
-    alt="@translate('Imagem de fundo')"
+    alt="<?php __('Imagem de fundo', 'gc') ?>"
   >
 
   <img
     class="logo h-14 md:h-20 mb-2 mt-36 md:mt-40"
     src="{{ \App\translateImage('page-header-logo.png') }}"
-    alt="@translate('Uma igreja em movimento')"
+    alt="<?php __('Uma igreja em movimento', 'gc') ?>"
   >
 
   @istrue($isTimeline)

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2022-05-02 07:50-0300\n"
-"PO-Revision-Date: 2022-05-30 16:16-0300\n"
+"POT-Creation-Date: 2022-05-31 16:45-0300\n"
+"PO-Revision-Date: 2022-05-31 17:02-0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es\n"
@@ -18,65 +18,131 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: node_modules\n"
 "X-Poedit-SearchPathExcluded-1: vendor\n"
 
-#: functions.php:8 functions.php:9 functions.php:10 functions.php:11
-msgid "Timeline"
+#: views/404.blade.php:9 views/partials/page-header.blade.php:9
+msgid "Imagem de fundo"
+msgstr "Imagen de fondo"
+
+#: views/404.blade.php:12 views/partials/page-header.blade.php:15
+msgid "Uma igreja em movimento"
+msgstr "Una iglesia en movimiento"
+
+#: views/404.blade.php:14
+msgid "Erro 404"
+msgstr "Error 404"
+
+#: views/404.blade.php:17
+msgid "Me desculpe!"
+msgstr "¡Me disculpa!"
+
+#: views/404.blade.php:19
+msgid "Conteúdo não encontrado! :"
+msgstr "¡Contenido no encontrado! :"
+
+#: views/404.blade.php:22
+msgid "O conteúdo que você está procurando não existe e não foi encontrado."
+msgstr "El contenido que está buscando no existe y no se pudo encontrar."
+
+#: views/404.blade.php:24
+msgid "Voltar para o início"
+msgstr "Volver arriba"
+
+#: views/404.blade.php:26 views/sections/footer.blade.php:2
+msgid "Logo Igreja Adventista"
+msgstr "Logotipo de la iglesia adventista"
+
+#: views/404.blade.php:30
+msgid "404"
 msgstr ""
 
-#: functions.php:12
-msgid "Timeline Archives"
-msgstr ""
+#: views/components/button-scroll-top.blade.php:2
+msgid "Seta para cima"
+msgstr "Flecha arriba"
 
-#: functions.php:13
-msgid "Timeline Attributes"
-msgstr ""
+#: views/components/share.blade.php:2
+msgid "Compartilhar no Facebook"
+msgstr "Flecha arriba"
 
-#: functions.php:14
-msgid "Parent Item:"
-msgstr ""
+#: views/components/share.blade.php:3
+msgid "Logo Facebook"
+msgstr "Logo de Facebook"
 
-#: functions.php:15
-msgid "All Itens"
-msgstr "Todos los Itens"
+#: views/components/share.blade.php:6
+msgid "Compartilhar no Twitter"
+msgstr "Compartir en Twitter"
 
-#: functions.php:16 functions.php:17
-msgid "Add New"
-msgstr "Añadir nuevo"
+#: views/components/share.blade.php:7
+msgid "Logo Twitter"
+msgstr "Logotipo de Twitter"
 
-#: functions.php:18
-msgid "New"
-msgstr "Nuevo"
+#: views/components/share.blade.php:10
+msgid "Compartilhar no Whatsapp"
+msgstr "Compartir en whatsapp"
 
-#: functions.php:19
-msgid "Edit"
-msgstr "Editar"
+#: views/components/share.blade.php:11
+msgid "Logo Whatsapp"
+msgstr "Logotipo de Whatsapp"
 
-#: functions.php:20
-msgid "Update"
-msgstr "Actualizar"
+#: views/components/timeline.blade.php:16
+msgid "Notícias de"
+msgstr "Noticias de"
 
-#: functions.php:21 functions.php:22
-msgid "View"
-msgstr "Ver"
+#: views/components/timeline.blade.php:16
+msgid "hoje"
+msgstr "hoy"
 
-#: functions.php:23
-msgid "Search"
-msgstr "Buscar"
+#: views/components/timeline.blade.php:23
+#: views/components/timeline.blade.php:48
+msgid "às"
+msgstr "a"
 
-#: functions.php:24
-msgid "Not found"
-msgstr "No se ha encontrado ninguno"
+#: views/components/timeline.blade.php:36
+msgid "Ler mais"
+msgstr "Leer más"
 
-#: functions.php:25
-msgid "Not found in Trash"
-msgstr "No encontrado en la Papelera"
+#: views/components/timeline.blade.php:37
+msgid "Seta para baixo"
+msgstr "Flecha hacia abajo"
 
-#: functions.php:28
-msgid "Item"
-msgstr "Item"
+#: views/partials/page-content.blade.php:17
+msgid "Acessar notícias"
+msgstr "Accede a las noticias"
 
-#: index.php:3
-msgid "teste"
-msgstr "teste es"
+#: views/sections/header.blade.php:15
+msgid "menu"
+msgstr "menú"
+
+#~ msgid "All Itens"
+#~ msgstr "Todos los Itens"
+
+#~ msgid "Add New"
+#~ msgstr "Añadir nuevo"
+
+#~ msgid "New"
+#~ msgstr "Nuevo"
+
+#~ msgid "Edit"
+#~ msgstr "Editar"
+
+#~ msgid "Update"
+#~ msgstr "Actualizar"
+
+#~ msgid "View"
+#~ msgstr "Ver"
+
+#~ msgid "Search"
+#~ msgstr "Buscar"
+
+#~ msgid "Not found"
+#~ msgstr "No se ha encontrado ninguno"
+
+#~ msgid "Not found in Trash"
+#~ msgstr "No encontrado en la Papelera"
+
+#~ msgid "Item"
+#~ msgstr "Item"
+
+#~ msgid "teste"
+#~ msgstr "teste es"
 
 #~ msgid "Featured Image"
 #~ msgstr "Imagem destaque"

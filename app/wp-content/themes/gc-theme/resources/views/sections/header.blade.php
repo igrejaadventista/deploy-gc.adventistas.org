@@ -12,7 +12,7 @@
         <span class="h-0.5 rounded-sm bg-primary w-5 block transition-all"></span>
         <span class="h-0.5 rounded-sm bg-primary w-5 block transition-all"></span>
       </div>
-      @translate('menu')
+      <?php __('menu', 'gc') ?>
     </label>
 
     <nav

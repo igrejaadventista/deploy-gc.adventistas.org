@@ -13,14 +13,14 @@
     <h2
       class="timeline-title text-secondary text-2xl md:text-[32px] md:leading-10 p-4 md:py-3 border-l-8 border-primary bg-gradient-to-r from-primary/20 to-primary/0 mb-6 mt-4"
     >
-      @translate('Notícias de') <span class="timeline-title__day font-bold">@translate('hoje')</span>
+      <?php __('Notícias de', 'gc') ?> <span class="timeline-title__day font-bold"><?php __('hoje', 'gc') ?></span>
     </h2>
   </template>
 
   <template id="timeline-manual-site">
     <article class="mb-12 md:mb-14">
       <div class="border-l-8 border-secondary pl-4">
-        <x-time class="text-right mt-4">@translate('às') <span class="timeline-item-time"></span></x-time>
+        <x-time class="text-right mt-4"><?php __('às', 'lg') ?> <span class="timeline-item-time"></span></x-time>
 
         <h3 class="timeline-item-title text-secondary font-bold text-xl md:text-2xl"></h3>
       </div>
@@ -33,8 +33,8 @@
             <div class="timeline-item-description text-sm md:text-base text-grey empty:hidden"></div>
 
             <a class="timeline-item-link btn-secondary py-2 px-3 text-sm mt-4 md:mt-6" href="#" rel="noopener" target="_blank">
-              <span class="grow-1 shrink-0 basis-auto">@translate('Ler mais')</span>
-              <img class="ml-2 h-3" src="@asset('images/icons/arrow-down.svg')" alt="@translate('Seta para baixo')">
+              <span class="grow-1 shrink-0 basis-auto"><?php __('Ler mais', 'gc') ?></span>
+              <img class="ml-2 h-3" src="@asset('images/icons/arrow-down.svg')" alt="<?php __('Seta para baixo', 'gc') ?>">
             </a>
           </div>
         </div>
@@ -45,7 +45,7 @@
   <template id="timeline-embed">
     <article class="mb-12 md:mb-14">
       <div class="border-l-8 border-secondary pl-4">
-        <x-time class="text-right mt-4">@translate('às') <span class="timeline-item-time"></span></x-time>
+        <x-time class="text-right mt-4"><?php __('às', 'gc') ?><span class="timeline-item-time"></span></x-time>
 
         <h3 class="timeline-item-title text-secondary font-bold text-xl md:text-2xl"></h3>
       </div>
