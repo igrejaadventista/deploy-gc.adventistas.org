@@ -27,7 +27,7 @@
 
       <div class="pl-6 flex flex-col mt-2">
         <div class="bg-[#F8F9FB] rounded-lg overflow-hidden">
-          <img class="timeline-item-thumbnail w-full aspect-thumbnail object-cover" src="data:, ">
+          <img class="timeline-item-thumbnail w-full aspect-thumbnail object-cover" src="data:, " alt="">
 
           <div class="p-4 md:p-6">
             <div class="timeline-item-description text-sm md:text-base text-grey empty:hidden"></div>

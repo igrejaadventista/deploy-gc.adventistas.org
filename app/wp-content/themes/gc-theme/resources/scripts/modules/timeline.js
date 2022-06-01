@@ -80,6 +80,7 @@ export default class Timeline {
       return;
 
     element.src = data.content.image;
+    element.alt = data.content?.title;
   }
 
   buildItemDescription(elementItem, data) {
