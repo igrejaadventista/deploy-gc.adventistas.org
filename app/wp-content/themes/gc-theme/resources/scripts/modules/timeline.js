@@ -10,8 +10,10 @@ export default class Timeline {
       manual: this.element.querySelector('#timeline-manual-site')?.content,
       site: this.element.querySelector('#timeline-manual-site')?.content,
       embed: this.element.querySelector('#timeline-embed')?.content,
+      html: this.element.querySelector('#timeline-html')?.content,
     }
 
+    console.log(this.element.querySelector('#timeline-html'));
     this.element.addEventListener('loadData', (event) => this.parseData(event.detail));
   }
 
@@ -23,6 +25,8 @@ export default class Timeline {
       this.buildDate(item);
 
       let element = this.templates[item.content?.acf_fc_layout]?.cloneNode(true);
+
+      console.log(this.templates);
 
       this.buildItem(element, item);
     });

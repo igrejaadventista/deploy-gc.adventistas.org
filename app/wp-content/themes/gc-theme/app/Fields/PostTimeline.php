@@ -76,6 +76,14 @@ class PostTimeline {
                                 ->required()
                                 ->mediaUpload(false),
                         ]),
+
+                    Layout::make(__('HTML', constant('TEXTDOMAIN')), 'html')
+                        ->layout('block')
+                        ->fields([
+                            Textarea::make(__('Código HTML', constant('TEXTDOMAIN')), 'codigo_html'),
+                            WysiwygEditor::make(__('Descrição', constant('TEXTDOMAIN')), 'description')
+                                ->mediaUpload(false),
+                        ]),
                 ])
         ];
     }

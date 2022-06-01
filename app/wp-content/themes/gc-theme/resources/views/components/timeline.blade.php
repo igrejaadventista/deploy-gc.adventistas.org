@@ -57,4 +57,21 @@
       </div>
     </article>
   </template>
+
+  <template id="timeline-html">
+    <article class="mb-12 md:mb-14">
+      <div class="border-l-8 border-secondary pl-4">
+        <x-time class="text-right mt-4"><?php _e('às', 'gc') ?><span class="timeline-item-time"></span></x-time>
+
+        <h3 class="timeline-item-title text-secondary font-bold text-xl md:text-2xl"></h3>
+      </div>
+
+      <div class="pl-6 mt-3">
+        <div class="timeline-item-html rounded-lg overflow-hidden"></div>
+
+        <div class="timeline-item-description text-sm md:text-base text-grey empty:hidden mt-4"></div>
+      </div>
+    </article>
+  </template>
+
 </infinite-scroll>
