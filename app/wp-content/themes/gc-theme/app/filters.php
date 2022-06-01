@@ -159,3 +159,20 @@ add_action('rest_api_init', function() {
 		)
 	);
 });
+
+/**
+ * WP - Load CSS Asynchronously
+ * Eliminate blocking-resources
+ */
+add_filter('style_loader_tag', function($tag, $handle) {
+    $handles = [
+        'noto-sans',
+    ];
+
+    if(is_admin() || (!in_array($handle, $handles)))
+        return $tag;
+
+    $tag = str_replace( 'media=\'all\'', 'media="print" onload="this.media=\'all\'"', $tag);
+
+    return $tag;
+}, 10, 2);
