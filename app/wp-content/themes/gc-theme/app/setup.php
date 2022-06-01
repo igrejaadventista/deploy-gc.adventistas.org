@@ -24,6 +24,13 @@ add_action('wp_enqueue_scripts', function () {
     wp_enqueue_style('noto-sans', 'https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap');
 
     bundle('app')->enqueue();
+
+    if(!is_front_page())
+        return;
+
+    // Remove Gutenberg Block Library CSS from loading on the home frontend
+    wp_dequeue_style('wp-block-library');
+    wp_dequeue_style('wp-block-library-theme');
 }, 100);
 
 /**
