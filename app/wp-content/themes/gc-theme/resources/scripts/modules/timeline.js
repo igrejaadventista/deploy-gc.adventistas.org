@@ -13,7 +13,6 @@ export default class Timeline {
       html: this.element.querySelector('#timeline-html')?.content,
     }
 
-    console.log(this.element.querySelector('#timeline-html'));
     this.element.addEventListener('loadData', (event) => this.parseData(event.detail));
   }
 
@@ -25,8 +24,6 @@ export default class Timeline {
       this.buildDate(item);
 
       let element = this.templates[item.content?.acf_fc_layout]?.cloneNode(true);
-
-      console.log(this.templates);
 
       this.buildItem(element, item);
     });
@@ -53,6 +50,7 @@ export default class Timeline {
     this.buildItemTitle(element, data);
     this.buildItemThumbnail(element, data);
     this.buildItemDescription(element, data);
+    this.buildItemHtml(element, data);
     this.buildItemEmbed(element, data);
     this.buildItemLink(element, data);
 
@@ -94,6 +92,15 @@ export default class Timeline {
       return;
 
     element.innerHTML = data.content?.description;
+  }
+
+  buildItemHtml(elementItem, data) {
+    const element = elementItem.querySelector('.timeline-item-html');
+
+    if(!element || !data.content?.html)
+      return;
+
+    element.innerHTML = data.content?.html;
   }
 
   buildItemEmbed(elementItem, data) {

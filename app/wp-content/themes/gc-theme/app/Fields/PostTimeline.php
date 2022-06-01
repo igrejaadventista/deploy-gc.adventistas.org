@@ -80,7 +80,7 @@ class PostTimeline {
                     Layout::make(__('HTML', constant('TEXTDOMAIN')), 'html')
                         ->layout('block')
                         ->fields([
-                            Textarea::make(__('Código HTML', constant('TEXTDOMAIN')), 'codigo_html'),
+                            Textarea::make(__('Código HTML', constant('TEXTDOMAIN')), 'html'),
                             WysiwygEditor::make(__('Descrição', constant('TEXTDOMAIN')), 'description')
                                 ->mediaUpload(false),
                         ]),
