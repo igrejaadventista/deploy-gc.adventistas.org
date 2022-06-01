@@ -1,0 +1,293 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-06-01 09:35-0300\n"
+"PO-Revision-Date: 2022-06-01 09:54-0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.0.1\n"
+
+#: resources/views/partials/page-content.blade.php:17
+msgid "Acessar notícias"
+msgstr "Accede a las noticias"
+
+#: resources/views/partials/page-header.blade.php:9
+#: resources/views/404.blade.php:9
+msgid "Imagem de fundo"
+msgstr "Imagen de fondo"
+
+#: resources/views/partials/page-header.blade.php:15
+#: resources/views/404.blade.php:12
+msgid "Uma igreja em movimento"
+msgstr "Una iglesia en movimiento"
+
+#: resources/views/sections/footer.blade.php:2 resources/views/404.blade.php:26
+msgid "Logo Igreja Adventista"
+msgstr "Logotipo de la iglesia adventista"
+
+#: resources/views/sections/header.blade.php:15
+msgid "menu"
+msgstr "menú"
+
+#: resources/views/components/timeline.blade.php:16
+msgid "Notícias de"
+msgstr "Noticias de"
+
+#: resources/views/components/timeline.blade.php:16
+msgid "hoje"
+msgstr "hoy"
+
+#: resources/views/components/timeline.blade.php:23
+#: resources/views/components/timeline.blade.php:48
+msgid "às"
+msgstr "a"
+
+#: resources/views/components/timeline.blade.php:36
+msgid "Ler mais"
+msgstr "Leer más"
+
+#: resources/views/components/timeline.blade.php:37
+msgid "Seta para baixo"
+msgstr "Flecha hacia abajo"
+
+#: resources/views/components/button-scroll-top.blade.php:2
+msgid "Seta para cima"
+msgstr "Flecha arriba"
+
+#: resources/views/components/share.blade.php:2
+msgid "Compartilhar no Facebook"
+msgstr "Flecha arriba"
+
+#: resources/views/components/share.blade.php:3
+msgid "Logo Facebook"
+msgstr "Logo de Facebook"
+
+#: resources/views/components/share.blade.php:6
+msgid "Compartilhar no Twitter"
+msgstr "Compartir en Twitter"
+
+#: resources/views/components/share.blade.php:7
+msgid "Logo Twitter"
+msgstr "Logotipo de Twitter"
+
+#: resources/views/components/share.blade.php:10
+msgid "Compartilhar no Whatsapp"
+msgstr "Compartir en whatsapp"
+
+#: resources/views/components/share.blade.php:11
+msgid "Logo Whatsapp"
+msgstr "Logotipo de Whatsapp"
+
+#: resources/views/404.blade.php:14
+msgid "Erro 404"
+msgstr "Error 404"
+
+#: resources/views/404.blade.php:17
+msgid "Me desculpe!"
+msgstr "¡Me disculpa!"
+
+#: resources/views/404.blade.php:19
+msgid "Conteúdo não encontrado! :"
+msgstr "¡Contenido no encontrado! :"
+
+#: resources/views/404.blade.php:22
+msgid "O conteúdo que você está procurando não existe e não foi encontrado."
+msgstr "El contenido que está buscando no existe y no se pudo encontrar."
+
+#: resources/views/404.blade.php:24
+msgid "Voltar para o início"
+msgstr "Volver arriba"
+
+#: resources/views/404.blade.php:30
+msgid "404"
+msgstr "404"
+
+#: app/Fields/TemplateTimeline.php:38
+msgid "Ano"
+msgstr "Año"
+
+#: app/Fields/TemplateTimeline.php:42 app/Fields/TemplateTimeline.php:49
+msgid "Ao vivo"
+msgstr ""
+
+#: app/Fields/TemplateTimeline.php:44
+msgid "Ativo"
+msgstr "Activo"
+
+#: app/Fields/TemplateTimeline.php:47 app/Fields/PostTimeline.php:62
+msgid "Título"
+msgstr "Título"
+
+#: app/Fields/TemplateTimeline.php:53
+msgid "ID do vídeo"
+msgstr "ID de vídeo"
+
+#: app/Fields/TemplateTimeline.php:58 app/Fields/PostTimeline.php:51
+#: app/Fields/PostTimeline.php:64 app/Fields/PostTimeline.php:75
+msgid "Descrição"
+msgstr "Descripción"
+
+#: app/Fields/PostTimeline.php:39
+msgid "Conteúdo"
+msgstr "Contenido"
+
+#: app/Fields/PostTimeline.php:42
+msgid "Adicionar conteúdo"
+msgstr "Agregar contenido"
+
+#: app/Fields/PostTimeline.php:44
+msgid "Embed"
+msgstr ""
+
+#: app/Fields/PostTimeline.php:47 app/Fields/PostTimeline.php:58
+#: app/Fields/PostTimeline.php:71
+msgid "URL"
+msgstr ""
+
+#: app/Fields/PostTimeline.php:55
+msgid "Site"
+msgstr ""
+
+#: app/Fields/PostTimeline.php:60 app/Fields/PostTimeline.php:73
+msgid "Imagem"
+msgstr "Imagen "
+
+#: app/Fields/PostTimeline.php:68
+msgid "Manual"
+msgstr "Manual"
+
+#: app/filters.php:15
+msgid "Continued"
+msgstr "Continuado"
+
+#: app/View/Composers/Post.php:48
+msgid "Latest Posts"
+msgstr "Últimas publicaciones"
+
+#: app/View/Composers/Post.php:58
+#, php-format
+msgid "Search Results for %s"
+msgstr "Resultados de la búsqueda de %s"
+
+#: app/View/Composers/Post.php:64
+msgid "Not Found"
+msgstr "Extraviado"
+
+#: app/PostTypes/Timeline.php:16
+msgctxt "Post Type General Name"
+msgid "Timeline"
+msgstr "Línea de tiempo"
+
+#: app/PostTypes/Timeline.php:17
+msgctxt "Post Type Singular Name"
+msgid "Timeline"
+msgstr "Línea de tiempo"
+
+#: app/PostTypes/Timeline.php:18 app/PostTypes/Timeline.php:19
+msgid "Timeline"
+msgstr "Línea de tiempo"
+
+#: app/PostTypes/Timeline.php:20
+msgid "Timeline Archives"
+msgstr "Archivos de la línea de tiempo"
+
+#: app/PostTypes/Timeline.php:21
+msgid "Timeline Attributes"
+msgstr "Atributos de la línea de tiempo"
+
+#: app/PostTypes/Timeline.php:22
+msgid "Parent Item:"
+msgstr "Artículo principal:"
+
+#: app/PostTypes/Timeline.php:23
+msgid "All Itens"
+msgstr "Todos los artículos"
+
+#: app/PostTypes/Timeline.php:24 app/PostTypes/Timeline.php:25
+msgid "Add New"
+msgstr "Agregar nuevo"
+
+#: app/PostTypes/Timeline.php:26
+msgid "New"
+msgstr "Nuevo"
+
+#: app/PostTypes/Timeline.php:27
+msgid "Edit"
+msgstr "Editar"
+
+#: app/PostTypes/Timeline.php:28
+msgid "Update"
+msgstr "Actualizar"
+
+#: app/PostTypes/Timeline.php:29 app/PostTypes/Timeline.php:30
+msgid "View"
+msgstr ""
+
+#: app/PostTypes/Timeline.php:31
+msgid "Search"
+msgstr "Búsqueda"
+
+#: app/PostTypes/Timeline.php:32
+msgid "Not found"
+msgstr "Extraviado"
+
+#: app/PostTypes/Timeline.php:33
+msgid "Not found in Trash"
+msgstr "No encontrado en la Papelera"
+
+#: app/PostTypes/Timeline.php:39
+msgid "Item"
+msgstr "Artículo"
+
+#: app/setup.php:67
+msgid "Primary Navigation"
+msgstr "Navegacion primaria"
+
+#: resources/views/partials/entry-meta.blade.php:6
+msgid "By"
+msgstr "Por"
+
+#: resources/views/partials/comments.blade.php:17
+msgid "&larr; Older comments"
+msgstr "&larr; Comentarios antiguos"
+
+#: resources/views/partials/comments.blade.php:23
+msgid "Newer comments &rarr;"
+msgstr "Comentarios mas nuevos &rarr;"
+
+#: resources/views/partials/comments.blade.php:33
+msgid "Comments are closed."
+msgstr "Los comentarios están cerrados."
+
+#: resources/views/partials/content-single.blade.php:15
+msgid "Pages:"
+msgstr "Páginas:"
+
+#: resources/views/forms/search.blade.php:4
+msgctxt "label"
+msgid "Search for:"
+msgstr "Buscar:"
+
+#: resources/views/forms/search.blade.php:15
+msgctxt "submit button"
+msgid "Search"
+msgstr "Búsqueda"
+
+#: resources/views/search.blade.php:8
+msgid "Sorry, no results were found."
+msgstr "Lo sentimos, no se encontraron resultados."
+
+#: resources/views/layouts/app.blade.php:2
+msgid "Skip to content"
+msgstr "Saltar al contenido"
