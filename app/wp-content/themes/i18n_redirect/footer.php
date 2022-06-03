@@ -26,7 +26,7 @@
 				window.location.href = "/es/"
 				break;
 		}
-	}, 3000));
+	}, 500));
 </script>
 
 
