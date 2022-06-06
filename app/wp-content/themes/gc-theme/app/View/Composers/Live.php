@@ -25,16 +25,14 @@ class Live extends Composer {
     public function override() {
         $live = gf('live');
 
-      
-    $locale = get_locale();
-    $language = $locale != 'pt_BR' ? $locale . '/' : '';
+        $locale = get_locale();
 
         return [
             'isOn'        => !is_front_page() && get_page_template_slug() !== 'timeline.blade.php' ? false : (is_array($live) && array_key_exists('enabled', $live) && $live['enabled']),
             'ID'          => is_array($live) && array_key_exists('videoID', $live) ? $live['videoID'] : '',
             'title'       => is_array($live) && array_key_exists('title', $live) ? $live['title'] : '',
             'description' => is_array($live) && array_key_exists('description', $live) ? $live['description'] : '',
-            'page'        => "https://s3.amazonaws.com/gc.adventistas.org/live/$language.json",
+            'page'        => "https://s3.amazonaws.com/gc.adventistas.org/live/{$locale}.json",
         ];
     }
 
