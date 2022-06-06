@@ -1,19 +1,17 @@
 <?php wp_footer(); ?>
 
 <script type="text/javascript">
-	document.addEventListener("DOMContentLoaded", setInterval(function() {
+	document.addEventListener("DOMContentLoaded", () => {
 		var userLang = navigator.language || navigator.userLanguage;
-
-		console.log(userLang.length);
 
 		if (userLang.length > 2) {
 			userLang = userLang.substring(0, 2)
-			console.log('maior');
+			
 		} else {
-			console.log('menor');
+			
 		}
 
-		console.log(userLang);
+
 
 		switch (userLang) {
 			case 'pt':
@@ -26,7 +24,7 @@
 				window.location.href = "/es/"
 				break;
 		}
-	}, 500));
+	});
 </script>
 
 
