@@ -95,6 +95,8 @@ export default class Live {
         this.refreshPlayer(live);
         this.refreshDescription(live);
         this.refreshStatus(live);
+        console.log(live.title);
+
       });
   }
 
