@@ -38,8 +38,8 @@ class PostTimeline {
         return [
             FlexibleContent::make(__('Conteúdo', constant('TEXTDOMAIN')), 'content')
                 ->required()
-                ->maxLayouts(1)
-                ->button(__('Adicionar conteúdo', constant('TEXTDOMAIN')))
+                ->max(1)
+                ->buttonLabel(__('Adicionar conteúdo', constant('TEXTDOMAIN')))
                 ->layouts([
                     Layout::make(__('Embed', constant('TEXTDOMAIN')), 'embed')
                         ->layout('block')
@@ -49,7 +49,7 @@ class PostTimeline {
                                 ->width(668)
                                 ->height(375),
                             WYSIWYGEditor::make(__('Descrição', constant('TEXTDOMAIN')), 'description')
-                                ->disableMediaUpload(),
+                                ->mediaUpload(false),
                         ]),
 
                     Layout::make(__('Site', constant('TEXTDOMAIN')), 'site')
@@ -71,10 +71,10 @@ class PostTimeline {
                             Url::make(__('URL', constant('TEXTDOMAIN')), 'url')
                                 ->required(),
                             Image::make(__('Imagem', constant('TEXTDOMAIN')), 'image')
-                                ->format('url'),
+                                ->returnFormat('url'),
                             WYSIWYGEditor::make(__('Descrição', constant('TEXTDOMAIN')), 'description')
                                 ->required()
-                                ->disableMediaUpload(),
+                                ->mediaUpload(false),
                         ]),
 
                     Layout::make(__('HTML', constant('TEXTDOMAIN')), 'html')
@@ -82,7 +82,7 @@ class PostTimeline {
                         ->fields([
                             Textarea::make(__('Código HTML', constant('TEXTDOMAIN')), 'html'),
                             WYSIWYGEditor::make(__('Descrição', constant('TEXTDOMAIN')), 'description')
-                                ->disableMediaUpload(),
+                                ->mediaUpload(false),
                         ]),
                 ])
         ];
