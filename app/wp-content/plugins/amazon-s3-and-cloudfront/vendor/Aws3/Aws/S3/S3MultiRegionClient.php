@@ -22,6 +22,8 @@ use DeliciousBrains\WP_Offload_Media\Aws3\GuzzleHttp\Promise;
  * @method \GuzzleHttp\Promise\Promise createBucketAsync(array $args = [])
  * @method \Aws\Result createMultipartUpload(array $args = [])
  * @method \GuzzleHttp\Promise\Promise createMultipartUploadAsync(array $args = [])
+ * @method \Aws\Result createSession(array $args = [])
+ * @method \GuzzleHttp\Promise\Promise createSessionAsync(array $args = [])
  * @method \Aws\Result deleteBucket(array $args = [])
  * @method \GuzzleHttp\Promise\Promise deleteBucketAsync(array $args = [])
  * @method \Aws\Result deleteBucketAnalyticsConfiguration(array $args = [])
@@ -104,6 +106,8 @@ use DeliciousBrains\WP_Offload_Media\Aws3\GuzzleHttp\Promise;
  * @method \GuzzleHttp\Promise\Promise getObjectAsync(array $args = [])
  * @method \Aws\Result getObjectAcl(array $args = [])
  * @method \GuzzleHttp\Promise\Promise getObjectAclAsync(array $args = [])
+ * @method \Aws\Result getObjectAttributes(array $args = [])
+ * @method \GuzzleHttp\Promise\Promise getObjectAttributesAsync(array $args = [])
  * @method \Aws\Result getObjectLegalHold(array $args = [])
  * @method \GuzzleHttp\Promise\Promise getObjectLegalHoldAsync(array $args = [])
  * @method \Aws\Result getObjectLockConfiguration(array $args = [])
@@ -130,6 +134,8 @@ use DeliciousBrains\WP_Offload_Media\Aws3\GuzzleHttp\Promise;
  * @method \GuzzleHttp\Promise\Promise listBucketMetricsConfigurationsAsync(array $args = [])
  * @method \Aws\Result listBuckets(array $args = [])
  * @method \GuzzleHttp\Promise\Promise listBucketsAsync(array $args = [])
+ * @method \Aws\Result listDirectoryBuckets(array $args = [])
+ * @method \GuzzleHttp\Promise\Promise listDirectoryBucketsAsync(array $args = [])
  * @method \Aws\Result listMultipartUploads(array $args = [])
  * @method \GuzzleHttp\Promise\Promise listMultipartUploadsAsync(array $args = [])
  * @method \Aws\Result listObjectVersions(array $args = [])
@@ -202,8 +208,10 @@ use DeliciousBrains\WP_Offload_Media\Aws3\GuzzleHttp\Promise;
  * @method \GuzzleHttp\Promise\Promise uploadPartAsync(array $args = [])
  * @method \Aws\Result uploadPartCopy(array $args = [])
  * @method \GuzzleHttp\Promise\Promise uploadPartCopyAsync(array $args = [])
+ * @method \Aws\Result writeGetObjectResponse(array $args = [])
+ * @method \GuzzleHttp\Promise\Promise writeGetObjectResponseAsync(array $args = [])
  */
-class S3MultiRegionClient extends \DeliciousBrains\WP_Offload_Media\Aws3\Aws\MultiRegionClient implements \DeliciousBrains\WP_Offload_Media\Aws3\Aws\S3\S3ClientInterface
+class S3MultiRegionClient extends BaseClient implements S3ClientInterface
 {
     use S3ClientTrait;
     /** @var CacheInterface */
@@ -212,12 +220,12 @@ class S3MultiRegionClient extends \DeliciousBrains\WP_Offload_Media\Aws3\Aws\Mul
     {
         $args = parent::getArguments();
         $regionDef = $args['region'] + ['default' => function (array &$args) {
-            $availableRegions = array_keys($args['partition']['regions']);
-            return end($availableRegions);
+            $availableRegions = \array_keys($args['partition']['regions']);
+            return \end($availableRegions);
         }];
         unset($args['region']);
-        return $args + ['bucket_region_cache' => ['type' => 'config', 'valid' => [\DeliciousBrains\WP_Offload_Media\Aws3\Aws\CacheInterface::class], 'doc' => 'Cache of regions in which given buckets are located.', 'default' => function () {
-            return new \DeliciousBrains\WP_Offload_Media\Aws3\Aws\LruArrayCache();
+        return $args + ['bucket_region_cache' => ['type' => 'config', 'valid' => [CacheInterface::class], 'doc' => 'Cache of regions in which given buckets are located.', 'default' => function () {
+            return new LruArrayCache();
         }], 'region' => $regionDef];
     }
     public function __construct(array $args)
@@ -229,12 +237,12 @@ class S3MultiRegionClient extends \DeliciousBrains\WP_Offload_Media\Aws3\Aws\Mul
     private function determineRegionMiddleware()
     {
         return function (callable $handler) {
-            return function (\DeliciousBrains\WP_Offload_Media\Aws3\Aws\CommandInterface $command) use($handler) {
+            return function (CommandInterface $command) use($handler) {
                 $cacheKey = $this->getCacheKey($command['Bucket']);
                 if (empty($command['@region']) && ($region = $this->cache->get($cacheKey))) {
                     $command['@region'] = $region;
                 }
-                return \DeliciousBrains\WP_Offload_Media\Aws3\GuzzleHttp\Promise\coroutine(function () use($handler, $command, $cacheKey) {
+                return Promise\Coroutine::of(function () use($handler, $command, $cacheKey) {
                     try {
                         (yield $handler($command));
                     } catch (PermanentRedirectException $e) {
@@ -269,7 +277,7 @@ class S3MultiRegionClient extends \DeliciousBrains\WP_Offload_Media\Aws3\Aws\Mul
             };
         };
     }
-    public function createPresignedRequest(\DeliciousBrains\WP_Offload_Media\Aws3\Aws\CommandInterface $command, $expires, array $options = [])
+    public function createPresignedRequest(CommandInterface $command, $expires, array $options = [])
     {
         if (empty($command['Bucket'])) {
             throw new \InvalidArgumentException('The S3\\MultiRegionClient' . ' cannot create presigned requests for commands without a' . ' specified bucket.');
@@ -288,7 +296,7 @@ class S3MultiRegionClient extends \DeliciousBrains\WP_Offload_Media\Aws3\Aws\Mul
     {
         $cacheKey = $this->getCacheKey($bucketName);
         if ($cached = $this->cache->get($cacheKey)) {
-            return \DeliciousBrains\WP_Offload_Media\Aws3\GuzzleHttp\Promise\promise_for($cached);
+            return Promise\Create::promiseFor($cached);
         }
         /** @var S3ClientInterface $regionalClient */
         $regionalClient = $this->getClientFromPool();

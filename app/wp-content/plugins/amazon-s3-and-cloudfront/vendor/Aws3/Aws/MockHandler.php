@@ -29,10 +29,11 @@ class MockHandler implements \Countable
      */
     public function __construct(array $resultOrQueue = [], callable $onFulfilled = null, callable $onRejected = null)
     {
+        $this->queue = [];
         $this->onFulfilled = $onFulfilled;
         $this->onRejected = $onRejected;
         if ($resultOrQueue) {
-            call_user_func_array([$this, 'append'], $resultOrQueue);
+            \call_user_func_array([$this, 'append'], \array_values($resultOrQueue));
         }
     }
     /**
@@ -41,8 +42,8 @@ class MockHandler implements \Countable
      */
     public function append()
     {
-        foreach (func_get_args() as $value) {
-            if ($value instanceof ResultInterface || $value instanceof Exception || is_callable($value)) {
+        foreach (\func_get_args() as $value) {
+            if ($value instanceof ResultInterface || $value instanceof Exception || \is_callable($value)) {
                 $this->queue[] = $value;
             } else {
                 throw new \InvalidArgumentException('Expected an Aws\\ResultInterface or Exception.');
@@ -54,7 +55,7 @@ class MockHandler implements \Countable
      */
     public function appendException()
     {
-        foreach (func_get_args() as $value) {
+        foreach (\func_get_args() as $value) {
             if ($value instanceof \Exception || $value instanceof \Throwable) {
                 $this->queue[] = $value;
             } else {
@@ -62,7 +63,7 @@ class MockHandler implements \Countable
             }
         }
     }
-    public function __invoke(\DeliciousBrains\WP_Offload_Media\Aws3\Aws\CommandInterface $command, \DeliciousBrains\WP_Offload_Media\Aws3\Psr\Http\Message\RequestInterface $request)
+    public function __invoke(CommandInterface $command, RequestInterface $request)
     {
         if (!$this->queue) {
             $last = $this->lastCommand ? ' The last command sent was ' . $this->lastCommand->getName() . '.' : '';
@@ -70,12 +71,12 @@ class MockHandler implements \Countable
         }
         $this->lastCommand = $command;
         $this->lastRequest = $request;
-        $result = array_shift($this->queue);
-        if (is_callable($result)) {
+        $result = \array_shift($this->queue);
+        if (\is_callable($result)) {
             $result = $result($command, $request);
         }
         if ($result instanceof \Exception) {
-            $result = new \DeliciousBrains\WP_Offload_Media\Aws3\GuzzleHttp\Promise\RejectedPromise($result);
+            $result = new RejectedPromise($result);
         } else {
             // Add an effective URI and statusCode if not present.
             $meta = $result['@metadata'];
@@ -86,7 +87,7 @@ class MockHandler implements \Countable
                 $meta['statusCode'] = 200;
             }
             $result['@metadata'] = $meta;
-            $result = \DeliciousBrains\WP_Offload_Media\Aws3\GuzzleHttp\Promise\promise_for($result);
+            $result = Promise\Create::promiseFor($result);
         }
         $result->then($this->onFulfilled, $this->onRejected);
         return $result;
@@ -114,8 +115,9 @@ class MockHandler implements \Countable
      *
      * @return int
      */
+    #[\ReturnTypeWillChange]
     public function count()
     {
-        return count($this->queue);
+        return \count($this->queue);
     }
 }

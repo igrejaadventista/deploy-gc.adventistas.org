@@ -2,12 +2,12 @@
 
 namespace DeliciousBrains\WP_Offload_Media\Aws3\Aws\Credentials;
 
+use DeliciousBrains\WP_Offload_Media\Aws3\Aws\Configuration\ConfigurationResolver;
 use DeliciousBrains\WP_Offload_Media\Aws3\Aws\Exception\CredentialsException;
 use DeliciousBrains\WP_Offload_Media\Aws3\Aws\Exception\InvalidJsonException;
 use DeliciousBrains\WP_Offload_Media\Aws3\Aws\Sdk;
 use DeliciousBrains\WP_Offload_Media\Aws3\GuzzleHttp\Exception\TransferException;
 use DeliciousBrains\WP_Offload_Media\Aws3\GuzzleHttp\Promise;
-use DeliciousBrains\WP_Offload_Media\Aws3\GuzzleHttp\Exception\RequestException;
 use DeliciousBrains\WP_Offload_Media\Aws3\GuzzleHttp\Psr7\Request;
 use DeliciousBrains\WP_Offload_Media\Aws3\GuzzleHttp\Promise\PromiseInterface;
 use DeliciousBrains\WP_Offload_Media\Aws3\Psr\Http\Message\ResponseInterface;
@@ -22,6 +22,11 @@ class InstanceProfileProvider
     const ENV_DISABLE = 'AWS_EC2_METADATA_DISABLED';
     const ENV_TIMEOUT = 'AWS_METADATA_SERVICE_TIMEOUT';
     const ENV_RETRIES = 'AWS_METADATA_SERVICE_NUM_ATTEMPTS';
+    const CFG_EC2_METADATA_V1_DISABLED = 'ec2_metadata_v1_disabled';
+    const DEFAULT_TIMEOUT = 1.0;
+    const DEFAULT_RETRIES = 3;
+    const DEFAULT_TOKEN_TTL_SECONDS = 21600;
+    const DEFAULT_AWS_EC2_METADATA_V1_DISABLED = \false;
     /** @var string */
     private $profile;
     /** @var callable */
@@ -33,40 +38,46 @@ class InstanceProfileProvider
     /** @var float|mixed */
     private $timeout;
     /** @var bool */
-    private $secureMode = true;
+    private $secureMode = \true;
+    /** @var bool|null */
+    private $ec2MetadataV1Disabled;
     /**
      * The constructor accepts the following options:
      *
      * - timeout: Connection timeout, in seconds.
      * - profile: Optional EC2 profile name, if known.
      * - retries: Optional number of retries to be attempted.
+     * - ec2_metadata_v1_disabled: Optional for disabling the fallback to IMDSv1.
      *
      * @param array $config Configuration options.
      */
     public function __construct(array $config = [])
     {
-        $this->timeout = (double) getenv(self::ENV_TIMEOUT) ?: (isset($config['timeout']) ? $config['timeout'] : 1.0);
-        $this->profile = isset($config['profile']) ? $config['profile'] : null;
-        $this->retries = (int) getenv(self::ENV_RETRIES) ?: (isset($config['retries']) ? $config['retries'] : 3);
-        $this->attempts = 0;
-        $this->client = isset($config['client']) ? $config['client'] : \DeliciousBrains\WP_Offload_Media\Aws3\Aws\default_http_handler();
+        $this->timeout = (float) \getenv(self::ENV_TIMEOUT) ?: $config['timeout'] ?? self::DEFAULT_TIMEOUT;
+        $this->profile = $config['profile'] ?? null;
+        $this->retries = (int) \getenv(self::ENV_RETRIES) ?: $config['retries'] ?? self::DEFAULT_RETRIES;
+        $this->client = $config['client'] ?? \DeliciousBrains\WP_Offload_Media\Aws3\Aws\default_http_handler();
+        $this->ec2MetadataV1Disabled = $config[self::CFG_EC2_METADATA_V1_DISABLED] ?? null;
     }
     /**
      * Loads instance profile credentials.
      *
      * @return PromiseInterface
      */
-    public function __invoke()
+    public function __invoke($previousCredentials = null)
     {
-        return \DeliciousBrains\WP_Offload_Media\Aws3\GuzzleHttp\Promise\coroutine(function () {
+        $this->attempts = 0;
+        return Promise\Coroutine::of(function () use($previousCredentials) {
             // Retrieve token or switch out of secure mode
             $token = null;
-            while ($this->secureMode && is_null($token)) {
+            while ($this->secureMode && \is_null($token)) {
                 try {
-                    $token = (yield $this->request(self::TOKEN_PATH, 'PUT', ['x-aws-ec2-metadata-token-ttl-seconds' => 21600]));
+                    $token = (yield $this->request(self::TOKEN_PATH, 'PUT', ['x-aws-ec2-metadata-token-ttl-seconds' => self::DEFAULT_TOKEN_TTL_SECONDS]));
                 } catch (TransferException $e) {
-                    if (!method_exists($e, 'getResponse') || empty($e->getResponse()) || !in_array($e->getResponse()->getStatusCode(), [400, 500, 502, 503, 504])) {
-                        $this->secureMode = false;
+                    if ($this->getExceptionStatusCode($e) === 500 && $previousCredentials instanceof Credentials) {
+                        goto generateCredentials;
+                    } elseif ($this->shouldFallbackToIMDSv1() && (!\method_exists($e, 'getResponse') || empty($e->getResponse()) || !\in_array($e->getResponse()->getStatusCode(), [400, 500, 502, 503, 504]))) {
+                        $this->secureMode = \false;
                     } else {
                         $this->handleRetryableException($e, [], $this->createErrorMessage('Error retrieving metadata token'));
                     }
@@ -86,7 +97,7 @@ class InstanceProfileProvider
                     // 401 indicates insecure flow not supported, switch to
                     // attempting secure mode for subsequent calls
                     if (!empty($this->getExceptionStatusCode($e)) && $this->getExceptionStatusCode($e) === 401) {
-                        $this->secureMode = true;
+                        $this->secureMode = \true;
                     }
                     $this->handleRetryableException($e, ['blacklist' => [401, 403]], $this->createErrorMessage($e->getMessage()));
                 }
@@ -103,14 +114,25 @@ class InstanceProfileProvider
                 } catch (TransferException $e) {
                     // 401 indicates insecure flow not supported, switch to
                     // attempting secure mode for subsequent calls
-                    if (!empty($this->getExceptionStatusCode($e)) && $this->getExceptionStatusCode($e) === 401) {
-                        $this->secureMode = true;
+                    if (($this->getExceptionStatusCode($e) === 500 || \strpos($e->getMessage(), "cURL error 28") !== \false) && $previousCredentials instanceof Credentials) {
+                        goto generateCredentials;
+                    } elseif (!empty($this->getExceptionStatusCode($e)) && $this->getExceptionStatusCode($e) === 401) {
+                        $this->secureMode = \true;
                     }
                     $this->handleRetryableException($e, ['blacklist' => [401, 403]], $this->createErrorMessage($e->getMessage()));
                 }
                 $this->attempts++;
             }
-            (yield new \DeliciousBrains\WP_Offload_Media\Aws3\Aws\Credentials\Credentials($result['AccessKeyId'], $result['SecretAccessKey'], $result['Token'], strtotime($result['Expiration'])));
+            generateCredentials:
+            if (!isset($result)) {
+                $credentials = $previousCredentials;
+            } else {
+                $credentials = new Credentials($result['AccessKeyId'], $result['SecretAccessKey'], $result['Token'], \strtotime($result['Expiration']));
+            }
+            if ($credentials->isExpired()) {
+                $credentials->extendExpiration();
+            }
+            (yield $credentials);
         });
     }
     /**
@@ -122,14 +144,14 @@ class InstanceProfileProvider
      */
     private function request($url, $method = 'GET', $headers = [])
     {
-        $disabled = getenv(self::ENV_DISABLE) ?: false;
-        if (strcasecmp($disabled, 'true') === 0) {
-            throw new \DeliciousBrains\WP_Offload_Media\Aws3\Aws\Exception\CredentialsException($this->createErrorMessage('EC2 metadata service access disabled'));
+        $disabled = \getenv(self::ENV_DISABLE) ?: \false;
+        if (\strcasecmp($disabled, 'true') === 0) {
+            throw new CredentialsException($this->createErrorMessage('EC2 metadata service access disabled'));
         }
         $fn = $this->client;
-        $request = new \DeliciousBrains\WP_Offload_Media\Aws3\GuzzleHttp\Psr7\Request($method, self::SERVER_URI . $url);
-        $userAgent = 'aws-sdk-php/' . \DeliciousBrains\WP_Offload_Media\Aws3\Aws\Sdk::VERSION;
-        if (defined('HHVM_VERSION')) {
+        $request = new Request($method, self::SERVER_URI . $url);
+        $userAgent = 'aws-sdk-php/' . Sdk::VERSION;
+        if (\defined('DeliciousBrains\\WP_Offload_Media\\Aws3\\HHVM_VERSION')) {
             $userAgent .= ' HHVM/' . HHVM_VERSION;
         }
         $userAgent .= ' ' . \DeliciousBrains\WP_Offload_Media\Aws3\Aws\default_user_agent();
@@ -137,7 +159,7 @@ class InstanceProfileProvider
         foreach ($headers as $key => $value) {
             $request = $request->withHeader($key, $value);
         }
-        return $fn($request, ['timeout' => $this->timeout])->then(function (\DeliciousBrains\WP_Offload_Media\Aws3\Psr\Http\Message\ResponseInterface $response) {
+        return $fn($request, ['timeout' => $this->timeout])->then(function (ResponseInterface $response) {
             return (string) $response->getBody();
         })->otherwise(function (array $reason) {
             $reason = $reason['exception'];
@@ -145,24 +167,24 @@ class InstanceProfileProvider
                 throw $reason;
             }
             $msg = $reason->getMessage();
-            throw new \DeliciousBrains\WP_Offload_Media\Aws3\Aws\Exception\CredentialsException($this->createErrorMessage($msg));
+            throw new CredentialsException($this->createErrorMessage($msg));
         });
     }
     private function handleRetryableException(\Exception $e, $retryOptions, $message)
     {
-        $isRetryable = true;
-        if (!empty($status = $this->getExceptionStatusCode($e)) && isset($retryOptions['blacklist']) && in_array($status, $retryOptions['blacklist'])) {
-            $isRetryable = false;
+        $isRetryable = \true;
+        if (!empty($status = $this->getExceptionStatusCode($e)) && isset($retryOptions['blacklist']) && \in_array($status, $retryOptions['blacklist'])) {
+            $isRetryable = \false;
         }
         if ($isRetryable && $this->attempts < $this->retries) {
-            sleep(pow(1.2, $this->attempts));
+            \sleep((int) \pow(1.2, $this->attempts));
         } else {
-            throw new \DeliciousBrains\WP_Offload_Media\Aws3\Aws\Exception\CredentialsException($message);
+            throw new CredentialsException($message);
         }
     }
     private function getExceptionStatusCode(\Exception $e)
     {
-        if (method_exists($e, 'getResponse') && !empty($e->getResponse())) {
+        if (\method_exists($e, 'getResponse') && !empty($e->getResponse())) {
             return $e->getResponse()->getStatusCode();
         }
         return null;
@@ -173,13 +195,28 @@ class InstanceProfileProvider
     }
     private function decodeResult($response)
     {
-        $result = json_decode($response, true);
-        if (json_last_error() > 0) {
-            throw new \DeliciousBrains\WP_Offload_Media\Aws3\Aws\Exception\InvalidJsonException();
+        $result = \json_decode($response, \true);
+        if (\json_last_error() > 0) {
+            throw new InvalidJsonException();
         }
         if ($result['Code'] !== 'Success') {
-            throw new \DeliciousBrains\WP_Offload_Media\Aws3\Aws\Exception\CredentialsException('Unexpected instance profile ' . 'response code: ' . $result['Code']);
+            throw new CredentialsException('Unexpected instance profile ' . 'response code: ' . $result['Code']);
         }
         return $result;
+    }
+    /**
+     * This functions checks for whether we should fall back to IMDSv1 or not.
+     * If $ec2MetadataV1Disabled is null then we will try to resolve this value from
+     * the following sources:
+     * - From environment: "AWS_EC2_METADATA_V1_DISABLED".
+     * - From config file: aws_ec2_metadata_v1_disabled
+     * - Defaulted to false
+     *
+     * @return bool
+     */
+    private function shouldFallbackToIMDSv1() : bool
+    {
+        $isImdsV1Disabled = \DeliciousBrains\WP_Offload_Media\Aws3\Aws\boolean_value($this->ec2MetadataV1Disabled) ?? \DeliciousBrains\WP_Offload_Media\Aws3\Aws\boolean_value(ConfigurationResolver::resolve(self::CFG_EC2_METADATA_V1_DISABLED, self::DEFAULT_AWS_EC2_METADATA_V1_DISABLED, 'bool', ['use_aws_shared_config_files' => \true])) ?? self::DEFAULT_AWS_EC2_METADATA_V1_DISABLED;
+        return !$isImdsV1Disabled;
     }
 }

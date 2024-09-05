@@ -11,7 +11,7 @@ use DeliciousBrains\WP_Offload_Media\Aws3\Psr\Http\Message\StreamInterface;
  * @internal Implements a decoder for a binary encoded event stream that will
  * decode, validate, and provide individual events from the stream.
  */
-class EventParsingIterator implements \Iterator
+class EventParsingIterator implements Iterator
 {
     /** @var StreamInterface */
     private $decodingIterator;
@@ -19,28 +19,33 @@ class EventParsingIterator implements \Iterator
     private $shape;
     /** @var AbstractParser */
     private $parser;
-    public function __construct(\DeliciousBrains\WP_Offload_Media\Aws3\Psr\Http\Message\StreamInterface $stream, \DeliciousBrains\WP_Offload_Media\Aws3\Aws\Api\StructureShape $shape, \DeliciousBrains\WP_Offload_Media\Aws3\Aws\Api\Parser\AbstractParser $parser)
+    public function __construct(StreamInterface $stream, StructureShape $shape, AbstractParser $parser)
     {
-        $this->decodingIterator = new \DeliciousBrains\WP_Offload_Media\Aws3\Aws\Api\Parser\DecodingEventStreamIterator($stream);
+        $this->decodingIterator = new DecodingEventStreamIterator($stream);
         $this->shape = $shape;
         $this->parser = $parser;
     }
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return $this->parseEvent($this->decodingIterator->current());
     }
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return $this->decodingIterator->key();
     }
+    #[\ReturnTypeWillChange]
     public function next()
     {
         $this->decodingIterator->next();
     }
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         $this->decodingIterator->rewind();
     }
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         return $this->decodingIterator->valid();
@@ -52,30 +57,64 @@ class EventParsingIterator implements \Iterator
                 return $this->parseError($event);
             }
             if ($event['headers'][':message-type'] !== 'event') {
-                throw new \DeliciousBrains\WP_Offload_Media\Aws3\Aws\Api\Parser\Exception\ParserException('Failed to parse unknown message type.');
+                throw new ParserException('Failed to parse unknown message type.');
             }
         }
-        if (empty($event['headers'][':event-type'])) {
-            throw new \DeliciousBrains\WP_Offload_Media\Aws3\Aws\Api\Parser\Exception\ParserException('Failed to parse without event type.');
+        $eventType = $event['headers'][':event-type'] ?? null;
+        if (empty($eventType)) {
+            throw new ParserException('Failed to parse without event type.');
         }
-        $eventShape = $this->shape->getMember($event['headers'][':event-type']);
-        $parsedEvent = [];
-        foreach ($eventShape['members'] as $shape => $details) {
-            if (!empty($details['eventpayload'])) {
-                $payloadShape = $eventShape->getMember($shape);
-                if ($payloadShape['type'] === 'blob') {
-                    $parsedEvent[$shape] = $event['payload'];
+        $eventShape = $this->shape->getMember($eventType);
+        $eventPayload = $event['payload'];
+        return [$eventType => \array_merge($this->parseEventHeaders($event['headers'], $eventShape), $this->parseEventPayload($eventPayload, $eventShape))];
+    }
+    /**
+     * @param $headers
+     * @param $eventShape
+     *
+     * @return array
+     */
+    private function parseEventHeaders($headers, $eventShape) : array
+    {
+        $parsedHeaders = [];
+        foreach ($eventShape->getMembers() as $memberName => $memberProps) {
+            if (isset($memberProps['eventheader'])) {
+                $parsedHeaders[$memberName] = $headers[$memberName];
+            }
+        }
+        return $parsedHeaders;
+    }
+    /**
+     * @param $payload
+     * @param $eventShape
+     *
+     * @return array
+     */
+    private function parseEventPayload($payload, $eventShape) : array
+    {
+        $parsedPayload = [];
+        foreach ($eventShape->getMembers() as $memberName => $memberProps) {
+            $memberShape = $eventShape->getMember($memberName);
+            if (isset($memberProps['eventpayload'])) {
+                if ($memberShape->getType() === 'blob') {
+                    $parsedPayload[$memberName] = $payload;
                 } else {
-                    $parsedEvent[$shape] = $this->parser->parseMemberFromStream($event['payload'], $payloadShape, null);
+                    $parsedPayload[$memberName] = $this->parser->parseMemberFromStream($payload, $memberShape, null);
                 }
-            } else {
-                $parsedEvent[$shape] = $event['headers'][$shape];
+                break;
             }
         }
-        return [$event['headers'][':event-type'] => $parsedEvent];
+        if (empty($parsedPayload) && !empty($payload->getContents())) {
+            /**
+             * If we did not find a member with an eventpayload trait, then we should deserialize the payload
+             * using the event's shape.
+             */
+            $parsedPayload = $this->parser->parseMemberFromStream($payload, $eventShape, null);
+        }
+        return $parsedPayload;
     }
     private function parseError(array $event)
     {
-        throw new \DeliciousBrains\WP_Offload_Media\Aws3\Aws\Exception\EventStreamDataException($event['headers'][':error-code'], $event['headers'][':error-message']);
+        throw new EventStreamDataException($event['headers'][':error-code'], $event['headers'][':error-message']);
     }
 }

@@ -2,15 +2,15 @@
 
 namespace App\Fields;
 
-use WordPlate\Acf\Fields\FlexibleContent;
-use WordPlate\Acf\Fields\Image;
-use WordPlate\Acf\Fields\Layout;
-use WordPlate\Acf\Fields\Oembed;
-use WordPlate\Acf\Fields\Text;
-use WordPlate\Acf\Fields\Textarea;
-use WordPlate\Acf\Fields\Url;
-use WordPlate\Acf\Fields\WysiwygEditor;
-use WordPlate\Acf\Location;
+use Extended\ACF\Fields\FlexibleContent;
+use Extended\ACF\Fields\Image;
+use Extended\ACF\Fields\Layout;
+use Extended\ACF\Fields\Oembed;
+use Extended\ACF\Fields\Text;
+use Extended\ACF\Fields\Textarea;
+use Extended\ACF\Fields\Url;
+use Extended\ACF\Fields\WYSIWYGEditor;
+use Extended\ACF\Location;
 
 /**
  * PostTimeline Register timeline post fields
@@ -24,7 +24,7 @@ class PostTimeline {
             'fields'       => $this->setFields(),
             'show_in_rest' => true,
             'location'     => [
-                Location::if('post_type', 'timeline')
+                Location::where('post_type', 'timeline')
             ],
         ]);
     }
@@ -48,7 +48,7 @@ class PostTimeline {
                                 ->required()
                                 ->width(668)
                                 ->height(375),
-                            WysiwygEditor::make(__('Descrição', constant('TEXTDOMAIN')), 'description')
+                            WYSIWYGEditor::make(__('Descrição', constant('TEXTDOMAIN')), 'description')
                                 ->mediaUpload(false),
                         ]),
 
@@ -72,7 +72,7 @@ class PostTimeline {
                                 ->required(),
                             Image::make(__('Imagem', constant('TEXTDOMAIN')), 'image')
                                 ->returnFormat('url'),
-                            WysiwygEditor::make(__('Descrição', constant('TEXTDOMAIN')), 'description')
+                            WYSIWYGEditor::make(__('Descrição', constant('TEXTDOMAIN')), 'description')
                                 ->required()
                                 ->mediaUpload(false),
                         ]),
@@ -81,7 +81,7 @@ class PostTimeline {
                         ->layout('block')
                         ->fields([
                             Textarea::make(__('Código HTML', constant('TEXTDOMAIN')), 'html'),
-                            WysiwygEditor::make(__('Descrição', constant('TEXTDOMAIN')), 'description')
+                            WYSIWYGEditor::make(__('Descrição', constant('TEXTDOMAIN')), 'description')
                                 ->mediaUpload(false),
                         ]),
                 ])

@@ -41,10 +41,10 @@
     }
   },
   "require": {
-    "php": "^7.4|^8.0",
+    "php": "^8.2",
     "log1x/sage-directives": "^1.1",
     "roots/acorn": "^2.1",
-    "wordplate/acf": "^11.2"
+    "vinkla/extended-acf": "^14.0"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "^3.6"
