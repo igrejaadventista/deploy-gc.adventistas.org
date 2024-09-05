@@ -21,16 +21,16 @@
 
 // ** Database settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-define('DB_NAME', 'generalconference');
+define('DB_NAME', $_ENV['WP_DB_NAME']);
 
-/** Database username */
-define('DB_USER', 'root');
+/** MySQL database username */
+define('DB_USER', $_ENV['WP_DB_USER']);
 
-/** Database password */
-define('DB_PASSWORD', 'root');
+/** MySQL database password */
+define('DB_PASSWORD', $_ENV['WP_DB_PASSWORD']);
 
-/** Database hostname */
-define('DB_HOST', 'localhost');
+/** MySQL hostname */
+define('DB_HOST', $_ENV['WP_DB_HOST'] . ':3306');
 
 /** Database charset to use in creating database tables. */
 define('DB_CHARSET', 'utf8mb4');
