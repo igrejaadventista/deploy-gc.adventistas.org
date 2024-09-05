@@ -1,0 +1,38 @@
+@tailwind utilities;
+
+.page-header {
+  &.has-live {
+    .background {
+      @apply h-[90%] md:h-[69%];
+    }
+  }
+
+  &--fixed {
+    @apply fixed top-0 z-10;
+
+    .background {
+      @apply h-full !important;
+    }
+
+    .logo {
+      @apply hidden;
+    }
+
+    .live {
+      @apply flex m-0;
+
+      &__title {
+        @apply mb-0 ml-6;
+      }
+
+      &__player {
+        max-width: 216px;
+        width: 46.7%;
+      }
+
+      &__description {
+        @apply hidden;
+      }
+    }
+  }
+}
