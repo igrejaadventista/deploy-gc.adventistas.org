@@ -1,0 +1,15 @@
+.timeline {
+  &::before {
+    height: calc(100% - 1rem + 110px);
+
+    @media (min-width: 768px) {
+      height: calc(100% - 1rem + 174px);
+    }
+  }
+
+  .timeline-item-embed {
+    iframe {
+      width: 100% !important;
+    }
+  }
+}

@@ -8,4 +8,4 @@
     @yield('content')
   </main>
 
-@include('sections.footer')
+@includeWhen(!is_404(), 'sections.footer')
