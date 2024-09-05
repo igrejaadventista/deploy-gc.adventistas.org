@@ -38,15 +38,15 @@ class TemplateTimeline {
         return [
             DatePicker::make(__('Ano', constant('TEXTDOMAIN')), 'year')
                 ->required()
-                ->displayFormat('Y'),
+                ->format('Y'),
             Group::make(__('Ao vivo', constant('TEXTDOMAIN')), 'live')
                 ->fields([
                     TrueFalse::make(__('Ativo', constant('TEXTDOMAIN')), 'enabled')
-                        ->defaultValue(false),
-                     //   ->stylized(on: 'Yes'), // optional on and off text labels
+                        ->default(false)
+                        ->stylized(on: 'Yes'), // optional on and off text labels
                     Text::make(__('Título', constant('TEXTDOMAIN')), 'title')
                         ->required()
-                        ->defaultValue(__('Ao vivo', constant('TEXTDOMAIN')))
+                        ->default(__('Ao vivo', constant('TEXTDOMAIN')))
                         ->conditionalLogic([
                             ConditionalLogic::where('enabled', '==', 1)
                         ]),
