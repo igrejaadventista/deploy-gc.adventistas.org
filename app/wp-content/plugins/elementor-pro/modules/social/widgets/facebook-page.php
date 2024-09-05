@@ -27,6 +27,10 @@ class Facebook_Page extends Base_Widget {
 		return [ 'facebook', 'social', 'embed', 'page' ];
 	}
 
+	protected function is_dynamic_content(): bool {
+		return false;
+	}
+
 	protected function register_controls() {
 		$this->start_controls_section(
 			'section_content',
@@ -107,17 +111,24 @@ class Facebook_Page extends Base_Widget {
 			[
 				'label' => esc_html__( 'Height', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'default' => [
-					'unit' => 'px',
 					'size' => 500,
 				],
 				'range' => [
 					'px' => [
-						'min' => 70,
+						'min' => 50,
 						'max' => 1000,
 					],
+					'em' => [
+						'min' => 5,
+						'max' => 100,
+					],
+					'rem' => [
+						'min' => 5,
+						'max' => 100,
+					],
 				],
-				'size_units' => [ 'px' ],
 			]
 		);
 
@@ -125,7 +136,7 @@ class Facebook_Page extends Base_Widget {
 	}
 
 	public function render() {
-		$settings = $this->get_settings();
+		$settings = $this->get_settings_for_display();
 
 		if ( empty( $settings['url'] ) ) {
 			echo $this->get_title() . ': ' . esc_html__( 'Please enter a valid URL', 'elementor-pro' ); // XSS ok.

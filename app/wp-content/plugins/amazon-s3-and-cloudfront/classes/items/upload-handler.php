@@ -4,6 +4,7 @@ namespace DeliciousBrains\WP_Offload_Media\Items;
 
 use AS3CF_Error;
 use AS3CF_Utils;
+use DeliciousBrains\WP_Offload_Media\Providers\Storage\Storage_Provider;
 use Exception;
 use WP_Error;
 
@@ -46,33 +47,33 @@ class Upload_Handler extends Item_Handler {
 
 		// Check for valid file path before attempting upload
 		if ( empty( $as3cf_item->source_path() ) ) {
-			$error_msg = sprintf( __( '%s with id %d does not have a valid file path', 'amazon-s3-and-cloudfront' ), $source_type_name, $as3cf_item->source_id() );
+			$error_msg = sprintf( __( '%1$s with id %2$d does not have a valid file path', 'amazon-s3-and-cloudfront' ), $source_type_name, $as3cf_item->source_id() );
 
 			return $this->return_handler_error( $error_msg );
 		}
 
 		// Ensure path is a string
 		if ( ! is_string( $as3cf_item->source_path() ) ) {
-			$error_msg = sprintf( __( '%s with id %d. Provided path is not a string', 'amazon-s3-and-cloudfront' ), $source_type_name, $as3cf_item->source_id() );
+			$error_msg = sprintf( __( '%1$s with id %2$d. Provided path is not a string', 'amazon-s3-and-cloudfront' ), $source_type_name, $as3cf_item->source_id() );
 
 			return $this->return_handler_error( $error_msg );
 		}
 
 		// Ensure primary source file exists for new offload.
 		if ( empty( $as3cf_item->id() ) && ! file_exists( $as3cf_item->full_source_path( $primary_key ) ) ) {
-			$error_msg = sprintf( __( 'Primary file %s does not exist', 'amazon-s3-and-cloudfront' ), $as3cf_item->full_source_path( $primary_key ) );
+			$error_msg = sprintf( __( 'Primary file %1$s for %2$s with id %3$s does not exist', 'amazon-s3-and-cloudfront' ), $as3cf_item->full_source_path( $primary_key ), $source_type_name, $as3cf_item->source_id() );
 
 			return $this->return_handler_error( $error_msg );
 		}
 
 		// Get primary file's stats.
 		$file_name     = wp_basename( $as3cf_item->source_path() );
-		$file_type     = wp_check_filetype_and_ext( $as3cf_item->source_path(), $file_name );
+		$file_type     = wp_check_filetype_and_ext( $as3cf_item->full_source_path(), $file_name );
 		$allowed_types = $this->as3cf->get_allowed_mime_types();
 
 		// check mime type of file is in allowed provider mime types
 		if ( ! in_array( $file_type['type'], $allowed_types, true ) ) {
-			$error_msg = sprintf( __( 'Mime type %s is not allowed', 'amazon-s3-and-cloudfront' ), $file_type['type'] );
+			$error_msg = sprintf( __( 'Mime type "%1$s" is not allowed (%2$s with id %3$s)', 'amazon-s3-and-cloudfront' ), $file_type['type'], $source_type_name, $as3cf_item->source_id() );
 
 			return $this->return_handler_error( $error_msg );
 		}
@@ -134,25 +135,7 @@ class Upload_Handler extends Item_Handler {
 				$args['ContentEncoding'] = 'gzip';
 			}
 
-			/**
-			 * This filter allows you to change the arguments passed to the cloud storage SDK client when
-			 * offloading a file to the bucket.
-			 *
-			 * Note: It is possible to change the destination 'Bucket' only while processing the primary object_key.
-			 *       All other object_keys will use the same bucket as the item's primary object.
-			 *       The 'Key' should be the "public" Key path. If a private prefix is configured
-			 *       for use with signed CloudFront URLs or similar, that prefix will be added later.
-			 *       A change to the 'Key' will only be handled when processing the primary object key.
-			 *
-			 * @param array  $args        Information to be sent to storage provider during offload (e.g. PutObject)
-			 * @param int    $source_id   Original file's unique ID for its source type
-			 * @param string $object_key  A unique file identifier for a composite item, e.g. image's "size" such as full, small, medium, large
-			 * @param bool   $copy        True if the object is being copied between buckets
-			 * @param array  $item_source Item source array containing source type and id
-			 *
-			 * @return array
-			 */
-			$args = apply_filters( 'as3cf_object_meta', $args, $as3cf_item->source_id(), $object_key, false, $as3cf_item->get_item_source_array() );
+			$args = Storage_Provider::filter_object_meta( $args, $as3cf_item, $object_key );
 
 			// If the bucket is changed by the filter while processing the primary object,
 			// we should try and use that bucket for the item.
@@ -163,7 +146,7 @@ class Upload_Handler extends Item_Handler {
 				$bucket = $this->as3cf->check_bucket( $args['Bucket'] );
 
 				if ( $bucket ) {
-					$region = $this->as3cf->get_bucket_region( $bucket, true );
+					$region = $this->as3cf->get_bucket_region( $bucket );
 
 					if ( is_wp_error( $region ) ) {
 						unset( $region );
@@ -269,6 +252,8 @@ class Upload_Handler extends Item_Handler {
 	 * @return bool|WP_Error
 	 */
 	protected function handle_item( Item $as3cf_item, Manifest $manifest, array $options ) {
+		$source_type_name = $this->as3cf->get_source_type_name( $as3cf_item->source_type() );
+
 		try {
 			$provider_client = $this->as3cf->get_provider_client( $as3cf_item->region() );
 		} catch ( Exception $e ) {
@@ -284,7 +269,7 @@ class Upload_Handler extends Item_Handler {
 			);
 
 			if ( ! file_exists( $args['SourceFile'] ) ) {
-				$error_msg = sprintf( __( 'File %s does not exist', 'amazon-s3-and-cloudfront' ), $args['SourceFile'] );
+				$error_msg = sprintf( __( 'File %1$s does not exist (%2$s with id %3$s)', 'amazon-s3-and-cloudfront' ), $args['SourceFile'], $source_type_name, $as3cf_item->source_id() );
 
 				$object['upload_result']['status']  = self::STATUS_FAILED;
 				$object['upload_result']['message'] = $error_msg;
@@ -305,7 +290,7 @@ class Upload_Handler extends Item_Handler {
 
 				$object['upload_result']['status'] = self::STATUS_OK;
 			} catch ( Exception $e ) {
-				$error_msg = sprintf( __( 'Error offloading %1$s to provider: %2$s', 'amazon-s3-and-cloudfront' ), $args['SourceFile'], $e->getMessage() );
+				$error_msg = sprintf( __( 'Error offloading %1$s to provider: %2$s (%3$s with id %4$s)', 'amazon-s3-and-cloudfront' ), $args['SourceFile'], $e->getMessage(), $source_type_name, $as3cf_item->source_id() );
 
 				$object['upload_result']['status']  = self::STATUS_FAILED;
 				$object['upload_result']['message'] = $error_msg;
@@ -326,7 +311,7 @@ class Upload_Handler extends Item_Handler {
 	 */
 	protected function post_handle( Item $as3cf_item, Manifest $manifest, array $options ) {
 		$item_objects = $as3cf_item->objects();
-		$errors       = new WP_Error;
+		$errors       = new WP_Error();
 		$i            = 1;
 
 		// Reconcile the Item's objects with their manifest status.
@@ -349,7 +334,7 @@ class Upload_Handler extends Item_Handler {
 				if ( empty( $options['offloaded_files'][ $object['source_file'] ] ) ) {
 					unset( $item_objects[ $object_key ] );
 				}
-				$errors->add( 'upload-object-' . $i++, $manifest->objects[ $object_key ]['upload_result']['message'] );
+				$errors->add( 'upload-object-' . ( $i++ ), $manifest->objects[ $object_key ]['upload_result']['message'] );
 			}
 		}
 

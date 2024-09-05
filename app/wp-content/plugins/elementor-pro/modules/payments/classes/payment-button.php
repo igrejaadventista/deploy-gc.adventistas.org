@@ -52,6 +52,12 @@ abstract class Payment_Button extends Widget_Button {
 	// Render custom controls after product type.
 	protected function after_product_type() { }
 
+	// Render custom controls test toggle control.
+	protected function after_custom_messages_toggle() { }
+
+	// Edit error massage placeholders for stripe widget
+	protected function update_error_massages() { }
+
 	// Return an array of supported currencies.
 	protected function get_currencies() {
 		return [
@@ -106,6 +112,7 @@ abstract class Payment_Button extends Widget_Button {
 
 	// Product details section.
 	protected function register_product_controls() {
+
 		$this->add_control(
 			'type',
 			[
@@ -142,6 +149,9 @@ abstract class Payment_Button extends Widget_Button {
 				'type' => Controls_Manager::TEXT,
 				'dynamic' => [
 					'active' => true,
+				],
+				'ai' => [
+					'active' => false,
 				],
 			]
 		);
@@ -310,7 +320,7 @@ abstract class Payment_Button extends Widget_Button {
 				'label' => esc_html__( 'Redirect After Success', 'elementor-pro' ),
 				'type' => Controls_Manager::URL,
 				'options' => false,
-				'placeholder' => esc_html__( 'Paste URL or type', 'elementor-pro' ),
+				'placeholder' => esc_html__( 'Choose a page or add a URL', 'elementor-pro' ),
 				'dynamic' => [
 					'active' => true,
 				],
@@ -336,7 +346,11 @@ abstract class Payment_Button extends Widget_Button {
 			'open_in_new_window',
 			[
 				'type' => Controls_Manager::SWITCHER,
-				'label' => sprintf( esc_html__( 'Open %s In New Tab', 'elementor-pro' ), $this->get_merchant_name() ),
+				'label' => sprintf(
+					/* translators: %s: Merchant name. */
+					esc_html__( 'Open %s In New Tab', 'elementor-pro' ),
+					$this->get_merchant_name()
+				),
 				'default' => 'yes',
 				'label_off' => esc_html__( 'No', 'elementor-pro' ),
 				'label_on' => esc_html__( 'Yes', 'elementor-pro' ),
@@ -352,6 +366,8 @@ abstract class Payment_Button extends Widget_Button {
 			]
 		);
 
+		$this->after_custom_messages_toggle();
+
 		$error_messages = $this->get_default_error_messages();
 
 		$this->add_control(
@@ -365,13 +381,20 @@ abstract class Payment_Button extends Widget_Button {
 				'condition' => [
 					'custom_messages!' => '',
 				],
+				'dynamic' => [
+					'active' => true,
+				],
 			]
 		);
 
 		$this->add_control(
 			'error_message_' . self::ERROR_MESSAGE_PAYMENT_METHOD,
 			[
-				'label' => sprintf( esc_html__( '%s Not Connected', 'elementor-pro' ), $this->get_merchant_name() ),
+				'label' => sprintf(
+					/* translators: %s: Merchant name. */
+					esc_html__( '%s Not Connected', 'elementor-pro' ),
+					$this->get_merchant_name()
+				),
 				'type' => Controls_Manager::TEXT,
 				'default' => $error_messages[ self::ERROR_MESSAGE_PAYMENT_METHOD ],
 				'placeholder' => $error_messages[ self::ERROR_MESSAGE_PAYMENT_METHOD ],
@@ -379,8 +402,13 @@ abstract class Payment_Button extends Widget_Button {
 				'condition' => [
 					'custom_messages!' => '',
 				],
+				'dynamic' => [
+					'active' => true,
+				],
 			]
 		);
+
+		$this->update_error_massages();
 
 		$this->end_controls_section();
 	}
@@ -395,23 +423,12 @@ abstract class Payment_Button extends Widget_Button {
 
 		$this->remove_control( 'size' );
 
-		$this->update_control( 'selected_icon', [
-			'default' => [
-				'value' => 'fab fa-paypal',
-				'library' => 'fa-brands',
-			],
-		] );
-
 		$this->update_control( 'text', [
 			'default' => 'Buy Now',
 		] );
 
 		$this->update_control( 'button_text_color', [
 			'default' => '#FFF',
-		] );
-
-		$this->update_control( 'background_color', [
-			'default' => '#032E82',
 		] );
 	}
 
@@ -450,7 +467,11 @@ abstract class Payment_Button extends Widget_Button {
 		$this->add_control(
 			'message_color_' . self::ERROR_MESSAGE_PAYMENT_METHOD,
 			[
-				'label' => sprintf( esc_html__( '%s Not Connected Color', 'elementor-pro' ), $this->get_merchant_name() ),
+				'label' => sprintf(
+					/* translators: %s: Merchant name. */
+					esc_html__( '%s Not Connected Color', 'elementor-pro' ),
+					$this->get_merchant_name()
+				),
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} .elementor-message.elementor-error-message-' . self::ERROR_MESSAGE_PAYMENT_METHOD => 'color: {{COLOR}};',
@@ -494,6 +515,8 @@ abstract class Payment_Button extends Widget_Button {
 
 		if ( ! empty( $settings['size'] ) ) {
 			$this->add_render_attribute( 'button', 'class', 'elementor-size-' . $settings['size'] );
+		} else {
+			$this->add_render_attribute( 'button', 'class', 'elementor-size-sm' ); // BC, to make sure the class is always present
 		}
 
 		if ( $settings['hover_animation'] ) {
@@ -511,16 +534,41 @@ abstract class Payment_Button extends Widget_Button {
 		return;
 		?>
 		<#
+		view.addRenderAttribute( 'wrapper', 'class', 'elementor-button-wrapper' );
+		view.addRenderAttribute( 'button', 'class', 'elementor-button' );
+		view.addRenderAttribute( 'content-wrapper', 'class', 'elementor-button-content-wrapper' );
+		view.addRenderAttribute( 'icon', 'class', 'elementor-button-icon' );
 		view.addRenderAttribute( 'text', 'class', 'elementor-button-text' );
+
+		if ( '' !== settings.link.url ) {
+			view.addRenderAttribute( 'button', 'class', 'elementor-button-link' );
+			view.addRenderAttribute( 'button', 'href', elementor.helpers.sanitizeUrl( settings.link.url ) );
+		} else {
+			view.addRenderAttribute( 'button', 'role', 'button' );
+		}
+
+		if ( '' !== settings.button_css_id ) {
+			view.addRenderAttribute( 'button', 'id', settings.button_css_id );
+		}
+
+		if ( '' !== settings.size ) {
+			view.addRenderAttribute( 'button', 'class', 'elementor-size-' + settings.size );
+		}
+
+		if ( '' !== settings.hover_animation ) {
+			view.addRenderAttribute( 'button', 'class', 'elementor-animation-' + settings.hover_animation );
+		}
+
 		view.addInlineEditingAttributes( 'text', 'none' );
-		var iconHTML = elementor.helpers.renderIcon( view, settings.selected_icon, { 'aria-hidden': true }, 'i' , 'object' ),
-		migrated = elementor.helpers.isIconMigrated( settings, 'selected_icon' );
+
+		const iconHTML = elementor.helpers.renderIcon( view, settings.selected_icon, { 'aria-hidden': true }, 'i' , 'object' );
+		const migrated = elementor.helpers.isIconMigrated( settings, 'selected_icon' );
 		#>
-		<div class="elementor-button-wrapper">
-			<a id="{{ settings.button_css_id }}" class="elementor-button elementor-size-{{ settings.size }} elementor-animation-{{ settings.hover_animation }}" href="#" role="button">
-				<span class="elementor-button-content-wrapper">
+		<div {{{ view.getRenderAttributeString( 'wrapper' ) }}}>
+			<a {{{ view.getRenderAttributeString( 'button' ) }}}>
+				<span {{{ view.getRenderAttributeString( 'content-wrapper' ) }}}>
 					<# if ( settings.icon || settings.selected_icon ) { #>
-					<span class="elementor-button-icon elementor-align-icon-{{ settings.icon_align }}">
+					<span {{{ view.getRenderAttributeString( 'icon' ) }}}>
 						<# if ( ( migrated || ! settings.icon ) && iconHTML.rendered ) { #>
 							{{{ iconHTML.value }}}
 						<# } else { #>

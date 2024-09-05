@@ -1,10 +1,12 @@
 <?php
 namespace Elementor\Modules\System_Info;
 
+use Elementor\Core\Admin\Menu\Admin_Menu_Manager;
 use Elementor\Core\Base\Module as BaseModule;
 use Elementor\Modules\System_Info\Reporters\Base;
 use Elementor\Modules\System_Info\Helpers\Model_Helper;
 use Elementor\Plugin;
+use Elementor\Settings;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
@@ -66,6 +68,10 @@ class Module extends BaseModule {
 		'mu_plugins' => [],
 	];
 
+	public function get_capability() {
+		return $this->capability;
+	}
+
 	/**
 	 * Main system info page constructor.
 	 *
@@ -112,9 +118,9 @@ class Module extends BaseModule {
 	 * @access private
 	 */
 	private function add_actions() {
-		if ( ! Plugin::$instance->experiments->is_feature_active( 'admin_menu_rearrangement' ) ) {
-			add_action( 'admin_menu', [ $this, 'register_menu' ], 500 );
-		}
+		add_action( 'elementor/admin/menu/register', function ( Admin_Menu_Manager $admin_menu_manager ) {
+			$this->register_menu( $admin_menu_manager );
+		}, Settings::ADMIN_MENU_PRIORITY + 30 );
 
 		add_action( 'wp_ajax_elementor_system_info_download_file', [ $this, 'download_file' ] );
 	}
@@ -127,19 +133,10 @@ class Module extends BaseModule {
 	 * Fired by `admin_menu` action.
 	 *
 	 * @since 2.9.0
-	 * @access public
+	 * @access private
 	 */
-	public function register_menu() {
-		$system_info_text = esc_html__( 'System Info', 'elementor' );
-
-		add_submenu_page(
-			'elementor',
-			$system_info_text,
-			$system_info_text,
-			$this->capability,
-			'elementor-system-info',
-			[ $this, 'display_page' ]
-		);
+	private function register_menu( Admin_Menu_Manager $admin_menu ) {
+		$admin_menu->register( 'elementor-system-info', new System_Info_Menu_Item( $this ) );
 	}
 
 	/**
@@ -156,7 +153,13 @@ class Module extends BaseModule {
 		$reports = $this->load_reports( $reports_info );
 		?>
 		<div id="elementor-system-info">
-			<h3 class="wp-heading-inline"><?php echo esc_html__( 'System Info', 'elementor' ); ?></h3>
+			<div class="elementor-system-info-header">
+				<h3 class="wp-heading-inline"><?php echo esc_html__( 'System Info', 'elementor' ); ?></h3>
+				<form action="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>" method="post">
+					<input type="hidden" name="action" value="elementor_system_info_download_file">
+					<input type="submit" class="button button-primary" value="<?php echo esc_attr__( 'Download System Info', 'elementor' ); ?>">
+				</form>
+			</div>
 			<div><?php $this->print_report( $reports, 'html' ); ?></div>
 			<h3><?php echo esc_html__( 'Copy & Paste Info', 'elementor' ); ?></h3>
 			<div id="elementor-system-info-raw">
@@ -178,7 +181,7 @@ class Module extends BaseModule {
 			<hr>
 			<form action="<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>" method="post">
 				<input type="hidden" name="action" value="elementor_system_info_download_file">
-				<input type="submit" class="button button-primary" value="<?php echo esc_html__( 'Download System Info', 'elementor' ); ?>">
+				<input type="submit" class="button button-primary" value="<?php echo esc_attr__( 'Download System Info', 'elementor' ); ?>">
 			</form>
 		</div>
 		<?php
@@ -196,7 +199,7 @@ class Module extends BaseModule {
 	 */
 	public function download_file() {
 		if ( ! current_user_can( $this->capability ) ) {
-			wp_die( esc_html__( 'You don\'t have permissions to download this file', 'elementor' ) );
+			wp_die( esc_html__( 'You do not have permission to download this file.', 'elementor' ) );
 		}
 
 		$reports_info = self::get_allowed_reports();

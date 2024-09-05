@@ -31,6 +31,10 @@ class Facebook_Embed extends Base_Widget {
 		return [ 'facebook', 'social', 'embed', 'video', 'post', 'comment' ];
 	}
 
+	protected function is_dynamic_content(): bool {
+		return false;
+	}
+
 	protected function register_controls() {
 		$this->start_controls_section(
 			'section_content',
@@ -165,6 +169,8 @@ class Facebook_Embed extends Base_Widget {
 				],
 			]
 		);
+
+		$this->end_controls_section();
 	}
 
 	public function render() {

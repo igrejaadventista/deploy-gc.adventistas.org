@@ -3,6 +3,8 @@ namespace ElementorPro\Modules\Woocommerce\Widgets;
 
 use Elementor\Controls_Manager;
 use Elementor\Group_Control_Border;
+use ElementorPro\Core\Utils;
+use ElementorPro\Plugin;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
@@ -39,9 +41,10 @@ class Product_Images extends Base_Widget {
 		$this->add_control(
 			'wc_style_warning',
 			[
-				'type' => Controls_Manager::RAW_HTML,
-				'raw' => esc_html__( 'The style of this widget is often affected by your theme and plugins. If you experience any such issue, try to switch to a basic theme and deactivate related plugins.', 'elementor-pro' ),
-				'content_classes' => 'elementor-panel-alert elementor-panel-alert-info',
+				// TODO: Remove define() with the release of Elementor 3.22
+				'type' => defined( 'Controls_Manager::ALERT' ) ? Controls_Manager::ALERT : 'alert',
+				'alert_type' => 'info',
+				'content' => esc_html__( 'The style of this widget is often affected by your theme and plugins. If you experience any such issue, try to switch to a basic theme and deactivate related plugins.', 'elementor-pro' ),
 			]
 		);
 
@@ -74,7 +77,7 @@ class Product_Images extends Base_Widget {
 			[
 				'label' => esc_html__( 'Border Radius', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'custom' ],
 				'selectors' => [
 					'.woocommerce {{WRAPPER}} .woocommerce-product-gallery__trigger + .woocommerce-product-gallery__wrapper,
 					.woocommerce {{WRAPPER}} .flex-viewport' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
@@ -87,7 +90,7 @@ class Product_Images extends Base_Widget {
 			[
 				'label' => esc_html__( 'Spacing', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
-				'size_units' => [ 'px', 'em' ],
+				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'selectors' => [
 					'.woocommerce {{WRAPPER}} .flex-viewport:not(:last-child)' => 'margin-bottom: {{SIZE}}{{UNIT}}',
 				],
@@ -116,7 +119,7 @@ class Product_Images extends Base_Widget {
 			[
 				'label' => esc_html__( 'Border Radius', 'elementor-pro' ),
 				'type' => Controls_Manager::DIMENSIONS,
-				'size_units' => [ 'px', '%' ],
+				'size_units' => [ 'px', '%', 'em', 'rem', 'custom' ],
 				'selectors' => [
 					'.woocommerce {{WRAPPER}} .flex-control-thumbs img' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
 				],
@@ -128,7 +131,7 @@ class Product_Images extends Base_Widget {
 			[
 				'label' => esc_html__( 'Spacing', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
-				'size_units' => [ 'px', 'em' ],
+				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'selectors' => [
 					'.woocommerce {{WRAPPER}} .flex-control-thumbs li' => 'padding-right: calc({{SIZE}}{{UNIT}} / 2); padding-left: calc({{SIZE}}{{UNIT}} / 2); padding-bottom: {{SIZE}}{{UNIT}}',
 					'.woocommerce {{WRAPPER}} .flex-control-thumbs' => 'margin-right: calc(-{{SIZE}}{{UNIT}} / 2); margin-left: calc(-{{SIZE}}{{UNIT}} / 2)',
@@ -140,13 +143,22 @@ class Product_Images extends Base_Widget {
 	}
 
 	public function render() {
-		$settings = $this->get_settings_for_display();
 		global $product;
 
-		$product = wc_get_product();
+		$product = $this->get_product();
 
-		if ( empty( $product ) ) {
+		if ( ! $product ) {
 			return;
+		}
+
+		$settings = $this->get_settings_for_display();
+
+		$is_library_preview = Utils::_unstable_get_super_global_value( $_GET, 'elementor_library' )
+			&& Utils::_unstable_get_super_global_value( $_GET, 'preview_id' );
+
+		if ( $is_library_preview ) {
+			// We need to enqueue these scripts manually on the Library preview.
+			$this->load_assets_dependencies();
 		}
 
 		if ( 'yes' === $settings['sale_flash'] ) {
@@ -155,7 +167,7 @@ class Product_Images extends Base_Widget {
 		wc_get_template( 'single-product/product-image.php' );
 
 		// On render widget from Editor - trigger the init manually.
-		if ( wp_doing_ajax() ) {
+		if ( Plugin::elementor()->editor->is_edit_mode() ) {
 			?>
 			<script>
 				jQuery( '.woocommerce-product-gallery' ).each( function() {
@@ -164,6 +176,25 @@ class Product_Images extends Base_Widget {
 			</script>
 			<?php
 		}
+	}
+
+	private function load_assets_dependencies() {
+		if ( current_theme_supports( 'wc-product-gallery-zoom' ) ) {
+			wp_enqueue_script( 'zoom' );
+		}
+		if ( current_theme_supports( 'wc-product-gallery-slider' ) ) {
+			wp_enqueue_script( 'flexslider' );
+		}
+		if ( current_theme_supports( 'wc-product-gallery-lightbox' ) ) {
+			wp_enqueue_script( 'photoswipe-ui-default' );
+			wp_enqueue_style( 'photoswipe-default-skin' );
+			add_action( 'wp_footer', 'woocommerce_photoswipe' );
+		}
+		wp_enqueue_script( 'wc-single-product' );
+
+		wp_enqueue_style( 'photoswipe' );
+		wp_enqueue_style( 'photoswipe-default-skin' );
+		wp_enqueue_style( 'woocommerce_prettyPhoto_css' );
 	}
 
 	public function get_group_name() {

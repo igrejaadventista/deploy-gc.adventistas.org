@@ -61,6 +61,12 @@ class Post_Navigation extends Base {
 			[
 				'label' => esc_html__( 'Previous Label', 'elementor-pro' ),
 				'type' => Controls_Manager::TEXT,
+				'dynamic' => [
+					'active' => true,
+				],
+				'ai' => [
+					'active' => false,
+				],
 				'default' => esc_html__( 'Previous', 'elementor-pro' ),
 				'condition' => [
 					'show_label' => 'yes',
@@ -76,6 +82,12 @@ class Post_Navigation extends Base {
 				'default' => esc_html__( 'Next', 'elementor-pro' ),
 				'condition' => [
 					'show_label' => 'yes',
+				],
+				'ai' => [
+					'active' => false,
+				],
+				'dynamic' => [
+					'active' => true,
 				],
 			]
 		);
@@ -239,6 +251,22 @@ class Post_Navigation extends Base {
 			]
 		);
 
+		$this->add_control(
+			'label_hover_color_transition_duration',
+			[
+				'label' => esc_html__( 'Transition Duration', 'elementor-pro' ),
+				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 's', 'ms', 'custom' ],
+				'default' => [
+					'unit' => 'ms',
+				],
+				'selectors' => [
+					'{{WRAPPER}} span.post-navigation__prev--label' => 'transition-duration: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} span.post-navigation__next--label' => 'transition-duration: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
 		$this->end_controls_tab();
 
 		$this->end_controls_tabs();
@@ -307,6 +335,22 @@ class Post_Navigation extends Base {
 				'type' => Controls_Manager::COLOR,
 				'selectors' => [
 					'{{WRAPPER}} span.post-navigation__prev--title:hover, {{WRAPPER}} span.post-navigation__next--title:hover' => 'color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'hover_color_transition_duration',
+			[
+				'label' => esc_html__( 'Transition Duration', 'elementor-pro' ),
+				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 's', 'ms', 'custom' ],
+				'default' => [
+					'unit' => 'ms',
+				],
+				'selectors' => [
+					'{{WRAPPER}} span.post-navigation__prev--title' => 'transition-duration: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} span.post-navigation__next--title' => 'transition-duration: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -380,6 +424,21 @@ class Post_Navigation extends Base {
 			]
 		);
 
+		$this->add_control(
+			'arrow_hover_color_transition_duration',
+			[
+				'label' => esc_html__( 'Transition Duration', 'elementor-pro' ),
+				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 's', 'ms', 'custom' ],
+				'default' => [
+					'unit' => 'ms',
+				],
+				'selectors' => [
+					'{{WRAPPER}} .post-navigation__arrow-wrapper' => 'transition-duration: {{SIZE}}{{UNIT}};',
+				],
+			]
+		);
+
 		$this->end_controls_tab();
 
 		$this->end_controls_tabs();
@@ -389,10 +448,17 @@ class Post_Navigation extends Base {
 			[
 				'label' => esc_html__( 'Size', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'range' => [
 					'px' => [
-						'min' => 6,
+						'min' => 1,
 						'max' => 300,
+					],
+					'em' => [
+						'max' => 30,
+					],
+					'rem' => [
+						'max' => 30,
 					],
 				],
 				'selectors' => [
@@ -406,17 +472,23 @@ class Post_Navigation extends Base {
 			[
 				'label' => esc_html__( 'Gap', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
+				'range' => [
+					'px' => [
+						'max' => 50,
+					],
+					'em' => [
+						'max' => 5,
+					],
+					'rem' => [
+						'max' => 5,
+					],
+				],
 				'selectors' => [
 					'body:not(.rtl) {{WRAPPER}} .post-navigation__arrow-prev' => 'padding-right: {{SIZE}}{{UNIT}};',
 					'body:not(.rtl) {{WRAPPER}} .post-navigation__arrow-next' => 'padding-left: {{SIZE}}{{UNIT}};',
 					'body.rtl {{WRAPPER}} .post-navigation__arrow-prev' => 'padding-left: {{SIZE}}{{UNIT}};',
 					'body.rtl {{WRAPPER}} .post-navigation__arrow-next' => 'padding-right: {{SIZE}}{{UNIT}};',
-				],
-				'range' => [
-					'em' => [
-						'min' => 0,
-						'max' => 5,
-					],
 				],
 			]
 		);
@@ -452,10 +524,17 @@ class Post_Navigation extends Base {
 			[
 				'label' => esc_html__( 'Size', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
 				'range' => [
 					'px' => [
 						'min' => 1,
 						'max' => 100,
+					],
+					'em' => [
+						'max' => 10,
+					],
+					'rem' => [
+						'max' => 10,
 					],
 				],
 				'selectors' => [
@@ -472,14 +551,20 @@ class Post_Navigation extends Base {
 			[
 				'label' => esc_html__( 'Spacing', 'elementor-pro' ),
 				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 'px', 'em', 'rem', 'custom' ],
+				'range' => [
+					'px' => [
+						'max' => 100,
+					],
+					'em' => [
+						'max' => 10,
+					],
+					'rem' => [
+						'max' => 10,
+					],
+				],
 				'selectors' => [
 					'{{WRAPPER}} .elementor-post-navigation' => 'padding: {{SIZE}}{{UNIT}} 0;',
-				],
-				'range' => [
-					'em' => [
-						'min' => 0,
-						'max' => 5,
-					],
 				],
 			]
 		);
@@ -488,7 +573,7 @@ class Post_Navigation extends Base {
 	}
 
 	protected function render() {
-		$settings = $this->get_active_settings();
+		$settings = $this->get_settings_for_display();
 
 		$prev_label = '';
 		$next_label = '';
@@ -509,8 +594,8 @@ class Post_Navigation extends Base {
 				$next_icon_class = str_replace( 'left', 'right', $settings['arrow'] );
 			}
 
-			$prev_arrow = '<span class="post-navigation__arrow-wrapper post-navigation__arrow-prev"><i class="' . $prev_icon_class . '" aria-hidden="true"></i><span class="elementor-screen-only">' . esc_html__( 'Prev', 'elementor-pro' ) . '</span></span>';
-			$next_arrow = '<span class="post-navigation__arrow-wrapper post-navigation__arrow-next"><i class="' . $next_icon_class . '" aria-hidden="true"></i><span class="elementor-screen-only">' . esc_html__( 'Next', 'elementor-pro' ) . '</span></span>';
+			$prev_arrow = '<span class="post-navigation__arrow-wrapper post-navigation__arrow-prev"><i class="' . esc_attr( $prev_icon_class ) . '" aria-hidden="true"></i><span class="elementor-screen-only">' . esc_html__( 'Prev', 'elementor-pro' ) . '</span></span>';
+			$next_arrow = '<span class="post-navigation__arrow-wrapper post-navigation__arrow-next"><i class="' . esc_attr( $next_icon_class ) . '" aria-hidden="true"></i><span class="elementor-screen-only">' . esc_html__( 'Next', 'elementor-pro' ) . '</span></span>';
 		}
 
 		$prev_title = '';

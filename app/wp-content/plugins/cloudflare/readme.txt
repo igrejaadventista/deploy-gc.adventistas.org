@@ -2,8 +2,8 @@
 Contributors: icyapril, manatarms, thillcf, deuill, epatryk, jacobbednarz
 Tags: cloudflare, seo, ssl, ddos, speed, security, cdn, performance, free
 Requires at least: 3.4
-Tested up to: 5.9
-Stable tag: 4.8.3
+Tested up to: 6.2
+Stable tag: 4.12.8
 Requires PHP: 7.2
 License: BSD-3-Clause
 
@@ -98,6 +98,64 @@ Yes, Cloudflare works with, and helps speed up your site even more, if you have 
 == Screenshots ==
 
 == Changelog ==
+= 4.12.8 - 2024-08-08 =
+
+* Prevent default settings from enabling Auto Minify due to deprecation (#547)
+
+= 4.12.7 - 2024-04-02 =
+
+* Upgrade cloudflare-plugin-frontend to v3.10.0 (#542)
+
+= 4.12.6 - 2024-03-04 =
+
+* Upgrade cloudflare-plugin-frontend to v3.9.0 (#537)
+
+= 4.12.5 - 2024-03-04 =
+
+* Upgrade cloudflare-plugin-frontend to v3.8.0 (#535)
+* Retrieve the Wordpress domain only from the active zone (#532)
+
+= 4.12.4 - 2024-01-19 =
+
+* Fix "creation of dynamic property is deprecated" notice
+
+= 4.12.3 - 2024-01-04 =
+
+* Prevent usage of `cloudflare_proxy` action on /admin-ajax endpoint for non-Administrator users
+
+= 4.12.2 - 2023-07-18 =
+
+* Revert the incorrect fix to Cloudflare Partners endpoint
+
+= 4.12.1 - 2023-07-18 =
+
+* Fix Cloudflare Partners endpoint
+
+= 4.12.0 - 2023-06-01 =
+
+* Updated plugin to be tested on WordPress 6.2
+
+= 4.11.0 - 2022-07-27 =
+
+* Restrict access to sensitive files using `.htaccess` configuration.
+* Added `cloudflare_use_cache` hook to determine when to cache.
+* Allow arrays with `url` keys to be passed into cache purge requests.
+* Handle `getZoneSettings` not returning a key and throwing an unset array key error.
+
+= 4.10.1 - 2022-06-06 =
+
+* Fix logic for ignoring cache purge operations.
+
+= 4.10.0 - 2022-06-03 =
+
+* Ignore feed URLs in cache purge operations unless a cache override is in place.
+
+= 4.9.1 - 2022-05-04 =
+
+* Handle empty URL arrays for purging.
+* Swap `publicly_queryable` for `is_post_type_viewable` when determining if the post is public.
+* Update `always_use_https` check to work with the API lacking a "value" for the key.
+* `purgeCacheByRelevantURLs` now accepts either an array or single ID
 
 = 4.8.3 - 2022-03-22 =
 

@@ -2,13 +2,14 @@
 
 namespace App\Fields;
 
-use WordPlate\Acf\ConditionalLogic;
-use WordPlate\Acf\Fields\Group;
-use WordPlate\Acf\Fields\Number;
-use WordPlate\Acf\Fields\Text;
-use WordPlate\Acf\Fields\Textarea;
-use WordPlate\Acf\Fields\TrueFalse;
-use WordPlate\Acf\Location;
+use Extended\ACF\ConditionalLogic;
+use Extended\ACF\Fields\Group;
+use Extended\ACF\Fields\Number;
+use Extended\ACF\Fields\Text;
+use Extended\ACF\Fields\Textarea;
+use Extended\ACF\Fields\TrueFalse;
+use Extended\ACF\Location;
+use Extended\ACF\Fields\DatePicker;
 
 /**
  * TemplateTimeline Register timeline template fields
@@ -23,7 +24,7 @@ class TemplateTimeline {
             'position' => 'side',
             'show_in_rest' => true,
             'location' => [
-                Location::if('post_template', 'timeline.blade.php')
+                Location::where('post_template', 'timeline.blade.php')
             ],
         ]);
     }
@@ -35,29 +36,28 @@ class TemplateTimeline {
      */
     function setFields(): array {
         return [
-            Number::make(__('Ano', constant('TEXTDOMAIN')), 'year')
-                ->required(true)
-                ->min(1900)
-                ->defaultValue(date('Y')),
+            DatePicker::make(__('Ano', constant('TEXTDOMAIN')), 'year')
+                ->required()
+                ->format('Y'),
             Group::make(__('Ao vivo', constant('TEXTDOMAIN')), 'live')
                 ->fields([
                     TrueFalse::make(__('Ativo', constant('TEXTDOMAIN')), 'enabled')
-                        ->defaultValue(false)
-                        ->stylisedUi(),
+                        ->default(false)
+                        ->stylized(on: 'Yes'),
                     Text::make(__('Título', constant('TEXTDOMAIN')), 'title')
                         ->required()
-                        ->defaultValue(__('Ao vivo', constant('TEXTDOMAIN')))
+                        ->default(__('Ao vivo', constant('TEXTDOMAIN')))
                         ->conditionalLogic([
-                            ConditionalLogic::if('enabled')->equals(1)
+                            ConditionalLogic::where('enabled', '==', 1)
                         ]),
                     Text::make(__('ID do vídeo', constant('TEXTDOMAIN')), 'videoID')
                         ->required()
                         ->conditionalLogic([
-                            ConditionalLogic::if('enabled')->equals(1)
+                            ConditionalLogic::where('enabled', '==', 1)
                         ]),
                     Textarea::make(__('Descrição', constant('TEXTDOMAIN')), 'description')
                         ->conditionalLogic([
-                            ConditionalLogic::if('enabled')->equals(1)
+                            ConditionalLogic::where('enabled', '==', 1)
                         ]),
                 ])
         ];

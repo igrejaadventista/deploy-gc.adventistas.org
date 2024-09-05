@@ -37,7 +37,7 @@ class Global_Typography extends Tab_Base {
 	}
 
 	public function get_help_url() {
-		return 'https://go.elementor.com/global-fonts';
+		return 'https://go.elementor.com/global-fonts/';
 	}
 
 	protected function register_tab_controls() {
@@ -107,6 +107,11 @@ class Global_Typography extends Tab_Base {
 					'letter_spacing' => [
 						'selectors' => [
 							'{{SELECTOR}}' => '--e-global-typography-{{external._id.VALUE}}-letter-spacing: {{SIZE}}{{UNIT}}',
+						],
+					],
+					'word_spacing' => [
+						'selectors' => [
+							'{{SELECTOR}}' => '--e-global-typography-{{external._id.VALUE}}-word-spacing: {{SIZE}}{{UNIT}}',
 						],
 					],
 				],
@@ -195,6 +200,9 @@ class Global_Typography extends Tab_Base {
 				'description' => esc_html__( 'The list of fonts used if the chosen font is not available.', 'elementor' ),
 				'label_block' => true,
 				'separator' => 'before',
+				'ai' => [
+					'active' => false,
+				],
 			]
 		);
 

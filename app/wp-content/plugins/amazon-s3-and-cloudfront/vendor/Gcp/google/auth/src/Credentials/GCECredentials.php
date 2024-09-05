@@ -22,6 +22,7 @@ use DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\GetQuotaProjectInterface;
 use DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\HttpHandler\HttpClientCache;
 use DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\HttpHandler\HttpHandlerFactory;
 use DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\Iam;
+use DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\IamSignerTrait;
 use DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\ProjectIdProviderInterface;
 use DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\SignBlobInterface;
 use DeliciousBrains\WP_Offload_Media\Gcp\GuzzleHttp\Exception\ClientException;
@@ -54,8 +55,9 @@ use InvalidArgumentException;
  *
  *   $res = $client->get('myproject/taskqueues/myqueue');
  */
-class GCECredentials extends \DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\CredentialsLoader implements \DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\SignBlobInterface, \DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\ProjectIdProviderInterface, \DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\GetQuotaProjectInterface
+class GCECredentials extends CredentialsLoader implements SignBlobInterface, ProjectIdProviderInterface, GetQuotaProjectInterface
 {
+    use IamSignerTrait;
     // phpcs:disable
     const cacheKey = 'GOOGLE_AUTH_PHP_GCE';
     // phpcs:enable
@@ -103,15 +105,17 @@ class GCECredentials extends \DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\C
      *
      * @var bool
      */
-    private $hasCheckedOnGce = false;
+    private $hasCheckedOnGce = \false;
     /**
      * Flag that stores the value of the onGCE check.
      *
      * @var bool
      */
-    private $isOnGce = false;
+    private $isOnGce = \false;
     /**
      * Result of fetchAuthToken.
+     *
+     * @var array<mixed>
      */
     protected $lastReceivedToken;
     /**
@@ -122,10 +126,6 @@ class GCECredentials extends \DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\C
      * @var string|null
      */
     private $projectId;
-    /**
-     * @var Iam|null
-     */
-    private $iam;
     /**
      * @var string
      */
@@ -144,7 +144,7 @@ class GCECredentials extends \DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\C
     private $serviceAccountIdentity;
     /**
      * @param Iam $iam [optional] An IAM instance.
-     * @param string|array $scope [optional] the scope of the access request,
+     * @param string|string[] $scope [optional] the scope of the access request,
      *        expressed either as an array or as a space-delimited string.
      * @param string $targetAudience [optional] The audience for the ID token.
      * @param string $quotaProject [optional] Specifies a project to bill for access
@@ -152,18 +152,18 @@ class GCECredentials extends \DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\C
      * @param string $serviceAccountIdentity [optional] Specify a service
      *   account identity name to use instead of "default".
      */
-    public function __construct(\DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\Iam $iam = null, $scope = null, $targetAudience = null, $quotaProject = null, $serviceAccountIdentity = null)
+    public function __construct(Iam $iam = null, $scope = null, $targetAudience = null, $quotaProject = null, $serviceAccountIdentity = null)
     {
         $this->iam = $iam;
         if ($scope && $targetAudience) {
-            throw new \InvalidArgumentException('Scope and targetAudience cannot both be supplied');
+            throw new InvalidArgumentException('Scope and targetAudience cannot both be supplied');
         }
         $tokenUri = self::getTokenUri($serviceAccountIdentity);
         if ($scope) {
-            if (is_string($scope)) {
-                $scope = explode(' ', $scope);
+            if (\is_string($scope)) {
+                $scope = \explode(' ', $scope);
             }
-            $scope = implode(',', $scope);
+            $scope = \implode(',', $scope);
             $tokenUri = $tokenUri . '?scopes=' . $scope;
         } elseif ($targetAudience) {
             $tokenUri = self::getIdTokenUri($serviceAccountIdentity);
@@ -186,7 +186,7 @@ class GCECredentials extends \DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\C
         $base = 'http://' . self::METADATA_IP . '/computeMetadata/';
         $base .= self::TOKEN_URI_PATH;
         if ($serviceAccountIdentity) {
-            return str_replace('/default/', '/' . $serviceAccountIdentity . '/', $base);
+            return \str_replace('/default/', '/' . $serviceAccountIdentity . '/', $base);
         }
         return $base;
     }
@@ -202,7 +202,7 @@ class GCECredentials extends \DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\C
         $base = 'http://' . self::METADATA_IP . '/computeMetadata/';
         $base .= self::CLIENT_ID_URI_PATH;
         if ($serviceAccountIdentity) {
-            return str_replace('/default/', '/' . $serviceAccountIdentity . '/', $base);
+            return \str_replace('/default/', '/' . $serviceAccountIdentity . '/', $base);
         }
         return $base;
     }
@@ -218,7 +218,7 @@ class GCECredentials extends \DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\C
         $base = 'http://' . self::METADATA_IP . '/computeMetadata/';
         $base .= self::ID_TOKEN_URI_PATH;
         if ($serviceAccountIdentity) {
-            return str_replace('/default/', '/' . $serviceAccountIdentity . '/', $base);
+            return \str_replace('/default/', '/' . $serviceAccountIdentity . '/', $base);
         }
         return $base;
     }
@@ -240,7 +240,7 @@ class GCECredentials extends \DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\C
      */
     public static function onAppEngineFlexible()
     {
-        return substr(getenv('GAE_INSTANCE'), 0, 4) === 'aef-';
+        return \substr((string) \getenv('GAE_INSTANCE'), 0, 4) === 'aef-';
     }
     /**
      * Determines if this a GCE instance, by accessing the expected metadata
@@ -252,7 +252,7 @@ class GCECredentials extends \DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\C
      */
     public static function onGce(callable $httpHandler = null)
     {
-        $httpHandler = $httpHandler ?: \DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\HttpHandler\HttpHandlerFactory::build(\DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\HttpHandler\HttpClientCache::getHttpClient());
+        $httpHandler = $httpHandler ?: HttpHandlerFactory::build(HttpClientCache::getHttpClient());
         $checkUri = 'http://' . self::METADATA_IP;
         for ($i = 1; $i <= self::MAX_COMPUTE_PING_TRIES; $i++) {
             try {
@@ -264,7 +264,7 @@ class GCECredentials extends \DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\C
                 // could lead to false negatives in the event that we are on GCE, but
                 // the metadata resolution was particularly slow. The latter case is
                 // "unlikely".
-                $resp = $httpHandler(new \DeliciousBrains\WP_Offload_Media\Gcp\GuzzleHttp\Psr7\Request('GET', $checkUri, [self::FLAVOR_HEADER => 'Google']), ['timeout' => self::COMPUTE_PING_CONNECTION_TIMEOUT_S]);
+                $resp = $httpHandler(new Request('GET', $checkUri, [self::FLAVOR_HEADER => 'Google']), ['timeout' => self::COMPUTE_PING_CONNECTION_TIMEOUT_S]);
                 return $resp->getHeaderLine(self::FLAVOR_HEADER) == 'Google';
             } catch (ClientException $e) {
             } catch (ServerException $e) {
@@ -272,7 +272,7 @@ class GCECredentials extends \DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\C
             } catch (ConnectException $e) {
             }
         }
-        return false;
+        return \false;
     }
     /**
      * Implements FetchAuthTokenInterface#fetchAuthToken.
@@ -282,36 +282,35 @@ class GCECredentials extends \DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\C
      *
      * @param callable $httpHandler callback which delivers psr7 request
      *
-     * @return array A set of auth related metadata, based on the token type.
+     * @return array<mixed> {
+     *     A set of auth related metadata, based on the token type.
      *
-     * Access tokens have the following keys:
-     *   - access_token (string)
-     *   - expires_in (int)
-     *   - token_type (string)
-     * ID tokens have the following keys:
-     *   - id_token (string)
-     *
+     *     @type string $access_token for access tokens
+     *     @type int    $expires_in   for access tokens
+     *     @type string $token_type   for access tokens
+     *     @type string $id_token     for ID tokens
+     * }
      * @throws \Exception
      */
     public function fetchAuthToken(callable $httpHandler = null)
     {
-        $httpHandler = $httpHandler ?: \DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\HttpHandler\HttpHandlerFactory::build(\DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\HttpHandler\HttpClientCache::getHttpClient());
+        $httpHandler = $httpHandler ?: HttpHandlerFactory::build(HttpClientCache::getHttpClient());
         if (!$this->hasCheckedOnGce) {
             $this->isOnGce = self::onGce($httpHandler);
-            $this->hasCheckedOnGce = true;
+            $this->hasCheckedOnGce = \true;
         }
         if (!$this->isOnGce) {
-            return array();
+            return [];
             // return an empty array with no access token
         }
         $response = $this->getFromMetadata($httpHandler, $this->tokenUri);
         if ($this->targetAudience) {
             return ['id_token' => $response];
         }
-        if (null === ($json = json_decode($response, true))) {
+        if (null === ($json = \json_decode($response, \true))) {
             throw new \Exception('Invalid JSON response');
         }
-        $json['expires_at'] = time() + $json['expires_in'];
+        $json['expires_at'] = \time() + $json['expires_in'];
         // store this so we can retrieve it later
         $this->lastReceivedToken = $json;
         return $json;
@@ -324,7 +323,7 @@ class GCECredentials extends \DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\C
         return self::cacheKey;
     }
     /**
-     * @return array|null
+     * @return array{access_token:string,expires_at:int}|null
      */
     public function getLastReceivedToken()
     {
@@ -346,39 +345,16 @@ class GCECredentials extends \DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\C
         if ($this->clientName) {
             return $this->clientName;
         }
-        $httpHandler = $httpHandler ?: \DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\HttpHandler\HttpHandlerFactory::build(\DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\HttpHandler\HttpClientCache::getHttpClient());
+        $httpHandler = $httpHandler ?: HttpHandlerFactory::build(HttpClientCache::getHttpClient());
         if (!$this->hasCheckedOnGce) {
             $this->isOnGce = self::onGce($httpHandler);
-            $this->hasCheckedOnGce = true;
+            $this->hasCheckedOnGce = \true;
         }
         if (!$this->isOnGce) {
             return '';
         }
         $this->clientName = $this->getFromMetadata($httpHandler, self::getClientNameUri($this->serviceAccountIdentity));
         return $this->clientName;
-    }
-    /**
-     * Sign a string using the default service account private key.
-     *
-     * This implementation uses IAM's signBlob API.
-     *
-     * @see https://cloud.google.com/iam/credentials/reference/rest/v1/projects.serviceAccounts/signBlob SignBlob
-     *
-     * @param string $stringToSign The string to sign.
-     * @param bool $forceOpenSsl [optional] Does not apply to this credentials
-     *        type.
-     * @return string
-     */
-    public function signBlob($stringToSign, $forceOpenSsl = false)
-    {
-        $httpHandler = \DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\HttpHandler\HttpHandlerFactory::build(\DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\HttpHandler\HttpClientCache::getHttpClient());
-        // Providing a signer is useful for testing, but it's undocumented
-        // because it's not something a user would generally need to do.
-        $signer = $this->iam ?: new \DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\Iam($httpHandler);
-        $email = $this->getClientName($httpHandler);
-        $previousToken = $this->getLastReceivedToken();
-        $accessToken = $previousToken ? $previousToken['access_token'] : $this->fetchAuthToken($httpHandler)['access_token'];
-        return $signer->signBlob($email, $accessToken, $stringToSign);
     }
     /**
      * Fetch the default Project ID from compute engine.
@@ -393,10 +369,10 @@ class GCECredentials extends \DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\C
         if ($this->projectId) {
             return $this->projectId;
         }
-        $httpHandler = $httpHandler ?: \DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\HttpHandler\HttpHandlerFactory::build(\DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\HttpHandler\HttpClientCache::getHttpClient());
+        $httpHandler = $httpHandler ?: HttpHandlerFactory::build(HttpClientCache::getHttpClient());
         if (!$this->hasCheckedOnGce) {
             $this->isOnGce = self::onGce($httpHandler);
-            $this->hasCheckedOnGce = true;
+            $this->hasCheckedOnGce = \true;
         }
         if (!$this->isOnGce) {
             return null;
@@ -413,7 +389,7 @@ class GCECredentials extends \DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\C
      */
     private function getFromMetadata(callable $httpHandler, $uri)
     {
-        $resp = $httpHandler(new \DeliciousBrains\WP_Offload_Media\Gcp\GuzzleHttp\Psr7\Request('GET', $uri, [self::FLAVOR_HEADER => 'Google']));
+        $resp = $httpHandler(new Request('GET', $uri, [self::FLAVOR_HEADER => 'Google']));
         return (string) $resp->getBody();
     }
     /**
@@ -424,5 +400,19 @@ class GCECredentials extends \DeliciousBrains\WP_Offload_Media\Gcp\Google\Auth\C
     public function getQuotaProject()
     {
         return $this->quotaProject;
+    }
+    /**
+     * Set whether or not we've already checked the GCE environment.
+     *
+     * @param bool $isOnGce
+     *
+     * @return void
+     */
+    public function setIsOnGce($isOnGce)
+    {
+        // Implicitly set hasCheckedGce to true
+        $this->hasCheckedOnGce = \true;
+        // Set isOnGce
+        $this->isOnGce = $isOnGce;
     }
 }
