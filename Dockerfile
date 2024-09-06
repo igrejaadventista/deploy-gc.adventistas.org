@@ -54,10 +54,12 @@ RUN cd /var/www/html/wp-content/themes/gc-theme \
 	&& find . -type f -name 'Dockerfile*' -exec rm {} + \
 	&& find . -type f -name 'task-definition.json' -exec rm {} + \
 	&& find . -type f -name '*.rb' -exec rm {} + \
-	&& find . -type f -name 'composer*' -exec rm {} + \
 	&& find . -type f -name 'README*' -exec rm {} + \
 	&& find . -type f -name '*.lock' -exec rm {} + \
 	&& find . -type f -name '*.mix.*' -exec rm {} + \
 	&& find . -type f -name '*.txt' -exec rm {} + 
+
+RUN cd /var/www/html/wp-content/themes/gc-theme \
+	&& chown www-data:www-data ./* -R
 
 EXPOSE 80
