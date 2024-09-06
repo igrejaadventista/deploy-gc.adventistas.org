@@ -1,4 +1,4 @@
-FROM wordpress:php8.3
+FROM wordpress:php8.2
 
 # RUN apk update 
 # RUN apk upgrade
