@@ -46,7 +46,9 @@ define('AS3CF_SETTINGS', serialize(array(
 	'provider' => 'aws',
 	'access-key-id' => $_ENV['WP_S3_ACCESS_KEY'],
 	'secret-access-key' => $_ENV['WP_S3_SECRET_KEY'],
-	'bucket' => $_ENV['WP_S3_BUCKET']
+	'bucket' => $_ENV['WP_S3_BUCKET'],
+	'enable-delivery-domain' => true,
+	'delivery-domain' => 'files.adventistas.org'
 )));
 
 define('WP_ALLOW_MULTISITE', true);
