@@ -8,7 +8,7 @@ use Extended\ACF\Fields\Layout;
 use Extended\ACF\Fields\Oembed;
 use Extended\ACF\Fields\Text;
 use Extended\ACF\Fields\Textarea;
-use Extended\ACF\Fields\Url;
+use Extended\ACF\Fields\URL;
 use Extended\ACF\Fields\WYSIWYGEditor;
 use Extended\ACF\Location;
 
@@ -55,7 +55,7 @@ class PostTimeline {
                     Layout::make(__('Site', constant('TEXTDOMAIN')), 'site')
                         ->layout('block')
                         ->fields([
-                            Url::make(__('URL', constant('TEXTDOMAIN')), 'url')
+                            URL::make(__('URL', constant('TEXTDOMAIN')), 'url')
                                 ->required(),
                             Text::make(__('Imagem', constant('TEXTDOMAIN')), 'image')
                                 ->readonly(),
@@ -68,7 +68,7 @@ class PostTimeline {
                     Layout::make(__('Manual', constant('TEXTDOMAIN')), 'manual')
                         ->layout('block')
                         ->fields([
-                            Url::make(__('URL', constant('TEXTDOMAIN')), 'url')
+                            URL::make(__('URL', constant('TEXTDOMAIN')), 'url')
                                 ->required(),
                             Image::make(__('Imagem', constant('TEXTDOMAIN')), 'image')
                             ->format('url'),
