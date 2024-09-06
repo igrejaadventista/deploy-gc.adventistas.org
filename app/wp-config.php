@@ -42,12 +42,12 @@ define('FORCE_SSL', true);
 define('FORCE_SSL_ADMIN', true);
 $_SERVER['HTTPS'] = 'on';
 
-// define('AS3CF_SETTINGS', serialize(array(
-// 	'provider' => 'aws',
-// 	'access-key-id' => $_ENV['WP_S3_ACCESS_KEY'],
-// 	'secret-access-key' => $_ENV['WP_S3_SECRET_KEY'],
-// 	'bucket' => $_ENV['WP_S3_BUCKET']
-// )));
+define('AS3CF_SETTINGS', serialize(array(
+	'provider' => 'aws',
+	'access-key-id' => $_ENV['WP_S3_ACCESS_KEY'],
+	'secret-access-key' => $_ENV['WP_S3_SECRET_KEY'],
+	'bucket' => $_ENV['WP_S3_BUCKET']
+)));
 
 define('WP_ALLOW_MULTISITE', true);
 define('MULTISITE', true);
