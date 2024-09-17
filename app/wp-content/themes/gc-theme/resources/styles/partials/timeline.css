@@ -12,4 +12,8 @@
       width: 100% !important;
     }
   }
+
+  .timeline-item-author {
+    font-size: 12px;
+  }
 }

@@ -53,6 +53,7 @@ export default class Timeline {
     this.buildItemHtml(element, data);
     this.buildItemEmbed(element, data);
     this.buildItemLink(element, data);
+    this.buildItemAuthor(element, data);
 
     this.element.appendChild(element);
   }
@@ -123,6 +124,18 @@ export default class Timeline {
       return;
 
     element.href = data.content?.url;
+  }
+
+  buildItemAuthor(elementItem, data) {
+    const element = elementItem.querySelector('.timeline-item-author span');
+    if (!element) return;
+
+    if (data.content.author.length === 0) {
+      element.parentElement.remove();
+      return;
+    }
+
+    element.innerHTML = data.content.author;
   }
 
 }

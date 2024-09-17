@@ -38,6 +38,8 @@
           </div>
         </div>
       </div>
+
+      <p class="timeline-item-author pl-6 mt-4">{{ __('Publicado por:', 'gc') }} <span></span></p>
     </article>
   </template>
 
@@ -54,6 +56,8 @@
 
         <div class="timeline-item-description text-sm md:text-base text-grey empty:hidden mt-4"></div>
       </div>
+
+      <p class="timeline-item-author pl-6 mt-4">{{ __('Publicado por:', 'gc') }} <span></span></p>
     </article>
   </template>
 
@@ -70,6 +74,8 @@
 
         <div class="timeline-item-description text-sm md:text-base text-grey empty:hidden mt-4"></div>
       </div>
+
+      <p class="timeline-item-author pl-6 mt-4">{{ __('Publicado por:', 'gc') }} <span></span></p>
     </article>
   </template>
 
