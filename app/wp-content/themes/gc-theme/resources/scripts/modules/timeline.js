@@ -70,8 +70,11 @@ export default class Timeline {
   buildItemTitle(elementItem, data) {
     const element = elementItem.querySelector('.timeline-item-title');
 
-    if(!element)
-      return;
+    if (!element) return;
+
+    if (data.content?.type === 'audio') {
+      element.classList.add('timeline-item-has-audio');
+    }
 
     element.innerHTML = data.content?.title !== undefined ? data.content.title : data.title.rendered;
   }
@@ -120,22 +123,25 @@ export default class Timeline {
   buildItemLink(elementItem, data) {
     const element = elementItem.querySelector('.timeline-item-link');
 
-    if(!element || !data.content?.url)
-      return;
+    if (!element || !data.content?.url) return;
 
     element.href = data.content?.url;
+
+    if (data.content?.type === 'audio') {
+      element.querySelector('span').innerHTML = 'Ouvir';
+    }
   }
 
   buildItemAuthor(elementItem, data) {
     const element = elementItem.querySelector('.timeline-item-author span');
     if (!element) return;
 
-    if (data.content.author.length === 0) {
+    if (data.content?.author.length === 0) {
       element.parentElement.remove();
       return;
     }
 
-    element.innerHTML = data.content.author;
+    element.innerHTML = data.content?.author;
   }
 
 }
