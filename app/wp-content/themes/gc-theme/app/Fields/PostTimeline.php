@@ -11,6 +11,7 @@ use Extended\ACF\Fields\Textarea;
 use Extended\ACF\Fields\URL;
 use Extended\ACF\Fields\WYSIWYGEditor;
 use Extended\ACF\Location;
+use Extended\ACF\Fields\Select;
 
 /**
  * PostTimeline Register timeline post fields
@@ -49,7 +50,14 @@ class PostTimeline {
                                 ->width(668)
                                 ->height(375),
                             WYSIWYGEditor::make(__('Descrição', constant('TEXTDOMAIN')), 'description')
-                            ->disableMediaUpload(),
+                                ->disableMediaUpload(),
+                            Text::make(__('Autor', constant('TEXTDOMAIN')), 'author'),
+                            Select::make(__('Tipo', constant('TEXTDOMAIN')), 'type')
+                                ->choices(['default' => 'Padrão', 'audio' => 'Áudio'])
+                                ->default('default')
+                                ->format('value')
+                                ->stylized()
+                                ->lazyLoad(),
                         ]),
 
                     Layout::make(__('Site', constant('TEXTDOMAIN')), 'site')
@@ -63,6 +71,13 @@ class PostTimeline {
                                 ->readonly(),
                             Textarea::make(__('Descrição', constant('TEXTDOMAIN')), 'description')
                                 ->readonly(),
+                            Text::make(__('Autor', constant('TEXTDOMAIN')), 'author'),
+                            Select::make(__('Tipo', constant('TEXTDOMAIN')), 'type')
+                                ->choices(['default' => 'Padrão', 'audio' => 'Áudio'])
+                                ->default('default')
+                                ->format('value')
+                                ->stylized()
+                                ->lazyLoad(),
                         ]),
 
                     Layout::make(__('Manual', constant('TEXTDOMAIN')), 'manual')
@@ -75,6 +90,13 @@ class PostTimeline {
                             WYSIWYGEditor::make(__('Descrição', constant('TEXTDOMAIN')), 'description')
                                 ->required()
                                 ->disableMediaUpload(),
+                            Text::make(__('Autor', constant('TEXTDOMAIN')), 'author'),
+                            Select::make(__('Tipo', constant('TEXTDOMAIN')), 'type')
+                                ->choices(['default' => 'Padrão', 'audio' => 'Áudio'])
+                                ->default('default')
+                                ->format('value')
+                                ->stylized()
+                                ->lazyLoad(),
                         ]),
 
                     Layout::make(__('HTML', constant('TEXTDOMAIN')), 'html')
@@ -83,6 +105,13 @@ class PostTimeline {
                             Textarea::make(__('Código HTML', constant('TEXTDOMAIN')), 'html'),
                             WYSIWYGEditor::make(__('Descrição', constant('TEXTDOMAIN')), 'description')
                             ->disableMediaUpload(),
+                            Text::make(__('Autor', constant('TEXTDOMAIN')), 'author'),
+                            Select::make(__('Tipo', constant('TEXTDOMAIN')), 'type')
+                                ->choices(['default' => 'Padrão', 'audio' => 'Áudio'])
+                                ->default('default')
+                                ->format('value')
+                                ->stylized()
+                                ->lazyLoad(),
                         ]),
                 ])
         ];
