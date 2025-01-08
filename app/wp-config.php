@@ -21,16 +21,16 @@
 
 // ** Database settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
-define('DB_NAME', $_ENV['WP_DB_NAME']);
+define('DB_NAME', 'WP_DB_NAME');
 
-/** MySQL database username */
-define('DB_USER', $_ENV['WP_DB_USER']);
+/** Tu nombre de usuario de MySQL */
+define('DB_USER', 'WP_DB_USER');
 
-/** MySQL database password */
-define('DB_PASSWORD', $_ENV['WP_DB_PASSWORD']);
+/** Tu contraseña de MySQL */
+define('DB_PASSWORD', 'WP_DB_PASSWORD');
 
-/** MySQL hostname */
-define('DB_HOST', $_ENV['WP_DB_HOST'] . ':3306');
+/** Host de MySQL (es muy probable que no necesites cambiarlo) */
+define('DB_HOST', 'WP_DB_HOST');
 
 /** Database charset to use in creating database tables. */
 define('DB_CHARSET', 'utf8mb4');
@@ -44,9 +44,9 @@ $_SERVER['HTTPS'] = 'on';
 
 define('AS3CF_SETTINGS', serialize(array(
 	'provider' => 'aws',
-	'access-key-id' => $_ENV['WP_S3_ACCESS_KEY'],
-	'secret-access-key' => $_ENV['WP_S3_SECRET_KEY'],
-	'bucket' => $_ENV['WP_S3_BUCKET'],
+	'access-key-id' => 'WP_S3_ACCESS_KEY',
+	'secret-access-key' => 'WP_S3_SECRET_KEY',
+	'bucket' => 'WP_S3_BUCKET',
 	'enable-delivery-domain' => true,
 	'delivery-domain' => 'files.adventistas.org'
 )));
@@ -102,7 +102,7 @@ $table_prefix = 'wp_';
  *
  * @link https://wordpress.org/support/article/debugging-in-wordpress/
  */
-define('WP_DEBUG', true);
+define('WP_DEBUG', false);
 
 /* Add any custom values between this line and the "stop editing" line. */
 
